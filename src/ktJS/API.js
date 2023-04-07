@@ -347,7 +347,8 @@ const render = () => {
   renderAnimationList.forEach(e => e.animation())
 
   // 天空
-  CACHE.container.sky.rotation.z += 0.0001
+  if(CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
+  
 
   requestAnimationFrame(render);
 };
