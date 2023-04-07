@@ -1,49 +1,28 @@
-<script setup lang="ts">
-import { onMounted, ref } from "vue";
-import * as echarts from "echarts";
-
-const leftRef = ref(null);
-
-onMounted(() => {
-  let myChart = echarts.init(leftRef.value);
-  let option = {
-    xAxis: {
-      type: "category",
-      data: [
-        "星期一",
-        "星期二",
-        "星期三",
-        "星期四",
-        "星期五",
-        "星期六",
-        "星期日",
-      ],
-    },
-    yAxis: {
-      type: "value",
-    },
-    series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: "line",
-      },
-    ],
-    tooltip: {
-      trigger: "axis",
-    },
-  };
-  myChart.setOption(option);
-});
-
-
-</script>
-
 <template>
   <div class="home">
-    <div ref="leftRef" class="left">
-    </div>
+    <div v-if="backShow" class="back" @click="back">返回</div>
   </div>
 </template>
+
+
+<script setup>
+import { onMounted, ref } from "vue";
+import * as echarts from "echarts";
+import { API } from '@/ktJS/API'
+
+let backShow = ref(false)
+
+function back() {
+  API.back()
+  backShow.value = false
+}
+
+onMounted(() => {
+
+});
+</script>
+
+
 
 <style scoped>
 .home {
@@ -52,10 +31,20 @@ onMounted(() => {
   z-index: 2;
   position: absolute;
 }
-.left {
-  width: 500px;
-  height: 500px;
-  background-color: rgba(133, 133, 133, 0.5);
-  pointer-events: auto;
+.back {
+  pointer-events: all;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 0.6rem;
+  letter-spacing: 0.6rem;
+  position: fixed;
+  bottom: 10vh;
+  right: 5vw;
+  height: 5vh;
+  width: 5vw;
+  background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
 }
 </style>

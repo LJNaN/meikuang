@@ -1,5 +1,9 @@
-<script setup lang="ts">
+<script setup>
 import Scene from '@/views/Scene.vue'
+import router from '@/router/index'
+
+if(router.currentRoute.value.path != '/') router.push('/')
+
 </script>
 
 <template>
@@ -13,5 +17,6 @@ import Scene from '@/views/Scene.vue'
   height: 100vh;
   background-color: #999;
   pointer-events: none;
+  color: #FFF;
 }
 </style>

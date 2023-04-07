@@ -29,7 +29,7 @@ function cameraAnimation({ cameraState, callback, delayTime = 0, duration = 800 
       },
       duration
     )
-    .onUpdate(() => {})
+    .onUpdate(() => { })
     .onComplete(() => {
       count++
 
@@ -51,7 +51,7 @@ function cameraAnimation({ cameraState, callback, delayTime = 0, duration = 800 
       },
       duration
     )
-    .onUpdate(() => {})
+    .onUpdate(() => { })
     .onComplete(() => {
       count++
       if (count == 2) {
@@ -163,10 +163,199 @@ function loadGUI() {
       CACHE.container.filterPass.filterMaterial.uniforms.contrast.value = val
     })
 
-  
+
 }
+
+/**
+ * 加载3d弹窗
+ */
+function initPopup() {
+  STATE.popupList.forEach(e => {
+    const popup = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+          margin:0;
+          cursor: pointer;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        ">
+
+          <div style="
+            background: url('./assets/3d/image/1.png') center / 100% 100% no-repeat;
+            width: 11vw;
+            height:10vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+            <p style="font-family: YouSheBiaoTiHei; font-size: 1.2vw;">${e.name}</p>
+            <p style="font-size: 0.7vw; margin-top: 0.5vh;">${e.sub}</p>
+          </div>
+    
+          <div style="
+            background: url('./assets/3d/image/2.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:13vh;
+          ">
+          </div>
+  
+          <div style="
+            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            width: 7vw;
+            height:5vh;
+            position: relative;
+            top: -3vh;
+          ">
+          </div>
+        </div>
+      `,
+      position: [e.position.x, e.position.y, e.position.z],
+      className: 'popup3dclass',
+      scale: [0.3, 0.3, 0.3],
+      closeVisible: 'hidden'
+    })
+    popup.name = e.name
+    popup.element.addEventListener("dblclick", () => {
+      enterRoom(e.name)
+    })
+
+    CACHE.container.attach(popup)
+    // setModelPosition(popup)
+
+    if (!STATE.popupList.popup3D) {
+      STATE.popupList.popup3D = []
+    }
+    STATE.popupList.popup3D.push(popup)
+  })
+
+
+  setTimeout(() => {
+    const dom = document.getElementsByClassName('popup3dclass')
+    if (dom.length) {
+      dom[0].parentElement.parentElement.style.zIndex = 20
+    }
+  }, 500)
+}
+
+/**
+ * 显示隐藏3d弹窗
+ */
+function showPopup(isShow = true) {
+  STATE.popupList.popup3D.forEach(e => {
+    e.visible = isShow
+  })
+}
+
+/**
+ * 设置模型位置(position)，旋转(rotation)，缩放(scale),有该属性的物体亦可
+ * @param {object} mesh 待操作模型
+ */
+function setModelPosition(mesh) {
+  const controls = CACHE.container.transformControl
+  const gui = new dat.GUI()
+  const options = {
+    transformModel: "translate"
+  }
+  gui.add(options, 'transformModel', ["translate", 'rotate', 'scale']).onChange(val => controls.setMode(val))
+  const positionX = gui.add(mesh.position, 'x').onChange(val => mesh.position.x = val).name('positionX')
+  const positionY = gui.add(mesh.position, 'y').onChange(val => mesh.position.y = val).name('positionY')
+  const positionZ = gui.add(mesh.position, 'z').onChange(val => mesh.position.z = val).name('positionZ')
+  const rotationX = gui.add(mesh.rotation, 'x').step(0.01).onChange(val => mesh.rotation.x = val).name('rotationX')
+  const rotationY = gui.add(mesh.rotation, 'y').step(0.01).onChange(val => mesh.rotation.y = val).name('rotationY')
+  const rotationZ = gui.add(mesh.rotation, 'z').step(0.01).onChange(val => mesh.rotation.z = val).name('rotationZ')
+  const scaleX = gui.add(mesh.scale, "x").step(0.01).onChange(val => mesh.scale.x = val).name('scaleX')
+  const scaleY = gui.add(mesh.scale, "y").step(0.01).onChange(val => mesh.scale.y = val).name('scaleY')
+  const scaleZ = gui.add(mesh.scale, "z").step(0.01).onChange(val => mesh.scale.z = val).name('scaleZ')
+  controls.attach(mesh)
+  controls.addEventListener("change", (e) => {
+    positionX.setValue(mesh.position.x)
+    positionY.setValue(mesh.position.y)
+    positionZ.setValue(mesh.position.z)
+    rotationX.setValue(mesh.rotation.x)
+    rotationY.setValue(mesh.rotation.y)
+    rotationZ.setValue(mesh.rotation.z)
+    scaleX.setValue(mesh.scale.x)
+    scaleY.setValue(mesh.scale.y)
+    scaleZ.setValue(mesh.scale.z)
+  })
+}
+
+/**
+ * 进入场景
+ * @param {String} name 场景名
+ */
+function enterRoom(name = '') {
+  if (name.includes('切眼')) {
+    STATE.router.push('/qieyan')
+  } else if (name.includes('综采')) {
+    STATE.router.push('/zongcai')
+  }
+
+  const item = STATE.roomModelName.find(e => e.name === name)
+  if (item) {
+    CACHE.container.sceneList.mkxdw.visible = false
+    item.model.visible = true
+    showPopup(false)
+    cameraAnimation({ cameraState: item.cameraState, duration: 0 })
+
+    const animation = () => {
+      item.rotateMesh.forEach(e2 => {
+        if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
+          e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
+        } else {
+          e2.mesh.rotation[e2.position] += e2.num
+        }
+      })
+    }
+    renderAnimationList.push({ name, animation })
+  }
+}
+
+
+/**
+ * 退回主页面
+ */
+function back() {
+  renderAnimationList = []
+  for (let key in STATE.sceneList) {
+    if (key === 'mkxdw') {
+      STATE.sceneList[key].visible = true
+    } else {
+      STATE.sceneList[key].visible = false
+    }
+  }
+  
+  showPopup()
+  cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
+}
+
+
+
+
+
+
+
+let renderAnimationList = []
+
+const render = () => {
+  const singleFrameTime = STATE.clock.getDelta()
+  const elapsedTime = STATE.clock.getElapsedTime()
+
+  renderAnimationList.forEach(e => e.animation())
+
+  // 天空
+  CACHE.container.sky.rotation.z += 0.0001
+
+  requestAnimationFrame(render);
+};
 
 export const API = {
   cameraAnimation,
-  loadGUI
+  initPopup,
+  loadGUI,
+  back,
+  render
 }

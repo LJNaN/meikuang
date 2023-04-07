@@ -10,12 +10,17 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     publicPath: STATE.PUBLIC_PATH,
     container: domElement,
     viewState: 'orbit',
-    bloomEnabled: false,
+    bloomEnabled: true,
+    bloom: {
+      bloomStrength: 1.5, // 强度
+      threshold: 0, // 阈值
+      bloomRadius: 0, // 半径
+    },
     cameras: {
       orbitCamera: {
         position: [STATE.initialState.position.x, STATE.initialState.position.y, STATE.initialState.position.z],
         near: 1,
-        far: 300,
+        far: 50000,
         fov: 30
       }
     },
@@ -26,8 +31,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
         // minDistance: 0,
         // maxDistance: 2500,
-        maxPolarAngle: Math.PI * 0.44,
-        minPolarAngle: Math.PI * 0.05,
+        maxPolarAngle: Math.PI,
+        minPolarAngle: 0,
         enableDamping: true,
         dampingFactor: 0.05,
       }
@@ -36,15 +41,23 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       directionLights: [{ color: 0xedeacc, intensity: 1.0, position: [20.3, 70, 40.2], mapSize: [4096, 4096], near: 10, far: 15000, bias: -0.001, distance: 8000 }],
       ambientLight: {
         color: '#ffffff',
-        intensity: 0
+        intensity: 3
       }
     },
     background: {
-      type: 'color',
-      value: '#333333'
+      type: 'panorama',
+      value: ['/hdr/48.jpg'],
+      options: {
+        scale: 0.5,
+        rotation: [0, 0, 0],
+        fog: true, // 天空盒受雾影响 默认值为false
+      }
     },
-    modelUrls: ['/model/白模.glb'],
-    hdrUrls: ['/hdr/HDR.hdr'],
+    modelUrls: [
+      '/model/mkxdw.glb', // 主
+      '/model/jjgzm.glb', // 101切眼
+      '/model/zcgzm.glb' // 综采
+    ],
     enableShadow: false,
     antiShake: false,
     // fog: {
@@ -65,21 +78,59 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     //   show: true,
     //   type: 10
     // }
+    onProgress: (model) => {
+      STATE.sceneList[model.name] = model
+      if (model.name === 'jjgzm') {
+        model.visible = false
+        model.scale.set(10, 10, 10)
+        STATE.roomModelName[2].model = model
+        model.traverse(child => {
+          if (child.isMesh) {
+            if (STATE.roomModelName[2].rotateMeshName.includes(child.name)) {
+              if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
+                STATE.roomModelName[2].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+              } else {
+                STATE.roomModelName[2].rotateMesh.push({ mesh: child, position: 'z', num: 0.1 })
+              }
+              STATE.bloomList.push(child)
+            }
+          }
+        })
 
+      } else if (model.name === 'zcgzm') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+        STATE.roomModelName[0].model = model
+        STATE.roomModelName[1].model = model
+        model.traverse(child => {
+          if (child.isMesh) {
+            if (child.name === 'xd') {
+              child.material.transparent = true
+              child.material.opacity = 0.5
+            } else if (STATE.roomModelName[0].rotateMeshName.includes(child.name)) {
+              STATE.roomModelName[0].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+              STATE.roomModelName[1].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+              STATE.bloomList.push(child)
+            }
+          }
+        })
+      }
+    },
     onLoad: (evt) => {
       CACHE.container = evt
       window.container = evt
+      CACHE.container.sceneList = STATE.sceneList
 
-      evt.sceneModels[0].scale.set(2, 2, 2)
-      evt.sceneModels[0].traverse((m) => {
-        if (m.isMesh) {
-          const matOpts = Object.assign({ envMap: evt.envMap }, DATA.materialOpts[m.name])
+      API.initPopup()
 
-          m.material = new Bol3D.MeshStandardMaterial(matOpts)
-        }
+
+      console.log(STATE.roomModelName)
+      STATE.bloomList.forEach(e => {
+        CACHE.container.addBloom(e)
       })
 
-      API.loadGUI()
+      API.render()
+      // API.loadGUI()
       callback && callback()
     }
   })
