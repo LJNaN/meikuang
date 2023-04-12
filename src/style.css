@@ -1,8 +1,15 @@
 * {
   margin: 0;
   user-select: none;
+  font-size: 1vw;
 }
 
 .dg.ac {
   z-index: 1 !important;
+}
+
+
+.popup3d_enviroment_detail .popup-close {
+  right: 6% !important;
+  top: 7% !important;
 }

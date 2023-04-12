@@ -10,9 +10,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     publicPath: STATE.PUBLIC_PATH,
     container: domElement,
     viewState: 'orbit',
+    hdrUrls: ['/hdr/2.hdr'],
     bloomEnabled: true,
     bloom: {
-      bloomStrength: 1.5, // 强度
+      bloomStrength: 0.5, // 强度
       threshold: 0, // 阈值
       bloomRadius: 0, // 半径
     },
@@ -24,21 +25,36 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         fov: 30
       }
     },
+    bounds: {
+      radius: 5000,
+      center: [0, 0, 0]
+    },
     controls: {
       orbitControls: {
         autoRotate: false,
         autoRotateSpeed: 1,
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
         // minDistance: 0,
-        // maxDistance: 2500,
-        maxPolarAngle: Math.PI,
-        minPolarAngle: 0,
-        enableDamping: true,
-        dampingFactor: 0.05,
+        maxDistance: 5000,
+        maxPolarAngle: STATE.initialState.maxPolarAngle,
+        minPolarAngle: STATE.initialState.minPolarAngle,
+        // maxPolarAngle: 3.14,
+        // minPolarAngle: 0,
+        enableDamping: false,
+        dampingFactor: 0,
       }
     },
     lights: {
-      directionLights: [{ color: 0xedeacc, intensity: 1.0, position: [20.3, 70, 40.2], mapSize: [4096, 4096], near: 10, far: 15000, bias: -0.001, distance: 8000 }],
+      directionLights: [{
+        color: 0xedeacc,
+        intensity: 1.7,
+        position: [20, 30, -140],
+        mapSize: [2048, 2048],
+        near: 10,
+        far: 15000,
+        bias: -0.001,
+        distance: 8000
+      }],
       ambientLight: {
         color: '#ffffff',
         intensity: 3
@@ -73,7 +89,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       supersampling: false
     },
     gammaEnabled: true,
-    stats: true,
+    stats: false,
     // loadingBar: {
     //   show: true,
     //   type: 10
@@ -86,6 +102,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         STATE.roomModelName[2].model = model
         model.traverse(child => {
           if (child.isMesh) {
+            STATE.clickObjects.push(child)
+
             if (STATE.roomModelName[2].rotateMeshName.includes(child.name)) {
               if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
                 STATE.roomModelName[2].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
@@ -104,13 +122,46 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         STATE.roomModelName[1].model = model
         model.traverse(child => {
           if (child.isMesh) {
+            STATE.clickObjects.push(child)
             if (child.name === 'xd') {
-              child.material.transparent = true
-              child.material.opacity = 0.5
+              // child.material.transparent = true
+              // child.material.opacity = 0.5
+              child.material.side = 0
             } else if (STATE.roomModelName[0].rotateMeshName.includes(child.name)) {
               STATE.roomModelName[0].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
               STATE.roomModelName[1].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
               STATE.bloomList.push(child)
+            }
+          }
+        })
+      } else if (model.name === 'mkxdw') {
+        model.traverse(child => {
+          if (child && child.isMesh) {
+            STATE.clickObjects.push(child)
+
+            const textArr = ["624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
+            const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm', '']
+            if (textArr.includes(child.name)) {
+              if (!STATE.sceneList.text) {
+                STATE.sceneList.text = new Bol3D.Group()
+                STATE.sceneList.text.name = 'text'
+              }
+              STATE.sceneList.text.add(child.clone())
+              child.visible = false
+              child.material.dispose()
+              child.geometry.dispose()
+              if (!CACHE.removed[child.name]) CACHE.removed[child.name] = child
+              child = null
+            } else if (workLocationArr.includes(child.name)) {
+              child.material.transparent = true
+              child.material.opacity = 0.5
+            } else if (child.name === 'hangdao') {
+              child.material.transparent = true
+              child.material.opacity = 0.4
+              STATE.bloomList.push(child)
+            } else {
+              child.material.transparent = true
+              child.material.opacity = 0.2
             }
           }
         })
@@ -120,23 +171,46 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       CACHE.container = evt
       window.container = evt
       CACHE.container.sceneList = STATE.sceneList
+      CACHE.container.attach(STATE.sceneList.text)
+      console.log(STATE.sceneList)
 
-      API.initPopup()
 
 
-      console.log(STATE.roomModelName)
+      // 处理text
+      STATE.sceneList.text.children.forEach(e => {
+        STATE.bloomList.push(e)
+      })
+
+      // 处理点击和辉光
+      CACHE.container.clickObjects = STATE.clickObjects
       STATE.bloomList.forEach(e => {
         CACHE.container.addBloom(e)
       })
 
-      API.render()
+      // remove unused obj3d
+      for (const i in CACHE.removed) {
+        const removed = CACHE.removed[i]
+        removed.parent.remove(removed)
+      }
+      delete CACHE.removed
+
+      // 加载弹窗
+      API.initLocationPopup()
+      API.initEnvironmentPopup()
+      // API.testBox()
       // API.loadGUI()
+      API.render()
       callback && callback()
     }
   })
 
   const events = new Bol3D.Events(container)
-  events.ondbclick = (e) => { }
+  events.ondbclick = (e) => {
+    if (e.objects.length) {
+      const obj = e.objects[0].object
+      console.log('obj: ', obj);
+    }
+  }
 
   events.onhover = (e) => { }
 }

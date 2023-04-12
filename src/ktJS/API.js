@@ -167,10 +167,10 @@ function loadGUI() {
 }
 
 /**
- * 加载3d弹窗
+ * 加载地方的3d弹窗
  */
-function initPopup() {
-  STATE.popupList.forEach(e => {
+function initLocationPopup() {
+  STATE.popupLocationList.forEach(e => {
     const popup = new Bol3D.POI.Popup3D({
       value: `
         <div style="
@@ -212,41 +212,178 @@ function initPopup() {
           </div>
         </div>
       `,
-      position: [e.position.x, e.position.y, e.position.z],
+      position: [0, 23, 0],
       className: 'popup3dclass',
       scale: [0.3, 0.3, 0.3],
       closeVisible: 'hidden'
     })
+    const group = new Bol3D.Group()
+    group.add(popup)
+    group.position.set(e.position.x, 0, e.position.z)
+    group.name = 'group_' + e.name
     popup.name = e.name
     popup.element.addEventListener("dblclick", () => {
       enterRoom(e.name)
     })
 
-    CACHE.container.attach(popup)
-    // setModelPosition(popup)
-
-    if (!STATE.popupList.popup3D) {
-      STATE.popupList.popup3D = []
+    CACHE.container.attach(group)
+    if (!STATE.sceneList.locationPopup) {
+      STATE.sceneList.locationPopup = []
     }
-    STATE.popupList.popup3D.push(popup)
+    STATE.sceneList.locationPopup.push(group)
   })
-
-
-  setTimeout(() => {
-    const dom = document.getElementsByClassName('popup3dclass')
-    if (dom.length) {
-      dom[0].parentElement.parentElement.style.zIndex = 20
-    }
-  }, 500)
 }
+
+/**
+ * 加载环境的3d弹窗
+ */
+function initEnvironmentPopup() {
+  STATE.popupEnvironmentList.forEach(e => {
+    const map = STATE.popupEnvironmentMap.find(e2 => e2.shortName === e.name)
+    const popup = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+          margin:0;
+          cursor: pointer;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        ">
+
+          <div style="
+            background: url('./assets/3d/image/${map.imgUrl}.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:6vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+          </div>
+    
+          <div style="
+            background: url('./assets/3d/image/2.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:13vh;
+            position: relative;
+            top: -5vh;
+          ">
+          </div>
+  
+          <div style="
+            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            width: 7vw;
+            height:5vh;
+            position: relative;
+            top: -7vh;
+          ">
+          </div>
+        </div>
+      `,
+      position: [0, 6, 0],
+      className: 'popup3dclass',
+      scale: [0.1, 0.1, 0.1],
+      closeVisible: 'hidden'
+    })
+    // 加group来间接改变popup的中心点
+    const group = new Bol3D.Group()
+    group.add(popup)
+    group.position.set(e.position.x, 0, e.position.z)
+    group.name = 'group_' + e.name
+    popup.name = e.name
+    popup.visible = false
+
+
+    popup.element.addEventListener('dblclick', (() => {
+      STATE.popupEnvironmentObj.forEach(e2 => {
+        CACHE.container.remove(e2)
+      })
+
+      cameraAnimation({
+        cameraState: {
+          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
+          target: e.position
+        }
+      })
+
+      // 设置点击之后的弹窗
+      let contentText = ``
+      if (e.info) e.info.forEach(e2 => {
+        contentText += `<p style="font-size: 0.8vw;">${e2.name}: ${e2.value}</p>`
+      })
+      const popup2 = new Bol3D.POI.Popup3D({
+        value: `
+        <div style="
+          margin:0;
+          cursor: pointer;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        ">
+
+          <div style="
+            background: url('./assets/3d/image/15.png') center / 100% 100% no-repeat;
+            width: 12vw;
+            height:8vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+            <p style="position: absolute; top: 19%;font-family: YouSheBiaoTiHei;">${map.name}</p>
+            <div style="width: 75%; height: 45%; margin-top: 15%; display: flex; flex-direction: column; justify-content: space-around;">
+              ${contentText}
+            </div>
+          </div>
+        </div>
+        `,
+        position: [e.position.x, 35, e.position.z],
+        className: 'popup3dclass popup3d_enviroment_detail',
+        scale: [0.2, 0.2, 0.2],
+        closeVisible: 'show'
+      })
+      STATE.popupEnvironmentObj.push(popup2)
+      CACHE.container.attach(popup2)
+    }))
+
+    CACHE.container.attach(group)
+    // setModelPosition(group)
+    if (!STATE.sceneList.environmentPopup) {
+      STATE.sceneList.environmentPopup = []
+    }
+    STATE.sceneList.environmentPopup.push(group)
+  })
+}
+
 
 /**
  * 显示隐藏3d弹窗
  */
-function showPopup(isShow = true) {
-  STATE.popupList.popup3D.forEach(e => {
-    e.visible = isShow
+function showPopup(groups = [], isShow = true) {
+  STATE.popupEnvironmentObj.forEach(e => {
+    CACHE.container.remove(e)
   })
+
+  groups.forEach(group => {
+    group.forEach(item => {
+      item.traverse(child => {
+        child.visible = isShow
+      })
+    })
+  })
+}
+
+/**
+ * 测试用盒子
+ */
+function testBox() {
+  const boxG = new Bol3D.BoxGeometry(30, 30, 30)
+  const boxM = new Bol3D.MeshBasicMaterial({ color: 0xffffff })
+  const box = new Bol3D.Mesh(boxG, boxM)
+  setModelPosition(box)
+  CACHE.container.attach(box)
 }
 
 /**
@@ -288,27 +425,42 @@ function setModelPosition(mesh) {
  * @param {String} name 场景名
  */
 function enterRoom(name = '') {
+
   if (name.includes('切眼')) {
+    STATE.animationFlag = true
     STATE.router.push('/qieyan')
+    STATE.sceneList.text.visible = false
+    
   } else if (name.includes('综采')) {
+    STATE.animationFlag = true
     STATE.router.push('/zongcai')
+    STATE.sceneList.text.visible = false
   }
+
+  CACHE.container.orbitControls.maxPolarAngle = Math.PI
+  CACHE.container.orbitControls.minPolarAngle = 0
+
 
   const item = STATE.roomModelName.find(e => e.name === name)
   if (item) {
     CACHE.container.sceneList.mkxdw.visible = false
     item.model.visible = true
-    showPopup(false)
+    showPopup([
+      STATE.sceneList.environmentPopup,
+      STATE.sceneList.locationPopup,
+    ], false)
     cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
     const animation = () => {
-      item.rotateMesh.forEach(e2 => {
-        if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
-          e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
-        } else {
-          e2.mesh.rotation[e2.position] += e2.num
-        }
-      })
+      if(STATE.animationFlag) {
+        item.rotateMesh.forEach(e2 => {
+          if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
+            e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
+          } else {
+            e2.mesh.rotation[e2.position] += e2.num
+          }
+        })
+      }
     }
     renderAnimationList.push({ name, animation })
   }
@@ -320,15 +472,19 @@ function enterRoom(name = '') {
  */
 function back() {
   renderAnimationList = []
+  CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
+  CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
   for (let key in STATE.sceneList) {
-    if (key === 'mkxdw') {
+    if (key === 'mkxdw' || key === 'text') {
       STATE.sceneList[key].visible = true
     } else {
       STATE.sceneList[key].visible = false
     }
   }
-  
-  showPopup()
+
+  showPopup([
+    STATE.sceneList.locationPopup
+  ], true)
   cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
 }
 
@@ -347,16 +503,19 @@ const render = () => {
   renderAnimationList.forEach(e => e.animation())
 
   // 天空
-  if(CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
-  
+  if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
+
 
   requestAnimationFrame(render);
 };
 
 export const API = {
   cameraAnimation,
-  initPopup,
+  initLocationPopup,
+  initEnvironmentPopup,
   loadGUI,
+  showPopup,
+  testBox,
   back,
   render
 }
