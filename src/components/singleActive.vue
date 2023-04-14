@@ -33,7 +33,7 @@ function handle() {
 
 let text = ref(options.text)
 watch(props, (nweProps) => {
-  console.log('nweProps: ', nweProps.options);
+  
   text.value = nweProps.options.text
 })
 

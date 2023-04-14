@@ -2,10 +2,10 @@
   <div class="home">
 
     <div class="control">
-      <div v-for="item in controlList" :key="item" class="control-item">
+      <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
         <div class="control-icon" :style="{
           background:
-            'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' + 
+            (personShowType === index ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
             'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
         }"></div>
         {{ item.name }}
@@ -55,19 +55,27 @@ const options2 = {
 function environment() {
   router.push('/quyufengxian')
   API.showPopup([STATE.sceneList.environmentPopup])
+  API.showPopup([STATE.sceneList.personPopup], false)
 }
 
 window.enterEnvironment = () => {
   environment()
 }
 
-const controlList = [
+const perserList = [
   { name: '全部', bg: ['26', '27'] },
   { name: '重点管控', bg: ['18', '19'] },
   { name: '加强管控', bg: ['20', '21'] },
   { name: '一般管控', bg: ['22', '23'] },
   { name: '日常管控', bg: ['24', '25'] },
 ]
+
+let personShowType = ref(0)
+
+function handlePerson(index){
+  personShowType.value = index
+  API.showPerson(index)
+}
 
 onMounted(() => {
 

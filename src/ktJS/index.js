@@ -61,15 +61,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       }
     },
     background: {
-      // type: 'panorama',
-      // value: ['/hdr/48.jpg'],
-      // options: {
-      //   scale: 0.5,
-      //   rotation: [0, 0, 0],
-      //   fog: true, // 天空盒受雾影响 默认值为false
-      // }
-      type: 'color',
-      value: '#999999'
+      type: 'panorama',
+      value: ['/hdr/48.jpg'],
+      options: {
+        scale: 0.5,
+        rotation: [0, 0, 0],
+        fog: true, // 天空盒受雾影响 默认值为false
+      }
     },
     modelUrls: [
       '/model/mkxdw.glb', // 主
@@ -93,7 +91,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     gammaEnabled: true,
     stats: false,
     loadingBar: {
-      show: false,
+      show: true,
       type: 10
     },
     onProgress: (model) => {
@@ -101,27 +99,35 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       if (model.name === 'jjgzm') {
         model.visible = false
         model.scale.set(10, 10, 10)
-        STATE.roomModelName[2].model = model
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
         model.traverse(child => {
           if (child.isMesh) {
             STATE.clickObjects.push(child)
 
-            if (STATE.roomModelName[2].rotateMeshName.includes(child.name)) {
-              if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
-                STATE.roomModelName[2].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
-              } else {
-                STATE.roomModelName[2].rotateMesh.push({ mesh: child, position: 'z', num: 0.1 })
+            STATE.roomModelName.forEach(e => {
+              if (e.rotateMeshName.includes(child.name)) {
+                if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
+                  e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+                } else {
+                  e.rotateMesh.push({ mesh: child, position: 'z', num: 0.1 })
+                }
               }
-              STATE.bloomList.push(child)
-            }
+            })
           }
         })
 
       } else if (model.name === 'zcgzm') {
         model.visible = false
         model.scale.set(5, 5, 5)
-        STATE.roomModelName[0].model = model
-        STATE.roomModelName[1].model = model
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
         model.traverse(child => {
           if (child.isMesh) {
             STATE.clickObjects.push(child)
@@ -129,10 +135,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               // child.material.transparent = true
               // child.material.opacity = 0.5
               child.material.side = 0
-            } else if (STATE.roomModelName[0].rotateMeshName.includes(child.name)) {
-              STATE.roomModelName[0].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
-              STATE.roomModelName[1].rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
-              STATE.bloomList.push(child)
+            } else {
+              STATE.roomModelName.forEach(e => {
+                if (e.rotateMeshName.includes(child.name)) {
+                  e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+                  e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
+                }
+              })
             }
           }
         })
@@ -141,8 +150,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           if (child && child.isMesh) {
             STATE.clickObjects.push(child)
 
-            const textArr = ["624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
-            const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm', '']
+            const textArr = ["1009", "624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
+            const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm']
             if (textArr.includes(child.name)) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
@@ -177,8 +186,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       console.log(STATE.sceneList)
 
 
-      
-      
+
+
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
         STATE.bloomList.push(e)
@@ -198,11 +207,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       delete CACHE.removed
 
       // 加载弹窗
+      API.initMonitorIconList()
+      API.initPersonList()
       API.initLocationPopup()
       API.initEnvironmentPopup()
       // API.testBox()
       // API.loadGUI()
-      // CACHE.container.loadingBar.style.visibility = 'hidden'
+      CACHE.container.loadingBar.style.visibility = 'hidden'
       API.render()
       callback && callback()
     }

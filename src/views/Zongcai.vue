@@ -17,7 +17,7 @@ import SingleActive from "@/components/SingleActive.vue";
 let animationFlag = ref(true)
 
 function back() {
-  API.back()
+  API.back('zongcai')
   router.push('/')
 }
 

@@ -8,6 +8,8 @@ const initialState = {
   target: { x: 26.63074872579247, y: -1.1237349734606397e-17, z: 59.90198556311061 },
   maxPolarAngle: Math.PI * 0.45,
   minPolarAngle: Math.PI * 0.05,
+  // maxPolarAngle: Math.PI,
+  // minPolarAngle: 0,
 }
 
 const clickObjects = []
@@ -48,6 +50,36 @@ const roomModelName = [{
     position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
     target: { x: -325, y: 17, z: 0 }
   }
+}, {
+  name: '1012进风顺槽(反掘)',
+  modelName: 'jjgzm',
+  model: null,
+  rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+  rotateMesh: [],
+  cameraState: {
+    position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+    target: { x: -325, y: 17, z: 0 }
+  }
+}, {
+  name: '1012进风顺槽',
+  modelName: 'jjgzm',
+  model: null,
+  rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+  rotateMesh: [],
+  cameraState: {
+    position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+    target: { x: -325, y: 17, z: 0 }
+  }
+}, {
+  name: '1000工作面',
+  modelName: 'jjgzm',
+  model: null,
+  rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+  rotateMesh: [],
+  cameraState: {
+    position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+    target: { x: -325, y: 17, z: 0 }
+  }
 }]
 
 // location popup 弹窗
@@ -65,16 +97,28 @@ const popupLocationList = [{
   position: { x: -18.530259199427906, y: 0, z: -149.209289 },
 }, {
   name: '820进风顺槽',
-  sub: '工作人员数量: 未知',
+  sub: '工作人员数量: 8人',
   position: { x: -368, y: 0, z: 316 },
 }, {
   name: '634进风顺槽',
-  sub: '工作人员数量: 未知',
+  sub: '工作人员数量: 8人',
   position: { x: -350, y: 0, z: -331 },
 }, {
   name: '632回风顺槽',
-  sub: '工作人员数量: 未知',
+  sub: '工作人员数量: 8人',
   position: { x: -311, y: 0, z: -342 },
+}, {
+  name: '1012进风顺槽(反掘)',
+  sub: '工作人员数量: 8人',
+  position: { x: -65, y: 0, z: -391 },
+}, {
+  name: '1012进风顺槽',
+  sub: '工作人员数量: 8人',
+  position: { x: -22, y: 0, z: -392 },
+}, {
+  name: '1000工作面',
+  sub: '工作人员数量: 8人',
+  position: { x: 371, y: 0, z: -222 },
 }]
 
 // Environment popup 的对应
@@ -383,7 +427,48 @@ const popupEnvironmentList = [{
   }]
 }]
 
-const popupEnvironmentObj = []
+// 当前展示的popup 主要是第二层popup
+const currentPopup = []
+
+// 监控摄像头icon
+const monitorIconList = [{
+  name: '1',
+  position: { x: 540, y: 0, z: 107 }
+}, {
+  name: '2',
+  position: { x: -108, y: 0, z: -88 }
+}, {
+  name: '3',
+  position: { x: 39, y: 0, z: 391 }
+}]
+
+// 人员管控
+// 1 重点 2 加强 3 一般 4 日常
+const personList = [
+  { name: '张一', level: 1, position: { x: -144, y: 0, z: -186 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张二', level: 4, position: { x: -87, y: 0, z: -70 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张三', level: 3, position: { x: -363, y: 0, z: -173 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张四', level: 1, position: { x: -5, y: 0, z: 170 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张五', level: 4, position: { x: 466, y: 0, z: 6 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张六', level: 1, position: { x: 374, y: 0, z: 140 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张七', level: 2, position: { x: 432, y: 0, z: 232 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张八', level: 3, position: { x: 304, y: 0, z: 316 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张九', level: 3, position: { x: -472, y: 0, z: 361 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张十', level: 2, position: { x: 176, y: 0, z: -275 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张十一', level: 1, position: { x: 336, y: 0, z: -363 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张十二', level: 4, position: { x: -121, y: 0, z: -390 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+]
+
+// 人员管控相关的配置
+const personMap = [
+  { name: '重点管控', level: 1, img: [34, 35, 40] },
+  { name: '加强管控', level: 2, img: [36, 37, 41] },
+  { name: '一般管控', level: 3, img: [30, 31, 38] },
+  { name: '日常管控', level: 4, img: [32, 33, 39] }
+]
+
+// 0 显示全部
+const personShowType = 0
 
 
 // 辉光bloom
@@ -398,7 +483,11 @@ export const STATE = {
   popupLocationList,
   popupEnvironmentList,
   popupEnvironmentMap,
-  popupEnvironmentObj,
+  personShowType,
+  currentPopup,
+  monitorIconList,
+  personList,
+  personMap,
   bloomList,
   clickObjects,
   roomModelName,
