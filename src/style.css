@@ -13,3 +13,11 @@
   right: 6% !important;
   top: 7% !important;
 }
+
+.publicBtn {
+  pointer-events: all;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

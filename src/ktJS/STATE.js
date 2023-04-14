@@ -190,14 +190,6 @@ const popupEnvironmentList = [{
     value: '0.9%'
   }]
 }, {
-  name: 'CH4',
-  position: { x: 161, y: 0, z: 34 },
-  id: '001487',
-  info: [{
-    name: 'CH4浓度',
-    value: '0.9%'
-  }]
-}, {
   name: 'FC',
   position: { x: 161, y: 0, z: 36 },
   id: '005381',
@@ -264,7 +256,7 @@ const popupEnvironmentList = [{
 }, {
   name: 'FC',
   position: { x: 17, y: 0, z: -148 },
-  id: '001487',
+  id: '005216',
   info: [{
     name: '粉尘浓度',
     value: '10mg/m³'
@@ -281,6 +273,110 @@ const popupEnvironmentList = [{
   name: 'CH4',
   position: { x: -28, y: 0, z: -160 },
   id: '002407',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 207, y: 0, z: 414 },
+  id: '001509',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'T',
+  position: { x: 207, y: 0, z: 416 },
+  id: '001058',
+  info: [{
+    name: '温度',
+    value: '28℃'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 26, y: 0, z: 391 },
+  id: '001031',
+  info: [{
+    name: 'CO浓度',
+    value: '0.2%'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 312, y: 0, z: 85 },
+  id: '005379',
+  info: [{
+    name: 'CO浓度',
+    value: '0.2%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 301, y: 0, z: 82 },
+  id: '000054',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 299, y: 0, z: 81 },
+  id: '008476',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 299, y: 0, z: 82 },
+  id: '009082',
+  info: [{
+    name: 'CO浓度',
+    value: '0.2%'
+  }]
+}, {
+  name: 'T',
+  position: { x: 299, y: 0, z: 83 },
+  id: '009091',
+  info: [{
+    name: '温度',
+    value: '28℃'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'T',
+  position: { x: 423, y: 0, z: -239 },
+  id: '003913',
+  info: [{
+    name: '温度',
+    value: '28℃'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 405, y: 0, z: -200 },
+  id: '000509',
+  info: [{
+    name: 'CO浓度',
+    value: '0.2%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'

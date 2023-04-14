@@ -1,11 +1,7 @@
 <template>
   <div class="home">
-    <div class="back" @click="back">返回</div>
-    <div
-      class="back animationFlag"
-      @click="handleAnimationFlag"
-      :style="{ background: 'url(' + './assets/3d/image/' + (animationFlag ? '17' : '16') + '.png' + ') center / 100% 100% no-repeat' }"
-      >{{ animationFlag ? '关闭' : '开启' }}模拟作业</div>
+    <SingleActive :options="options1"></SingleActive>
+    <SingleActive :options="options2"></SingleActive>
   </div>
 </template>
 
@@ -16,6 +12,9 @@ import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
+import SingleActive from "@/components/SingleActive.vue";
+
+
 
 let animationFlag = ref(true)
 
@@ -27,7 +26,36 @@ function back() {
 function handleAnimationFlag() {
   animationFlag.value = !animationFlag.value
   STATE.animationFlag = animationFlag.value
+  options1.text = (animationFlag.value ? '关闭' : '开启') + '模拟作业'
 }
+
+const options2 = {
+  text: '返回',
+  style: {
+    right: '1%',
+    width: '10vw',
+    height: '5vh',
+    bottom: '3%',
+    top: 'auto'
+  },
+  bgimg: [17, 16],
+  cb: back
+}
+
+const options1 = {
+  text: (animationFlag.value ? '关闭' : '开启') + '模拟作业',
+  style: {
+    right: '1%',
+    width: '10vw',
+    height: '5vh',
+    bottom: '9%',
+    top: 'auto'
+  },
+  active: true,
+  cb: handleAnimationFlag
+}
+
+
 
 onMounted(() => {
 
@@ -45,11 +73,6 @@ onMounted(() => {
 }
 
 .back {
-  pointer-events: all;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   box-sizing: border-box;
   padding-left: 0.6rem;
   letter-spacing: 0.6rem;

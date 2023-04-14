@@ -12,19 +12,13 @@
       </div>
     </div>
 
-    <el-badge :value="12" class="right"
-      :style="{ background: 'url(' + './assets/3d/image/' + (alertActive ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
-      @click="handleAlert">
-      报警信息
+    <el-badge :value="12" class="alert">
+      <SingleActive :options="options1"></SingleActive>
     </el-badge>
 
-    <div class="right xunyou"
-      :style="{ background: 'url(' + './assets/3d/image/' + (xunyouActive ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
-      @click="handleXunyou">
-      场景巡游
-    </div>
+    <SingleActive :options="options2"></SingleActive>
 
-    <div class="environment" @click="environment">显示环境信息</div>
+    <!-- <div class="environment publicBtn" @click="environment">显示环境信息</div> -->
   </div>
 </template>
 
@@ -35,16 +29,27 @@ import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
+import SingleActive from '@/components/SingleActive.vue'
 
-let xunyouActive = ref(false)
-let alertActive = ref(false)
 
-function handleAlert() {
-  alertActive.value = !alertActive.value
+const options1 = {
+  text: '报警信息',
+  style: {
+    right: '1%',
+    top: '3%',
+    width: '10vw',
+    height: '5vh'
+  }
 }
 
-function handleXunyou() {
-  xunyouActive.value = !xunyouActive.value
+const options2 = {
+  text: '场景巡游',
+  style: {
+    right: '1%',
+    top: '9%',
+    width: '10vw',
+    height: '5vh'   
+  }
 }
 
 function environment() {
@@ -52,12 +57,16 @@ function environment() {
   API.showPopup([STATE.sceneList.environmentPopup])
 }
 
+window.enterEnvironment = () => {
+  environment()
+}
+
 const controlList = [
   { name: '全部', bg: ['26', '27'] },
   { name: '重点管控', bg: ['18', '19'] },
-  { name: '加强', bg: ['20', '21'] },
-  { name: '一般', bg: ['22', '23'] },
-  { name: '日常', bg: ['24', '25'] },
+  { name: '加强管控', bg: ['20', '21'] },
+  { name: '一般管控', bg: ['22', '23'] },
+  { name: '日常管控', bg: ['24', '25'] },
 ]
 
 onMounted(() => {
@@ -87,6 +96,7 @@ onMounted(() => {
 }
 
 .control-item {
+  pointer-events: all;
   cursor: pointer;
   font-family: YouSheBiaoTiHei;
   font-size: 1.8vw;
@@ -102,35 +112,21 @@ onMounted(() => {
 }
 
 .environment {
-  pointer-events: all;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   bottom: 3%;
   right: 1vw;
   height: 5vh;
   width: 10vw;
-  background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
+  background: url('/assets/3d/image/5.png') center / 100% 100% no-repeat;
 }
 
-.right {
+.alert {
   position: fixed;
   right: 1%;
   top: 3%;
   transform: translateY(-3%);
   width: 10vw;
-  pointer-events: all;
-  cursor: pointer;
   height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.xunyou {
-  top: 8.5vh;
 }
 
 /deep/ .el-badge__content.is-fixed {

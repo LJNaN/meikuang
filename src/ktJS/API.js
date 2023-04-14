@@ -290,8 +290,8 @@ function initEnvironmentPopup() {
     const group = new Bol3D.Group()
     group.add(popup)
     group.position.set(e.position.x, 0, e.position.z)
-    group.name = 'group_' + e.name
-    popup.name = e.name
+    group.name = 'group_' + e.id
+    popup.name = e.id
     popup.visible = false
 
 
@@ -349,7 +349,11 @@ function initEnvironmentPopup() {
     }))
 
     CACHE.container.attach(group)
-    // setModelPosition(group)
+
+    // if(e.id === '001487') {
+    //   setModelPosition(group)
+    // }
+
     if (!STATE.sceneList.environmentPopup) {
       STATE.sceneList.environmentPopup = []
     }
@@ -430,7 +434,7 @@ function enterRoom(name = '') {
     STATE.animationFlag = true
     STATE.router.push('/qieyan')
     STATE.sceneList.text.visible = false
-    
+
   } else if (name.includes('综采')) {
     STATE.animationFlag = true
     STATE.router.push('/zongcai')
@@ -445,14 +449,86 @@ function enterRoom(name = '') {
   if (item) {
     CACHE.container.sceneList.mkxdw.visible = false
     item.model.visible = true
+
     showPopup([
       STATE.sceneList.environmentPopup,
       STATE.sceneList.locationPopup,
     ], false)
     cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
+    let zongcaiMoveMesh = []
+    if (name.includes('综采')) {
+      const bladePoint1 = new API.bladePoints().point
+      const bladePoint2 = new API.bladePoints().point
+
+
+      item.model.children.forEach(child => {
+        if (child.isMesh && ['CMJ', 'CMJ-1', 'CMJ-2'].includes(child.name)) {
+          if (child.name === 'CMJ') {
+            child.userData.move = true
+            child.userData.directionLeft = false
+            // setModelPosition(child)
+          } else if (child.name === 'CMJ-1') {
+            let wordPosition = new Bol3D.Vector3()
+            child.getWorldPosition(wordPosition)
+            bladePoint1.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            child.userData.points = bladePoint1
+          } else if (child.name === 'CMJ-2') {
+            let wordPosition = new Bol3D.Vector3()
+            child.getWorldPosition(wordPosition)
+            bladePoint2.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            child.userData.points = bladePoint2
+          }
+          zongcaiMoveMesh.push(child)
+        }
+      })
+    }
+
     const animation = () => {
-      if(STATE.animationFlag) {
+      if (STATE.animationFlag) {
+
+        // 综采的左右移动
+        if (zongcaiMoveMesh.length) {
+          const CMJ = zongcaiMoveMesh.find(e => e.name === 'CMJ')
+          let directionLeft = CMJ.userData.directionLeft
+          let move = CMJ.userData.move
+
+          zongcaiMoveMesh.forEach(child => {
+            if (child.name === 'CMJ') {
+              if (move) {
+                if (child.position.z > -55) {
+                  child.userData.move = false
+                  child.userData.directionLeft = false
+                  setTimeout(() => {
+                    child.position.z = -55
+                    child.userData.move = true
+                  }, 3000);
+
+                } else if (child.position.z < -85) {
+                  child.userData.move = false
+                  child.userData.directionLeft = true
+                  setTimeout(() => {
+                    child.position.z = -85
+                    child.userData.move = true;
+                  }, 3000);
+                }
+              }
+            }
+
+            if (move) {
+              child.position.z += directionLeft ? 0.05 : -0.05
+
+              if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
+                let wordPosition = new Bol3D.Vector3()
+                child.getWorldPosition(wordPosition)
+                child.userData.points.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+              }
+            }
+          })
+        }
+
+
+        // 齿轮旋转
         item.rotateMesh.forEach(e2 => {
           if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
             e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
@@ -470,7 +546,7 @@ function enterRoom(name = '') {
 /**
  * 退回主页面
  */
-function back() {
+function back(type) {
   renderAnimationList = []
   CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
   CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
@@ -482,13 +558,143 @@ function back() {
     }
   }
 
-  showPopup([
-    STATE.sceneList.locationPopup
-  ], true)
+  showPopup([STATE.sceneList.locationPopup], true)
+
+  if (type === 'hideEnvironment') {
+    showPopup([STATE.sceneList.environmentPopup], false)
+  }
   cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
 }
 
+/**
+ * 挖煤刀片的粒子效果
+ */
+class bladePoints {
+  constructor(particleCount = 300) {
+    this.velocities = null
+    this.particleCount = particleCount
+    this.particlesGeometry = null
+    this.point = {}
+    // 设置初始速度和时间
+    this.initialVelocities = new Float32Array(this.particleCount).fill(0).map(() => Math.random() * 10);
+    this.times = new Float32Array(this.particleCount).fill(0);
+    // 重力
+    this.gravity = -9.81;
+    this.init()
+  }
+  init() {
+    this.createPoints()
+    CACHE.container.attach(this.point);
+    setModelPosition(this.point)
+    this.animation()
+  }
+  createPoints() {
+    this.particlesGeometry = new Bol3D.BufferGeometry();
+    let particleCount = this.particleCount
+    const positions = new Float32Array(particleCount * 3);
+    this.velocities = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 5;
+      positions[i + 1] = (Math.random() - 0.5) * 10;
+      positions[i + 2] = (Math.random() - 0.5) * 5;
+      this.velocities[i] = 0;
+      this.velocities[i + 1] = 0;
+      this.velocities[i + 2] = 0;
+    }
 
+    const sizes = new Float32Array(particleCount);
+    for (let i = 0; i < particleCount; i++) {
+      sizes[i] = Math.random() * 1.2 + 0.3;// 设置粒子大小范围为0.05到1.5
+    }
+    this.particlesGeometry.setAttribute('size', new Bol3D.BufferAttribute(sizes, 1));
+
+    this.particlesGeometry.setAttribute('position', new Bol3D.BufferAttribute(positions, 3));
+
+    // 加载贴图
+    const textureLoader = new Bol3D.TextureLoader();
+    const particleTexture = textureLoader.load('./assets/3d/image/28.png');
+
+    // 创建粒子材质，并设置贴图
+    // const particleMaterial = new Bol3D.PointsMaterial({ color: 0xffffff, size: 1.0, map: particleTexture, transparent: true });
+
+    const vertexShader = `
+    #include <logdepthbuf_pars_vertex>
+    #include <common>
+
+    attribute float size;
+    varying vec2 vUv;
+    void main() {
+        vUv = uv;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size * (300.0 / -mvPosition.z);
+        gl_Position = projectionMatrix * mvPosition;
+
+        #include <logdepthbuf_vertex>
+    }
+    
+  `;
+
+    const fragmentShader = `
+    #include <logdepthbuf_pars_fragment>
+    #include <common>
+    uniform sampler2D pointTexture;
+    varying vec2 vUv;
+    void main() {
+        vec4 textureColor = texture2D(pointTexture, gl_PointCoord);
+        if (textureColor.a < 0.5) discard;
+        gl_FragColor = textureColor;
+        #include <logdepthbuf_fragment>
+    }
+  `;
+
+    const particleMaterial = new Bol3D.ShaderMaterial({
+      uniforms: {
+        pointTexture: { value: particleTexture },
+      },
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      alphaToCoverage: true
+    });
+
+    const particles = new Bol3D.Points(this.particlesGeometry, particleMaterial);
+    this.point = particles
+  }
+  animation() {
+    // 更新粒子位置
+    for (let i = 0; i < this.particleCount; i++) {
+      const pos = this.particlesGeometry.attributes.position;
+      const currentPosition = new Bol3D.Vector3(pos.array[i * 3], pos.array[i * 3 + 1], pos.array[i * 3 + 2]);
+
+      // 更新速度
+      const velocity = this.initialVelocities[i] + (this.gravity * this.times[i]);
+      this.velocities[i * 3 + 1] = velocity;
+
+      // 添加随机横向扩散（从立方体中心向四周扩散）
+      const direction = new Bol3D.Vector3(pos.array[i * 3], 0, pos.array[i * 3 + 2]).normalize();
+      const spreadSpeed = Math.random() * 0.2;
+      const spreadVector = direction.multiplyScalar(spreadSpeed);
+
+      currentPosition.add(new Bol3D.Vector3(spreadVector.x, this.velocities[i * 3 + 1] * 0.016, spreadVector.z));
+      pos.array[i * 3] = currentPosition.x;
+      pos.array[i * 3 + 1] = currentPosition.y;
+      pos.array[i * 3 + 2] = currentPosition.z;
+
+      // 如果粒子达到一定高度，将其重新设置回初始位置
+      if (currentPosition.y < -10) {
+        pos.array[i * 3] = (Math.random() - 0.5) * 5;
+        pos.array[i * 3 + 1] = (Math.random() - 0.5) * 10;
+        pos.array[i * 3 + 2] = (Math.random() - 0.5) * 5;
+        this.times[i] = 0;
+        this.initialVelocities[i] = Math.random() * 10;
+      } else {
+        this.times[i] += 0.1;
+      }
+    }
+
+    this.particlesGeometry.attributes.position.needsUpdate = true;
+    requestAnimationFrame(this.animation.bind(this));
+  }
+}
 
 
 
@@ -517,5 +723,6 @@ export const API = {
   showPopup,
   testBox,
   back,
+  bladePoints,
   render
 }

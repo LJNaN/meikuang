@@ -7,19 +7,13 @@
         {{ item }}</div>
     </div>
 
-    <el-badge :value="12" class="right"
-      :style="{ background: 'url(' + './assets/3d/image/' + (alertActive ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
-      @click="handleAlert">
-      报警信息
+    <el-badge :value="12" class="alert">
+      <SingleActive :options="options1"></SingleActive>
     </el-badge>
 
-    <div class="right xunyou"
-      :style="{ background: 'url(' + './assets/3d/image/' + (xunyouActive ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
-      @click="handleXunyou">
-      场景巡游
-    </div>
+    <SingleActive :options="options2"></SingleActive>
 
-    <div class="back" @click="back">返回</div>
+    <SingleActive :options="options3"></SingleActive>
   </div>
 </template>
 
@@ -29,9 +23,41 @@ import { onMounted, ref } from "vue";
 import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import router from '@/router/index'
+import SingleActive from '@/components/SingleActive.vue'
 
-let xunyouActive = ref(false)
-let alertActive = ref(false)
+const options1 = {
+  text: '报警信息',
+  style: {
+    right: '1%',
+    top: '3%',
+    width: '10vw',
+    height: '5vh'   
+  }
+}
+
+const options2 = {
+  text: '场景巡游',
+  style: {
+    right: '1%',
+    top: '9%',
+    width: '10vw',
+    height: '5vh'   
+  }
+}
+
+const options3 = {
+  text: '返回',
+  style: {
+    right: '1%',
+    width: '10vw',
+    height: '5vh',
+    bottom: '3%',
+    top: 'auto'
+  },
+  bgimg: [17, 16],
+  cb: back
+}
+
 let leftList = ['重点区域', '区域评分', '视频监控', '环境信息']
 let leftIndex = ref(-1)
 
@@ -43,16 +69,8 @@ function handleLeft(index) {
   }
 }
 
-
-function handleAlert() {
-  alertActive.value = !alertActive.value
-}
-
-function handleXunyou() {
-  xunyouActive.value = !xunyouActive.value
-}
-
 function back() {
+  API.back('hideEnvironment')
   router.push('/')
 }
 
@@ -71,22 +89,13 @@ onMounted(() => {
   position: absolute;
 }
 
-.right {
+.alert {
   position: fixed;
   right: 1%;
   top: 3%;
   transform: translateY(-3%);
   width: 10vw;
-  pointer-events: all;
-  cursor: pointer;
   height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.xunyou {
-  top: 8.5vh;
 }
 
 .left {
@@ -112,14 +121,6 @@ onMounted(() => {
 
 
 .back {
-  pointer-events: all;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  padding-left: 0.6rem;
-  letter-spacing: 0.6rem;
   position: fixed;
   bottom: 3%;
   right: 1vw;

@@ -61,13 +61,15 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       }
     },
     background: {
-      type: 'panorama',
-      value: ['/hdr/48.jpg'],
-      options: {
-        scale: 0.5,
-        rotation: [0, 0, 0],
-        fog: true, // 天空盒受雾影响 默认值为false
-      }
+      // type: 'panorama',
+      // value: ['/hdr/48.jpg'],
+      // options: {
+      //   scale: 0.5,
+      //   rotation: [0, 0, 0],
+      //   fog: true, // 天空盒受雾影响 默认值为false
+      // }
+      type: 'color',
+      value: '#999999'
     },
     modelUrls: [
       '/model/mkxdw.glb', // 主
@@ -90,10 +92,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     },
     gammaEnabled: true,
     stats: false,
-    // loadingBar: {
-    //   show: true,
-    //   type: 10
-    // }
+    loadingBar: {
+      show: false,
+      type: 10
+    },
     onProgress: (model) => {
       STATE.sceneList[model.name] = model
       if (model.name === 'jjgzm') {
@@ -175,7 +177,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       console.log(STATE.sceneList)
 
 
-
+      
+      
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
         STATE.bloomList.push(e)
@@ -199,6 +202,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initEnvironmentPopup()
       // API.testBox()
       // API.loadGUI()
+      // CACHE.container.loadingBar.style.visibility = 'hidden'
       API.render()
       callback && callback()
     }
