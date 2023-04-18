@@ -11,12 +11,16 @@
 
 .popup3d_enviroment_detail .popup-close {
   right: 6% !important;
-  top: 7% !important;
+  top: -108% !important;
+}
+
+.popup3d_person_detail {
+  pointer-events: none !important;
 }
 
 .popup3d_person_detail .popup-close {
-  right: -57% !important;
-  top: 102% !important;
+  right: -13.5vw !important;
+  top: -2vh !important;
 }
 
 .publicBtn {

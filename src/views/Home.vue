@@ -5,7 +5,7 @@
       <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
         <div class="control-icon" :style="{
           background:
-            (personShowType === index ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
+            (personShowType.includes(index) ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
             'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
         }"></div>
         {{ item.name }}
@@ -18,7 +18,7 @@
 
     <SingleActive :options="options2"></SingleActive>
 
-    <!-- <div class="environment publicBtn" @click="environment">显示环境信息</div> -->
+    <div class="environment publicBtn" @click="environment">显示环境信息</div>
   </div>
 </template>
 
@@ -70,12 +70,15 @@ const perserList = [
   { name: '日常管控', bg: ['24', '25'] },
 ]
 
-let personShowType = ref(0)
+let personShowType = ref([0])
 
 function handlePerson(index){
-  personShowType.value = index
   API.showPerson(index)
+  personShowType.value = []
+  personShowType.value = STATE.personShowType
 }
+
+window.handlePerson = handlePerson
 
 onMounted(() => {
 

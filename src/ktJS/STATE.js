@@ -461,14 +461,14 @@ const personList = [
 
 // 人员管控相关的配置
 const personMap = [
-  { name: '重点管控', level: 1, img: [34, 35, 40] },
-  { name: '加强管控', level: 2, img: [36, 37, 41] },
-  { name: '一般管控', level: 3, img: [30, 31, 38] },
-  { name: '日常管控', level: 4, img: [32, 33, 39] }
+  { name: '重点管控', level: 1, img: [34, 35, 40, 18] },
+  { name: '加强管控', level: 2, img: [36, 37, 41, 20] },
+  { name: '一般管控', level: 3, img: [30, 31, 38, 22] },
+  { name: '日常管控', level: 4, img: [32, 33, 39, 24] }
 ]
 
 // 0 显示全部
-const personShowType = 0
+let personShowType = [0]
 
 
 // 辉光bloom

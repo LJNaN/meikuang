@@ -180,6 +180,7 @@ function initLocationPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
+          transform: translate(0, -27%);
         ">
 
           <div style="
@@ -212,7 +213,7 @@ function initLocationPopup() {
           </div>
         </div>
       `,
-      position: [0, 23, 0],
+      position: [0, 0, 0],
       className: 'popup3dclass',
       scale: [0.3, 0.3, 0.3],
       closeVisible: 'hidden'
@@ -226,6 +227,8 @@ function initLocationPopup() {
       enterRoom(e.name)
     })
 
+    
+
     CACHE.container.attach(group)
     if (!STATE.sceneList.locationPopup) {
       STATE.sceneList.locationPopup = []
@@ -238,7 +241,7 @@ function initLocationPopup() {
  * 加载环境的3d弹窗
  */
 function initEnvironmentPopup() {
-  STATE.popupEnvironmentList.forEach(e => {
+  STATE.popupEnvironmentList.forEach((e, index) => {
     const map = STATE.popupEnvironmentMap.find(e2 => e2.shortName === e.name)
     const popup = new Bol3D.POI.Popup3D({
       value: `
@@ -249,6 +252,7 @@ function initEnvironmentPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
+          transform: translate(0, -17%);
         ">
 
           <div style="
@@ -281,7 +285,7 @@ function initEnvironmentPopup() {
           </div>
         </div>
       `,
-      position: [0, 6, 0],
+      position: [0, 0, 0],
       className: 'popup3dclass',
       scale: [0.1, 0.1, 0.1],
       closeVisible: 'hidden'
@@ -295,6 +299,7 @@ function initEnvironmentPopup() {
     popup.visible = false
 
 
+  
     popup.element.addEventListener('dblclick', (() => {
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
@@ -321,6 +326,7 @@ function initEnvironmentPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
+          transform: translate(0, -115%);
         ">
 
           <div style="
@@ -339,7 +345,7 @@ function initEnvironmentPopup() {
           </div>
         </div>
         `,
-        position: [e.position.x, 35, e.position.z],
+        position: [e.position.x, 0, e.position.z],
         className: 'popup3dclass popup3d_enviroment_detail',
         scale: [0.2, 0.2, 0.2],
         closeVisible: 'show'
@@ -407,10 +413,35 @@ function initMonitorIconList() {
 }
 
 // 加载管控人员
-function initPersonList() {
+function initPersonPopup() {
   STATE.personList.forEach(e => {
     const map = STATE.personMap.find(e2 => e2.level === e.level)
     const popup = new Bol3D.POI.Popup3D({
+      value: `
+      <div style="
+        pointer-events: all;
+        margin:0;
+        cursor: pointer;
+        color: #ffffff;
+        ">
+        
+        <div style="
+          position: absolute;
+          background: url('./assets/3d/image/${map.img[0]}.png') center / 100% 100% no-repeat;
+          width: 2vw;
+          height:11vh;
+          transform: translate(-50%, -50%);
+        ">
+        </div>
+      </div>
+      `,
+      position: [0, 20, 0],
+      className: 'popup3dclass',
+      scale: [0.4, 0.4, 0.4],
+      closeVisible: 'hidden'
+    })
+
+    const popup3 = new Bol3D.POI.Popup3D({
       value: `
       <div style="
         pointer-events: all;
@@ -421,46 +452,35 @@ function initPersonList() {
 
         <div style="
           position: absolute;
-          background: url('./assets/3d/image/${map.img[0]}.png') center / 100% 100% no-repeat;
+          background: url('./assets/3d/image/${map.img[3]}.png') center / 100% 100% no-repeat;
           width: 2vw;
-          height:11vh;
+          height:2vw;
+          transform: translate(-50%, -50%);
         ">
-        </div>
-
-        <div style="
-          position: absolute;
-          background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
-          width: 7vw;
-          height:2.5vh;
-          left: 1.5vw;
-          top: 0.63vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding-top: 0.3vh;
-          font-family: YouSheBiaoTiHei;
-        ">
-          <p style="
-            pointer-events: none;
-            display: inline;
-            text-align: center;
-            min-width: 15vw;
-            font-size: 0.6vw;"
-          >${e.name} ${map.name}</p>
         </div>
       </div>
       `,
-      position: [0, 34, 0],
+      position: [0, 0, 0],
       className: 'popup3dclass',
       scale: [0.4, 0.4, 0.4],
       closeVisible: 'hidden'
     })
+    popup3.element.addEventListener('dblclick', ((e) => {
+      const strSplit = e.target.style.backgroundImage.match(/\/\d{1,}.png/)
+      if (strSplit) {
+        const num = Number(strSplit[0].replace(/[^0-9]/ig, ''))
+        const personMap2 = STATE.personMap.find(e2 => e2.img.includes(num))
+        if(personMap2) window.handlePerson(personMap2.level)
+      }
+    }))
+    popup3.visible = false
     // 加group来间接改变popup的中心点
     const group = new Bol3D.Group()
     group.add(popup)
+    group.add(popup3)
     group.position.set(e.position.x, 0, e.position.z)
     group.name = 'group_' + e.level + '_' + e.name
+
 
     popup.element.addEventListener('dblclick', (() => {
       STATE.currentPopup.forEach(e2 => {
@@ -480,19 +500,43 @@ function initPersonList() {
         <div style="
             margin:0;
             cursor: pointer;
+            pointer-events: all;
             color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             position: relative;
-            left: 9vw;
-            top: 16vh;
+            left: 0;
+            top: -3vh;
+            transform: translate(-50%, -50%);
           ">
 
           <div style="
+            position: absolute;
+            background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
+            width: 13vw;
+            height:4.5vh;
+            left: 1vw;
+            top: -5.6vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 0.3vh;
+            font-family: YouSheBiaoTiHei;
+          ">
+            <p style="
+              pointer-events: none;
+              display: inline;
+              text-align: center;
+              min-width: 15vw;
+              font-size: 1.6vw;"
+            >${e.name} ${map.name}</p>
+          </div>
+
+          <div style="
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
-            width: 14vw;
-            height:18vh;
+            width: 15vw;
+            height:19vh;
+            position: absolute;
+            top: -1vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -516,7 +560,7 @@ function initPersonList() {
         </div>
       </div>
         `,
-        position: [e.position.x, 34, e.position.z],
+        position: [e.position.x, 20, e.position.z],
         className: 'popup3dclass popup3d_person_detail',
         scale: [0.22, 0.22, 0.22],
         closeVisible: 'show'
@@ -536,21 +580,81 @@ function initPersonList() {
 
 // 0 全部 1 重点 2 加强 3 一般 4 日常
 function showPerson(type) {
-  STATE.currentPopup.forEach(e2 => {
-    CACHE.container.remove(e2)
+  STATE.currentPopup.forEach(e => {
+    CACHE.container.remove(e)
   })
 
+  // 如果点全部显示
   if (type === 0) {
-    STATE.sceneList.personPopup.forEach(e => {
-      e.children[0].visible = true
+    if (STATE.personShowType.includes(0)) {
+      STATE.personShowType = []
+      STATE.sceneList.personPopup.forEach(e => {
+        e.children[0].visible = false
+      })
+    } else {
+      STATE.personShowType = [0, 1, 2, 3, 4]
+      STATE.sceneList.personPopup.forEach(e => {
+        e.children[0].visible = true
+        e.children[1].visible = false
+      })
+    }
+  } else {
+    // 先判断之前是不是显示的全部
+    if (STATE.personShowType.includes(0)) {
+      STATE.personShowType.splice(STATE.personShowType.indexOf(0), 1)
+
+      if (STATE.personShowType.includes(type)) {
+        STATE.personShowType.splice(STATE.personShowType.indexOf(type), 1)
+      } else {
+        STATE.personShowType.push(type)
+      }
+
+    } else {
+      // 如果之前不是显示的全部
+      // 如果点的是数组里已有的
+      if (STATE.personShowType.includes(type)) {
+        STATE.personShowType.splice(STATE.personShowType.indexOf(type), 1)
+
+      } else {
+        STATE.personShowType.push(type)
+        // 如果全给点了
+        if (STATE.personShowType.includes(1) && STATE.personShowType.includes(2) && STATE.personShowType.includes(3) && STATE.personShowType.includes(4)) {
+          STATE.personShowType = [0, 1, 2, 3, 4]
+        }
+      }
+    }
+  }
+
+  console.log(STATE.personShowType)
+
+  // 如果给清空了 显示光点
+  if (!STATE.personShowType.length) {
+    STATE.personShowType = []
+    STATE.sceneList.personPopup.map(e => {
+      e.children[0].visible = false
+      e.children[1].visible = true
     })
   } else {
     STATE.sceneList.personPopup.map(e => {
-      if (e.name.includes('group_' + type + '_')) {
+      e.children[1].visible = false
+      
+      let showFlag = false
+      for (let i = 0; i < STATE.personShowType.length; i++) {
+        if (e.name.includes('group_' + STATE.personShowType[i] + '_')) {
+          showFlag = true
+        }
+      }
+
+      if (showFlag) {
         e.children[0].visible = true
       } else {
         e.children[0].visible = false
       }
+
+      setTimeout(() => {
+        console.log('e.children[1]: ', e.children[1]);
+        console.log('e.children[1]: ', e.children[1]);
+      }, 1000)
     })
   }
 }
@@ -610,7 +714,7 @@ function enterRoom(name = '') {
   if (name.includes('切眼') || name.includes('1012进风顺槽') || name === '1000工作面') {
 
     STATE.animationFlag = true
-    console.log('STATE.animationFlag: ', STATE.animationFlag);
+
     STATE.router.push('/qieyan')
     STATE.sceneList.text.visible = false
 
@@ -728,8 +832,6 @@ function enterRoom(name = '') {
  * 退回主页面
  */
 function back(type) {
-  STATE.personShowType = 0
-  showPerson(STATE.personShowType)
 
   if (CACHE.timer) {
     clearTimeout(CACHE.timer)
@@ -769,6 +871,11 @@ function back(type) {
       // }
     })
   }
+
+  
+  STATE.personShowType = []
+  showPerson(0)
+  
   cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
 }
 
@@ -907,7 +1014,7 @@ class bladePoints {
 
 
 function pause3D(flag = false) {
-  if(flag) {
+  if (flag) {
     CACHE.container.renderer.setAnimationLoop(null)
     STATE.pause3D = flag
   } else {
@@ -929,7 +1036,7 @@ const render = () => {
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
-  if(!STATE.pause3D) {
+  if (!STATE.pause3D) {
     requestAnimationFrame(render);
   }
 };
@@ -939,7 +1046,7 @@ export const API = {
   initLocationPopup,
   initEnvironmentPopup,
   initMonitorIconList,
-  initPersonList,
+  initPersonPopup,
   loadGUI,
   showPopup,
   testBox,

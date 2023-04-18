@@ -208,7 +208,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
       // 加载弹窗
       API.initMonitorIconList()
-      API.initPersonList()
+      API.initPersonPopup()
       API.initLocationPopup()
       API.initEnvironmentPopup()
       // API.testBox()
