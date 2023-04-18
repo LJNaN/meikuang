@@ -19,8 +19,8 @@
 }
 
 .popup3d_person_detail .popup-close {
-  right: -13.5vw !important;
-  top: -2vh !important;
+  right: -20.5vw !important;
+  top: 0 !important;
 }
 
 .publicBtn {
@@ -29,4 +29,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@font-face {
+  font-family: 'YouSheBiaoTiHei';
+  src: url('./assets/2d/fonts/YouSheBiaoTiHei.ttf');
+  font-weight: normal;
+  font-style: normal;
 }

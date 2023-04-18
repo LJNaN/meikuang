@@ -185,15 +185,15 @@ function initLocationPopup() {
 
           <div style="
             background: url('./assets/3d/image/1.png') center / 100% 100% no-repeat;
-            width: 11vw;
+            width: 16vw;
             height:10vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
           ">
-            <p style="font-family: YouSheBiaoTiHei; font-size: 1.2vw;">${e.name}</p>
-            <p style="font-size: 0.7vw; margin-top: 0.5vh;">${e.sub}</p>
+            <p style="font-family: YouSheBiaoTiHei; font-size: 2vw;">${e.name}</p>
+            <p style="font-size: 1vw; margin-top: 0.5vh;">${e.sub}</p>
           </div>
     
           <div style="
@@ -315,7 +315,7 @@ function initEnvironmentPopup() {
       // 设置点击之后的弹窗
       let contentText = ``
       if (e.info) e.info.forEach(e2 => {
-        contentText += `<p style="font-size: 0.8vw;">${e2.name}: ${e2.value}</p>`
+        contentText += `<p style="font-size: 1.6vw;">${e2.name}: ${e2.value}</p>`
       })
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
@@ -331,14 +331,14 @@ function initEnvironmentPopup() {
 
           <div style="
             background: url('./assets/3d/image/15.png') center / 100% 100% no-repeat;
-            width: 12vw;
-            height:8vw;
+            width: 23vw;
+            height:15vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
           ">
-            <p style="position: absolute; top: 19%;font-family: YouSheBiaoTiHei;">${map.name}</p>
+            <p style="position: absolute; top: 19%;font-size: 1.6vw;font-family: YouSheBiaoTiHei;">${map.name}</p>
             <div style="width: 75%; height: 45%; margin-top: 15%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
             </div>
@@ -403,6 +403,7 @@ function initMonitorIconList() {
       scale: [15, 15],
       color: 0xffffff
     })
+
     if (!STATE.sceneList.monitorIcon) {
       STATE.sceneList.monitorIcon = new Bol3D.Group()
     }
@@ -410,11 +411,19 @@ function initMonitorIconList() {
 
   })
   container.attach(STATE.sceneList.monitorIcon)
+
+  
+  setTimeout(() => {
+    STATE.sceneList.monitorIcon.children.forEach(e => {
+      e.material.transparent = false
+      e.material.alphaToCoverage = true
+    })
+  }, 1000);
 }
 
-// 加载管控人员
+// 加载监管人员
 function initPersonPopup() {
-  STATE.personList.forEach(e => {
+  STATE.personList.forEach((e, index) => {
     const map = STATE.personMap.find(e2 => e2.level === e.level)
     const popup = new Bol3D.POI.Popup3D({
       value: `
@@ -429,7 +438,7 @@ function initPersonPopup() {
           position: absolute;
           background: url('./assets/3d/image/${map.img[0]}.png') center / 100% 100% no-repeat;
           width: 2vw;
-          height:11vh;
+          height:8vw;
           transform: translate(-50%, -50%);
         ">
         </div>
@@ -511,10 +520,10 @@ function initPersonPopup() {
           <div style="
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
-            width: 13vw;
-            height:4.5vh;
+            width: 20vw;
+            height:3.5vh;
             left: 1vw;
-            top: -5.6vh;
+            top: -3.5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -527,22 +536,23 @@ function initPersonPopup() {
               display: inline;
               text-align: center;
               min-width: 15vw;
-              font-size: 1.6vw;"
+              font-size: 2vw;"
             >${e.name} ${map.name}</p>
           </div>
 
           <div style="
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
-            width: 15vw;
-            height:19vh;
+            min-width: 220px;
+            width: 22vw;
+            height:17vh;
             position: absolute;
-            top: -1vh;
+            top: -0.5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
           ">
-            <p style="position: absolute; top: 24%;font-family: YouSheBiaoTiHei;font-size:1.3vw;">${e.info.title}</p>
+            <p style="position: absolute; top: 21%;font-family: YouSheBiaoTiHei;font-size:2.3vw;">${e.info.title}</p>
             <div
               style="width: 75%; height: 34%; margin-top: 18%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
@@ -625,7 +635,7 @@ function showPerson(type) {
     }
   }
 
-  console.log(STATE.personShowType)
+  
 
   // 如果给清空了 显示光点
   if (!STATE.personShowType.length) {
@@ -652,8 +662,8 @@ function showPerson(type) {
       }
 
       setTimeout(() => {
-        console.log('e.children[1]: ', e.children[1]);
-        console.log('e.children[1]: ', e.children[1]);
+        
+        
       }, 1000)
     })
   }

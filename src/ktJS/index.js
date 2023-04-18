@@ -207,10 +207,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       delete CACHE.removed
 
       // 加载弹窗
-      API.initMonitorIconList()
       API.initPersonPopup()
       API.initLocationPopup()
       API.initEnvironmentPopup()
+      API.initMonitorIconList()
       // API.testBox()
       // API.loadGUI()
       CACHE.container.loadingBar.style.visibility = 'hidden'

@@ -85,39 +85,39 @@ const roomModelName = [{
 // location popup 弹窗
 const popupLocationList = [{
   name: '1010切眼',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: 278.81202800325644, y: 0, z: -360.275618 },
 }, {
   name: '501综采工作面',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: 220, y: 0, z: 42 },
 }, {
   name: '627综采工作面',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -18.530259199427906, y: 0, z: -149.209289 },
 }, {
   name: '820进风顺槽',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -368, y: 0, z: 316 },
 }, {
   name: '634进风顺槽',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -350, y: 0, z: -331 },
 }, {
   name: '632回风顺槽',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -311, y: 0, z: -342 },
 }, {
   name: '1012进风顺槽(反掘)',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -65, y: 0, z: -391 },
 }, {
   name: '1012进风顺槽',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: -22, y: 0, z: -392 },
 }, {
   name: '1000工作面',
-  sub: '工作人员数量: 8人',
+  sub: '工作人员数量: 13人',
   position: { x: 371, y: 0, z: -222 },
 }]
 
@@ -433,38 +433,39 @@ const currentPopup = []
 // 监控摄像头icon
 const monitorIconList = [{
   name: '1',
-  position: { x: 540, y: 0, z: 107 }
+  position: { x: 540, y: 10, z: 107 }
 }, {
   name: '2',
-  position: { x: -108, y: 0, z: -88 }
+  position: { x: -108, y: 10, z: -88 }
 }, {
   name: '3',
-  position: { x: 39, y: 0, z: 391 }
+  position: { x: 39, y: 10, z: 391 }
 }]
 
-// 人员管控
-// 1 重点 2 加强 3 一般 4 日常
+// 人员监管
+// 1 重点 2 加强 3 需关注 4 安全
 const personList = [
-  { name: '张一', level: 1, position: { x: -144, y: 0, z: -186 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张二', level: 4, position: { x: -87, y: 0, z: -70 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张三', level: 3, position: { x: -363, y: 0, z: -173 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张四', level: 1, position: { x: -5, y: 0, z: 170 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张五', level: 4, position: { x: 466, y: 0, z: 6 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张六', level: 1, position: { x: 374, y: 0, z: 140 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张七', level: 2, position: { x: 432, y: 0, z: 232 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张八', level: 3, position: { x: 304, y: 0, z: 316 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张九', level: 3, position: { x: -472, y: 0, z: 361 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张十', level: 2, position: { x: 176, y: 0, z: -275 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张十一', level: 1, position: { x: 336, y: 0, z: -363 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
-  { name: '张十二', level: 4, position: { x: -121, y: 0, z: -390 }, info: { title: '1009综采工作面', value1: '李华(8点班)', value2: '重点管控', value3: '支护工', value4: '生产一班', value5: '综采一队' } },
+  { name: '张士明', level: 4, position: { x: 172, y: 0, z: 27 }, info: { title: '501综采工作面', value1: '5004', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '韩辉', level: 4, position: { x: 177, y: 0, z: 28 }, info: { title: '501综采工作面', value1: 'X3026', value2: '安全', value3: '采煤机检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '高长虎', level: 4, position: { x: 183, y: 0, z: 29 }, info: { title: '501综采工作面', value1: '3658', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
+  { name: '葛治国', level: 4, position: { x: 269, y: 0, z: 55 }, info: { title: '501综采工作面', value1: 'x3595', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
+  { name: '阎翔', level: 4, position: { x: 186, y: 0, z: 35 }, info: { title: '501综采工作面', value1: 'X2576', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '王浩东', level: 4, position: { x: 200, y: 0, z: 39 }, info: { title: '501综采工作面', value1: 'X3095', value2: '安全', value3: '三机检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '高遵奇', level: 4, position: { x: 211, y: 0, z: 38 }, info: { title: '501综采工作面', value1: '1846', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
+  { name: '刘鑫', level: 4, position: { x: 224, y: 0, z: 44 }, info: { title: '501综采工作面', value1: '6252', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
+  { name: '齐进荣', level: 4, position: { x: 238, y: 0, z: 48 }, info: { title: '501综采工作面', value1: '6401', value2: '安全', value3: '泵站检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '赵岩', level: 4, position: { x: 253, y: 0, z: 47 }, info: { title: '501综采工作面', value1: 'X2708', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
+  { name: '成兆强', level: 4, position: { x: 259, y: 0, z: 54 }, info: { title: '501综采工作面', value1: 'X2587', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
+  { name: '仵朋辉', level: 4, position: { x: 288, y: 0, z: 55 }, info: { title: '501综采工作面', value1: '6945', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '张涵溪', level: 4, position: { x: 298, y: 0, z: 66 }, info: { title: '501综采工作面', value1: 'X3053', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
 ]
 
-// 人员管控相关的配置
+// 人员监管相关的配置
 const personMap = [
-  { name: '重点管控', level: 1, img: [34, 35, 40, 18] },
-  { name: '加强管控', level: 2, img: [36, 37, 41, 20] },
-  { name: '一般管控', level: 3, img: [30, 31, 38, 22] },
-  { name: '日常管控', level: 4, img: [32, 33, 39, 24] }
+  { name: '重点监管', level: 1, img: [34, 35, 40, 18] },
+  { name: '加强监管', level: 2, img: [36, 37, 41, 20] },
+  { name: '需关注', level: 3, img: [30, 31, 38, 22] },
+  { name: '安全', level: 4, img: [32, 33, 39, 24] }
 ]
 
 // 0 显示全部

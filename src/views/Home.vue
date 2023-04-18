@@ -18,7 +18,7 @@
 
     <SingleActive :options="options2"></SingleActive>
 
-    <div class="environment publicBtn" @click="environment">显示环境信息</div>
+    <!-- <div class="environment publicBtn" @click="environment">显示环境信息</div> -->
   </div>
 </template>
 
@@ -64,10 +64,10 @@ window.enterEnvironment = () => {
 
 const perserList = [
   { name: '全部', bg: ['26', '27'] },
-  { name: '重点管控', bg: ['18', '19'] },
-  { name: '加强管控', bg: ['20', '21'] },
-  { name: '一般管控', bg: ['22', '23'] },
-  { name: '日常管控', bg: ['24', '25'] },
+  { name: '重点监管', bg: ['18', '19'] },
+  { name: '加强监管', bg: ['20', '21'] },
+  { name: '需关注', bg: ['22', '23'] },
+  { name: '安全', bg: ['24', '25'] },
 ]
 
 let personShowType = ref([0])
