@@ -477,6 +477,9 @@ const bloomList = []
 // 动画开关
 let animationFlag = true
 
+// 渲染开关
+let pause3D = false
+
 export const STATE = {
   initialState,
   sceneList,
@@ -494,5 +497,6 @@ export const STATE = {
   PUBLIC_PATH,
   router,
   animationFlag,
+  pause3D,
   clock
 }

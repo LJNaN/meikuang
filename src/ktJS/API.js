@@ -650,13 +650,11 @@ function enterRoom(name = '') {
             child.userData.directionLeft = false
             // setModelPosition(child)
           } else if (child.name === 'CMJ-1') {
-            // aaa
             // let wordPosition = new Bol3D.Vector3()
             // child.getWorldPosition(wordPosition)
             // bladePoint1.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
             // child.userData.points = bladePoint1
           } else if (child.name === 'CMJ-2') {
-            // aaa
             // let wordPosition = new Bol3D.Vector3()
             // child.getWorldPosition(wordPosition)
             // bladePoint2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
@@ -701,8 +699,6 @@ function enterRoom(name = '') {
             if (move) {
               child.position.z += directionLeft ? 0.05 : -0.05
 
-
-              // aaa
               // if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
               //   let wordPosition = new Bol3D.Vector3()
               //   child.getWorldPosition(wordPosition)
@@ -760,19 +756,18 @@ function back(type) {
     showPopup([STATE.sceneList.environmentPopup], false)
   } else if (type === 'zongcai') {
 
-    // aaa
-    // STATE.sceneList.zcgzm.children.find(e => {
-    //   if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
-    //     if (e.userData.points.point) {
-    //       let points = e.userData.points
-    //       points.point.geometry.dispose()
-    //       points.point.material.dispose()
-    //       CACHE.container.scene.remove(points.point)
-    //       points.point = null
+    STATE.sceneList.zcgzm.children.find(e => {
+      // if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
+      //   if (e.userData.points.point) {
+      //     let points = e.userData.points
+      //     points.point.geometry.dispose()
+      //     points.point.material.dispose()
+      //     CACHE.container.scene.remove(points.point)
+      //     points.point = null
 
-    //     }
-    //   }
-    // })
+      //   }
+      // }
+    })
   }
   cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
 }
@@ -781,7 +776,7 @@ function back(type) {
  * 挖煤刀片的粒子效果
  */
 class bladePoints {
-  constructor(particleCount = 300) {
+  constructor(particleCount = 500) {
     this.velocities = null
     this.particleCount = particleCount
     this.particlesGeometry = null
@@ -796,7 +791,6 @@ class bladePoints {
   init() {
     this.createPoints()
     CACHE.container.attach(this.point);
-    // setModelPosition(this.point)
     this.animation()
   }
   createPoints() {
@@ -814,8 +808,9 @@ class bladePoints {
     }
 
     const sizes = new Float32Array(particleCount);
+    // 设置粒子大小范围为0.05到1.5
     for (let i = 0; i < particleCount; i++) {
-      sizes[i] = Math.random() * 1.2 + 0.3;// 设置粒子大小范围为0.05到1.5
+      sizes[i] = Math.random() * 5 + 0.3;
     }
     this.particlesGeometry.setAttribute('size', new Bol3D.BufferAttribute(sizes, 1));
 
@@ -826,8 +821,6 @@ class bladePoints {
     const particleTexture = textureLoader.load('./assets/3d/image/28.png');
 
     // 创建粒子材质，并设置贴图
-    // const particleMaterial = new Bol3D.PointsMaterial({ color: 0xffffff, size: 1.0, map: particleTexture, transparent: true });
-
     const vertexShader = `
     #include <logdepthbuf_pars_vertex>
     #include <common>
@@ -852,8 +845,8 @@ class bladePoints {
     varying vec2 vUv;
     void main() {
         vec4 textureColor = texture2D(pointTexture, gl_PointCoord);
-        if (textureColor.a < 0.5) discard;
-        gl_FragColor = textureColor;
+        // if (textureColor.a < 0.5) discard;
+        gl_FragColor = vec4(textureColor.r * 0.5, textureColor.g * 0.5, textureColor.b * 0.5, textureColor.a);
         #include <logdepthbuf_fragment>
     }
   `;
@@ -913,7 +906,16 @@ class bladePoints {
 }
 
 
-
+function pause3D(flag = false) {
+  if(flag) {
+    CACHE.container.renderer.setAnimationLoop(null)
+    STATE.pause3D = flag
+  } else {
+    CACHE.container.renderer.setAnimationLoop(CACHE.container.animation)
+    STATE.pause3D = flag
+    render()
+  }
+}
 
 
 let renderAnimationList = []
@@ -927,8 +929,9 @@ const render = () => {
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
-
-  requestAnimationFrame(render);
+  if(!STATE.pause3D) {
+    requestAnimationFrame(render);
+  }
 };
 
 export const API = {
@@ -943,5 +946,6 @@ export const API = {
   back,
   showPerson,
   bladePoints,
+  pause3D,
   render
 }

@@ -1,8 +1,13 @@
 <script setup>
 import Scene from '@/views/Scene.vue'
 import router from '@/router/index'
+import { API } from '@/ktJS/API'
 
 if (router.currentRoute.value.path != '/') router.push('/')
+
+window.pause3D = (flag) => {
+  API.pause3D(flag)
+}
 
 </script>
 
