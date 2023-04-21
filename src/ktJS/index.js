@@ -36,29 +36,17 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
         // minDistance: 0,
         maxDistance: 5000,
-        maxPolarAngle: STATE.initialState.maxPolarAngle,
-        minPolarAngle: STATE.initialState.minPolarAngle,
-        // maxPolarAngle: 3.14,
-        // minPolarAngle: 0,
+        // maxPolarAngle: STATE.initialState.maxPolarAngle,
+        // minPolarAngle: STATE.initialState.minPolarAngle,
+        maxPolarAngle: 3.14,
+        minPolarAngle: 0,
         enableDamping: false,
         dampingFactor: 0,
       }
     },
     lights: {
-      directionLights: [{
-        color: 0xedeacc,
-        intensity: 1.7,
-        position: [20, 30, -140],
-        mapSize: [2048, 2048],
-        near: 10,
-        far: 15000,
-        bias: -0.001,
-        distance: 8000
-      }],
-      ambientLight: {
-        color: '#ffffff',
-        intensity: 3
-      }
+      directionLights: STATE.initialState.directionLights,
+      ambientLight: STATE.initialState.ambientLight
     },
     background: {
       type: 'panorama',
@@ -72,7 +60,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     modelUrls: [
       '/model/mkxdw.glb', // 主
       '/model/jjgzm.glb', // 101切眼
-      '/model/zcgzm.glb' // 综采
+      '/model/zcgzm.glb', // 综采
+      '/model/ts.glb', // 硐室
+      '/model/jxcc.glb', // 井下车场
+      '/model/yfjf.glb', // 压风机房
+      // '/model/sbf.glb', // 水泵房
+      '/model/tfjf.glb', // 通风机房
+      '/model/bds.glb', // 变电所
     ],
     enableShadow: false,
     antiShake: false,
@@ -145,6 +139,71 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             }
           }
         })
+      } else if (model.name === 'ts') {
+        model.visible = false
+        model.scale.set(7, 7, 7)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'xd003_1') {
+            child.material.side = 0
+          }
+        })
+      } else if (model.name === 'jxcc') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'xd003_1') {
+            child.material.side = 0
+          }
+        })
+      } else if (model.name === 'sbf') {
+        model.visible = false
+      } else if (model.name === 'yfjf') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'yfjf_2') {
+            child.material.side = 0
+            child.material.transparent = true
+            child.material.opacity = 0.5
+          } else if (child.name === 'yfjf_4') {
+            child.material.transparent = true
+            child.material.opacity = 0.2
+          }
+        })
+      } else if (model.name === 'tfjf') {
+        model.visible = false
+      } else if (model.name === 'bds') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'xd003') {
+            child.material.side = 0
+          }
+        })
       } else if (model.name === 'mkxdw') {
         model.traverse(child => {
           if (child && child.isMesh) {
@@ -183,7 +242,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       window.container = evt
       CACHE.container.sceneList = STATE.sceneList
       CACHE.container.attach(STATE.sceneList.text)
-      console.log(STATE.sceneList)
+      console.log(STATE.roomModelName)
 
 
 

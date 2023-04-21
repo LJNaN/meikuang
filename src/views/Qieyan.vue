@@ -20,7 +20,9 @@ let animationFlag = ref(true)
 
 function back() {
   API.back()
-  router.push('/')
+  setTimeout(() => {
+    router.push('/')
+  }, 500);
 }
 
 function handleAnimationFlag() {

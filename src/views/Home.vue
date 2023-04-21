@@ -18,7 +18,7 @@
 
     <SingleActive :options="options2"></SingleActive>
 
-    <!-- <div class="environment publicBtn" @click="environment">显示环境信息</div> -->
+    <div class="environment publicBtn" @click="environment">显示环境信息</div>
   </div>
 </template>
 
@@ -110,7 +110,7 @@ onMounted(() => {
   pointer-events: all;
   cursor: pointer;
   font-family: YouSheBiaoTiHei;
-  font-size: 1.8vw;
+  font-size: 1.8vh;
   display: flex;
   align-items: center;
 }

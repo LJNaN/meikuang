@@ -60,7 +60,7 @@ window.pause3D = (flag) => {
 :global(#app) {
   width: 100vw;
   height: 100vh;
-  background-color: #999;
+  background-color: #000;
   pointer-events: none;
   color: #FFF;
 }
