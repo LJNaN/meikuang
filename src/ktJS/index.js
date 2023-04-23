@@ -36,10 +36,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
         // minDistance: 0,
         maxDistance: 5000,
-        // maxPolarAngle: STATE.initialState.maxPolarAngle,
-        // minPolarAngle: STATE.initialState.minPolarAngle,
-        maxPolarAngle: 3.14,
-        minPolarAngle: 0,
+        maxPolarAngle: STATE.initialState.maxPolarAngle,
+        minPolarAngle: STATE.initialState.minPolarAngle,
+        // maxPolarAngle: 3.14,
+        // minPolarAngle: 0,
         enableDamping: false,
         dampingFactor: 0,
       }
@@ -67,6 +67,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       // '/model/sbf.glb', // 水泵房
       '/model/tfjf.glb', // 通风机房
       '/model/bds.glb', // 变电所
+      '/model/ysdx.glb', // 运输大巷
+      '/model/wsb.glb', // 瓦斯泵
     ],
     enableShadow: false,
     antiShake: false,
@@ -204,6 +206,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
+      } else if (model.name === 'wsb') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+      } else if (model.name === 'ysdx') {
+        model.visible = false
+        model.scale.set(5, 5, 5)
+        
       } else if (model.name === 'mkxdw') {
         model.traverse(child => {
           if (child && child.isMesh) {

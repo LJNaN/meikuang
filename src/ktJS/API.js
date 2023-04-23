@@ -174,9 +174,7 @@ function initLocationPopup() {
     const popup = new Bol3D.POI.Popup3D({
       value: `
         <div style="
-          pointer-events: all;
           margin:0;
-          cursor: pointer;
           color: #ffffff;
           display: flex;
           flex-direction: column;
@@ -193,7 +191,13 @@ function initLocationPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="font-family: YouSheBiaoTiHei; font-size: 2.2vh;text-align: center;">${e.name}</p>
+            <p style="
+              pointer-events: all;
+              cursor: pointer;
+              font-family: YouSheBiaoTiHei;
+              font-size: 2.2vh;
+              text-align: center;">${e.name}
+            </p>
             <p style="font-size: 1vh; margin-top: 0.5vh;">${e.sub}</p>
           </div>
     
@@ -431,10 +435,10 @@ function initPersonPopup() {
       value: `
       <div style="
         pointer-events: all;
-        margin:0;
         cursor: pointer;
+        margin:0;
         color: #ffffff;
-        ">
+      ">
         
         <div style="
           position: absolute;
@@ -492,6 +496,10 @@ function initPersonPopup() {
     group.add(popup3)
     group.position.set(e.position.x, 0, e.position.z)
     group.name = 'group_' + e.level + '_' + e.name
+
+    // if(index === 0) {
+    //   setModelPosition(group)
+    // }
 
     // 点击一根竖直的弹窗
     popup.element.addEventListener('dblclick', (() => {
@@ -593,6 +601,7 @@ function initPersonPopup() {
 
 // 0 全部 1 重点 2 加强 3 一般 4 日常
 function showPerson(type) {
+  console.log('type: ', type);
   STATE.currentPopup.forEach(e => {
     CACHE.container.remove(e)
   })
@@ -723,7 +732,7 @@ function setModelPosition(mesh) {
  */
 function enterRoom(name = '') {
   const item = STATE.roomModelName.find(e => name.includes(e.name))
-  
+
   if (item) {
     const popup = STATE.popupLocationList.find(e => e.name === name)
     const popupCameraState = {
@@ -751,14 +760,14 @@ function enterRoom(name = '') {
       CACHE.container.sceneList.mkxdw.visible = false
       item.model.visible = true
 
-      
+
       if (item.light) {
         if (item.light.ambientLight != undefined) {
-          
+
           CACHE.container.ambientLight.intensity = item.light.ambientLight
         }
         if (item.light.directionLight != undefined) {
-          
+
           const lightPosition = item.light.directionLight.position
           CACHE.container.directionLights[0].position.set(lightPosition.x, lightPosition.y, lightPosition.z)
           CACHE.container.directionLights[0].intensity = item.light.directionLight.intensity
@@ -867,67 +876,54 @@ function enterRoom(name = '') {
 function back(type) {
   if (type === 'hideEnvironment') {
     showPopup([STATE.sceneList.environmentPopup], false)
+    showPopup([STATE.sceneList.personPopup])
+    STATE.personShowType = []
+    showPerson(0)
 
   } else {
-    new Bol3D.TWEEN.Tween(CACHE.container.orbitCamera)
-      .to({
-        zoom: 0.8
-      }, 500)
-      .onUpdate(() => {
-        CACHE.container.orbitCamera.updateProjectionMatrix()
-      })
-      .onComplete(() => {
-        afterCamera()
-        CACHE.container.orbitCamera.zoom = 1
-        CACHE.container.orbitCamera.updateProjectionMatrix()
-      })
-      .start()
-
-    function afterCamera() {
-      if (CACHE.timer) {
-        clearTimeout(CACHE.timer)
-      }
-
-      renderAnimationList = []
-      CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
-      CACHE.container.directionLights[0].position.set(...STATE.initialState.directionLights[0].position)
-      CACHE.container.directionLights[0].intensity = STATE.initialState.directionLights[0].intensity
-
-      CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
-      CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
-      for (let key in STATE.sceneList) {
-        if (key === 'mkxdw' || key === 'text') {
-          STATE.sceneList[key].visible = true
-        } else {
-          STATE.sceneList[key].visible = false
-        }
-      }
-
-      showPopup([
-        STATE.sceneList.locationPopup,
-        STATE.sceneList.personPopup,
-        STATE.sceneList.monitorIcon
-      ], true)
-
-      if (type === 'zongcai') {
-        STATE.sceneList.zcgzm.children.find(e => {
-          if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
-            if (e.userData.points.point) {
-              let points = e.userData.points
-              points.point.geometry.dispose()
-              points.point.material.dispose()
-              CACHE.container.scene.remove(points.point)
-              points.point = null
-
-            }
-          }
-        })
-      }
-
-      STATE.personShowType = []
-      showPerson(0)
-      cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
+    if (CACHE.timer) {
+      clearTimeout(CACHE.timer)
     }
+
+    renderAnimationList = []
+    CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
+    CACHE.container.directionLights[0].position.set(...STATE.initialState.directionLights[0].position)
+    CACHE.container.directionLights[0].intensity = STATE.initialState.directionLights[0].intensity
+
+    CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
+    CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
+    for (let key in STATE.sceneList) {
+      if (key === 'mkxdw' || key === 'text') {
+        STATE.sceneList[key].visible = true
+      } else {
+        STATE.sceneList[key].visible = false
+      }
+    }
+
+    showPopup([
+      STATE.sceneList.locationPopup,
+      STATE.sceneList.personPopup,
+      STATE.sceneList.monitorIcon
+    ], true)
+
+    if (type === 'zongcai') {
+      STATE.sceneList.zcgzm.children.find(e => {
+        if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
+          if (e.userData.points.point) {
+            let points = e.userData.points
+            points.point.geometry.dispose()
+            points.point.material.dispose()
+            CACHE.container.scene.remove(points.point)
+            points.point = null
+
+          }
+        }
+      })
+    }
+
+    STATE.personShowType = []
+    showPerson(0)
+    cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
   }
 }
 

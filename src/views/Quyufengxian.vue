@@ -46,6 +46,7 @@
 import { onMounted, ref } from "vue";
 import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
+import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from '@/components/SingleActive.vue'
 
@@ -105,7 +106,7 @@ const list2 = [
 
 let leftIndex = ref(-1)
 let leftDetailItemIndex = ref(-1)
-
+let environmentShow = ref(false)
 let leftDetailShow = ref(false)
 
 function handleLeft(index) {
@@ -113,16 +114,50 @@ function handleLeft(index) {
     leftIndex.value = -1
     leftDetailItemIndex.value = -1
     leftDetailShow.value = false
+    environmentShow.value = false
+    if (index === 3) {
+      environment(false)
+    }
   } else {
-    if (index === 0) leftDetailItemIndex.value = -1
     leftIndex.value = index
-    leftDetailShow.value = true
+    environment(false)
+    if (index === 0) {
+      leftDetailItemIndex.value = -1
+      leftDetailShow.value = true
+    } else if (index === 1) {
+      leftDetailShow.value = true
+    } else if (index === 2) {
+    } else if (index === 3) {
+      environmentShow.value = true
+      environment(true)
+    }
   }
+}
+
+function environment(type) {
+  if (type) {
+    API.showPopup([STATE.sceneList.environmentPopup])
+    API.showPopup([STATE.sceneList.personPopup], false)
+  } else {
+    API.showPopup([STATE.sceneList.environmentPopup], false)
+  }
+}
+
+window.enterEnvironment = () => {
+  environment()
 }
 
 function handleLeftItem(item, index) {
   console.log('item: ', item);
   leftDetailItemIndex.value = index
+  const child = STATE.popupLocationList.find(e => e.name === item.name)
+  if (child) {
+    const cameraState = {
+      position: { x: child.position.x + 200, y: 200, z: child.position.z + 200 },
+      target: { x: child.position.x, y: 20, z: child.position.z }
+    }
+    API.cameraAnimation({ cameraState })
+  }
 }
 
 function close() {

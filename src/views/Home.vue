@@ -4,10 +4,10 @@
     <div class="control">
       <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
         <div class="control-icon" :style="{
-          background:
-            (personShowType.includes(index) ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
-            'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
-        }"></div>
+            background:
+              (personShowType.includes(index) ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
+              'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
+          }"></div>
         {{ item.name }}
       </div>
     </div>
@@ -48,18 +48,13 @@ const options2 = {
     right: '1%',
     top: '9%',
     width: '10vw',
-    height: '5vh'   
+    height: '5vh'
   }
 }
 
 function environment() {
-  router.push('/quyufengxian')
-  API.showPopup([STATE.sceneList.environmentPopup])
   API.showPopup([STATE.sceneList.personPopup], false)
-}
-
-window.enterEnvironment = () => {
-  environment()
+  router.push('/quyufengxian')
 }
 
 const perserList = [
@@ -70,9 +65,9 @@ const perserList = [
   { name: '安全', bg: ['24', '25'] },
 ]
 
-let personShowType = ref([0])
+let personShowType = ref([0, 1, 2, 3, 4])
 
-function handlePerson(index){
+function handlePerson(index) {
   API.showPerson(index)
   personShowType.value = []
   personShowType.value = STATE.personShowType
@@ -140,7 +135,7 @@ onMounted(() => {
   height: 5vh;
 }
 
-/deep/ .el-badge__content.is-fixed {
+:deep(.el-badge__content.is-fixed) {
   right: auto;
   left: calc(var(--el-badge-size) / 0.5 * -1);
   background-color: #ad1805;
