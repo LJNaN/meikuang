@@ -171,6 +171,7 @@ function loadGUI() {
  */
 function initLocationPopup() {
   STATE.popupLocationList.forEach((e, index) => {
+    // location 的popup
     const popup = new Bol3D.POI.Popup3D({
       value: `
         <div style="
@@ -226,10 +227,132 @@ function initLocationPopup() {
     const group = new Bol3D.Group()
     group.add(popup)
     group.position.set(e.position.x, 0, e.position.z)
-    group.name = 'group_' + e.name
+    group.name = 'location_group_' + e.name
     popup.name = e.name
+
+    // location 的区域风险的环境评分弹窗
+    const popup2 = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+          margin:0;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transform: translate(0, -182%);
+        ">
+
+          <div style="
+            background: url('./assets/3d/image/44.png') center / 100% 100% no-repeat;
+            width: 30vw;
+            height:25vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+            <p style="
+              position: absolute;
+              top: 13%;
+              font-size: 3vh;
+              font-family: YouSheBiaoTiHei;">区域评分: ${e.regionRate.total}
+            </p>
+
+            <div style="
+              width: 80%;
+              height: 35%;
+              position: absolute;
+              display: flex;
+              justify-content: space-between;
+              top: 41%;
+            ">
+              <div style="
+                position: absolute;
+                top: 40%;
+                width: 120%;
+                left: -10%;
+                height: 1px;
+                background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
+                opacity: 0.5;
+                ">
+              </div>
+
+              <div style="
+                position: absolute;
+                top: 105%;
+                width: 120%;
+                left: -10%;
+                height: 1px;
+                background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
+                opacity: 0.5;
+                ">
+              </div>
+
+              <div style="
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  align-items: center;
+              ">
+                <p>人员</p>
+                <p>${e.regionRate.member || ''}</p>
+              </div>
+              <div style="
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  align-items: center;
+              ">
+                <p>设备</p>
+                <p>${e.regionRate.device || ''}</p>
+              </div>
+              <div style="
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  align-items: center;
+              ">
+                <p>环境</p>
+                <p>${e.regionRate.environment || ''}</p>
+              </div>
+              <div style="
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  align-items: center;
+              ">
+                <p>管理</p>
+                <p>${e.regionRate.manager || ''}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      position: [0, 0, 0],
+      className: 'popup3dclass popup3d_location_region',
+      scale: [0.2, 0.2, 0.2],
+      closeVisible: 'show'
+    })
+    popup2.visible = false
+    group.add(popup2)
+
+    // 双击popup 判断是弹窗还是他妈的直接进去
     popup.element.addEventListener("dblclick", () => {
-      enterRoom(e.name)
+      if (CACHE.regionalRateMode) {
+        popup2.visible = true
+        const cameraState = {
+          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
+          target: { x: e.position.x, y: 60, z: e.position.z }
+        }
+        cameraAnimation({ cameraState })
+      } else {
+        popup2.visible = false
+        enterRoom(e.name)
+      }
     })
 
 
@@ -299,7 +422,7 @@ function initEnvironmentPopup() {
     const group = new Bol3D.Group()
     group.add(popup)
     group.position.set(e.position.x, 0, e.position.z)
-    group.name = 'group_' + e.id
+    group.name = 'environment_group_' + e.id
     popup.name = e.id
     popup.visible = false
 
@@ -382,6 +505,7 @@ function showPopup(groups = [], isShow = true) {
   })
 
   groups.forEach(group => {
+    // 如果里面还有组  主要是针对 monitorIcon
     if (group.type && group.type === 'Group') {
       group.visible = isShow
       group.children.forEach(item => {
@@ -389,13 +513,20 @@ function showPopup(groups = [], isShow = true) {
           child.visible = isShow
         })
       })
-    } else {
+    } else { // 如果直接是mesh
       group.forEach(item => {
-        item.traverse(child => {
-          child.visible = isShow
-        })
+        // 针对location location[0]动态 [1]为false 只有双击才显示
+        if (item.name.includes('location_group_')) {
+          item.children[0].visible = isShow
+          item.children[1].visible = false
+        } else {
+          item.traverse(child => {
+            child.visible = isShow
+          })
+        }
       })
     }
+
   })
 }
 
@@ -495,7 +626,7 @@ function initPersonPopup() {
     group.add(popup)
     group.add(popup3)
     group.position.set(e.position.x, 0, e.position.z)
-    group.name = 'group_' + e.level + '_' + e.name
+    group.name = 'person_group_' + e.level + '_' + e.name
 
     // if(index === 0) {
     //   setModelPosition(group)
@@ -601,7 +732,6 @@ function initPersonPopup() {
 
 // 0 全部 1 重点 2 加强 3 一般 4 日常
 function showPerson(type) {
-  console.log('type: ', type);
   STATE.currentPopup.forEach(e => {
     CACHE.container.remove(e)
   })
@@ -662,7 +792,7 @@ function showPerson(type) {
 
       let showFlag = false
       for (let i = 0; i < STATE.personShowType.length; i++) {
-        if (e.name.includes('group_' + STATE.personShowType[i] + '_')) {
+        if (e.name.includes('person_group_' + STATE.personShowType[i] + '_')) {
           showFlag = true
         }
       }
@@ -673,10 +803,6 @@ function showPerson(type) {
         e.children[0].visible = false
       }
 
-      setTimeout(() => {
-
-
-      }, 1000)
     })
   }
 }
@@ -874,9 +1000,13 @@ function enterRoom(name = '') {
  * 退回主页面
  */
 function back(type) {
-  if (type === 'hideEnvironment') {
+  if (type === 'hideRegionalRisk') {
     showPopup([STATE.sceneList.environmentPopup], false)
-    showPopup([STATE.sceneList.personPopup])
+    showPopup([
+      STATE.sceneList.personPopup,
+      STATE.sceneList.locationPopup,
+      STATE.sceneList.monitorIcon
+    ])
     STATE.personShowType = []
     showPerson(0)
 

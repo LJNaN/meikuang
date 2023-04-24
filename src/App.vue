@@ -1,9 +1,14 @@
+<!-- 这个项目是他妈的嵌入到正方形尺寸里面的，我建议你把窗口搞成正方形进行修改 -->
+<!-- 这个项目是他妈的嵌入到正方形尺寸里面的，我建议你把窗口搞成正方形进行修改 -->
+<!-- 这个项目是他妈的嵌入到正方形尺寸里面的，我建议你把窗口搞成正方形进行修改 -->
+
 <script setup>
 import Scene from '@/views/Scene.vue'
 import router from '@/router/index'
 import { API } from '@/ktJS/API'
 
-if (router.currentRoute.value.path != '/') router.push('/')
+// 没卵用
+// if (router.currentRoute.value.path != '/') router.push('/')
 
 window.pause3D = (flag) => {
   API.pause3D(flag)

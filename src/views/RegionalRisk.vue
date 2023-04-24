@@ -16,19 +16,6 @@
         </div>
       </div>
 
-      <!-- 区域评分 -->
-      <div v-show="leftDetailShow && leftIndex === 1" class="left-btn-detail detail1">
-        <div class="detail1-close" @click="close"></div>
-        <p class="detail1-title">区域评分: 96</p>
-        <div class="detail1-content">
-          <div class="detail1-line"></div>
-          <div class="detail1-line"></div>
-          <div v-for="item in list2" :key="item.name" class="detail1-content-item">
-            <p>{{ item.name }}</p>
-            <p>{{ item.value }}</p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <el-badge :value="12" class="alert">
@@ -46,6 +33,7 @@
 import { onMounted, ref } from "vue";
 import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
+import { CACHE } from '@/ktJS/CACHE'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from '@/components/SingleActive.vue'
@@ -106,49 +94,89 @@ const list2 = [
 
 let leftIndex = ref(-1)
 let leftDetailItemIndex = ref(-1)
-let environmentShow = ref(false)
 let leftDetailShow = ref(false)
 
 function handleLeft(index) {
+  // 取消高亮
   if (leftIndex.value === index) {
+    if (index === 0) {
+      showFlag('location', false)
+    } else if (index === 1) {
+      showFlag('location', false)
+      CACHE.regionalRateMode = false
+    } else if (index === 2) {
+      showFlag('monitor', false)
+    } else if (index === 3) {
+      showFlag('environment', false)
+    }
     leftIndex.value = -1
     leftDetailItemIndex.value = -1
     leftDetailShow.value = false
-    environmentShow.value = false
-    if (index === 3) {
-      environment(false)
-    }
-  } else {
+
+  } else { // 高亮
     leftIndex.value = index
-    environment(false)
+    CACHE.regionalRateMode = false
+
     if (index === 0) {
       leftDetailItemIndex.value = -1
       leftDetailShow.value = true
+      showFlag('location', true)
+
     } else if (index === 1) {
       leftDetailShow.value = true
+      showFlag('location', true)
+      CACHE.regionalRateMode = true
+
     } else if (index === 2) {
+      showFlag('monitor', true)
+
     } else if (index === 3) {
-      environmentShow.value = true
-      environment(true)
+      showFlag('environment', true)
     }
   }
 }
 
-function environment(type) {
-  if (type) {
-    API.showPopup([STATE.sceneList.environmentPopup])
-    API.showPopup([STATE.sceneList.personPopup], false)
-  } else {
-    API.showPopup([STATE.sceneList.environmentPopup], false)
+function showFlag(type, flag) {
+  if (type === 'environment') {
+    if (flag) {
+      API.showPopup([STATE.sceneList.environmentPopup])
+      API.showPopup([
+        STATE.sceneList.personPopup,
+        STATE.sceneList.monitorIcon,
+        STATE.sceneList.locationPopup
+      ], false)
+    } else {
+      API.showPopup([STATE.sceneList.environmentPopup], false)
+    }
+
+  } else if (type === 'monitor') {
+    if (flag) {
+      API.showPopup([STATE.sceneList.monitorIcon])
+      API.showPopup([
+        STATE.sceneList.personPopup,
+        STATE.sceneList.environmentPopup,
+        STATE.sceneList.locationPopup
+      ], false)
+    } else {
+      API.showPopup([STATE.sceneList.monitorIcon], false)
+    }
+
+  } else if (type === 'location') {
+    if (flag) {
+      API.showPopup([STATE.sceneList.locationPopup])
+      API.showPopup([
+        STATE.sceneList.personPopup,
+        STATE.sceneList.environmentPopup,
+        STATE.sceneList.monitorIcon
+      ], false)
+    } else {
+      API.showPopup([STATE.sceneList.locationPopup], false)
+    }
   }
 }
 
-window.enterEnvironment = () => {
-  environment()
-}
-
 function handleLeftItem(item, index) {
-  console.log('item: ', item);
+
   leftDetailItemIndex.value = index
   const child = STATE.popupLocationList.find(e => e.name === item.name)
   if (child) {
@@ -160,14 +188,8 @@ function handleLeftItem(item, index) {
   }
 }
 
-function close() {
-  leftIndex.value = -1
-  leftDetailItemIndex.value = -1
-  leftDetailShow.value = false
-}
-
 function back() {
-  API.back('hideEnvironment')
+  API.back('hideQuyufengxian')
   router.push('/')
 }
 
@@ -237,66 +259,6 @@ onMounted(() => {
   justify-content: center;
   font-size: 0.8vh;
 }
-
-.detail1 {
-  position: absolute;
-  background: url('/assets/3d/image/44.png') center / 100% 100% no-repeat;
-  height: 25vh;
-  width: 30vw;
-  left: 110%;
-}
-
-.detail1-close {
-  position: absolute;
-  right: 4%;
-  top: 12%;
-  width: 2vw;
-  height: 2vw;
-  background: url('/assets/3d/image/45.png') center / 100% 100% no-repeat;
-}
-
-.detail1-title {
-  position: absolute;
-  top: 15%;
-  font-size: 2vh;
-  font-family: YouSheBiaoTiHei;
-}
-
-.detail1-content {
-  width: 80%;
-  height: 25%;
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  top: 45%;
-}
-
-.detail1-content-item {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.detail1-content-item p {
-  font-size: 1.5vh;
-}
-
-.detail1-line {
-  position: absolute;
-  top: 40%;
-  width: 120%;
-  left: -10%;
-  height: 1px;
-  background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
-  opacity: 0.5;
-}
-
-.detail1-line:nth-child(2) {
-  top: 115%;
-}
-
 
 .back {
   position: fixed;

@@ -167,102 +167,277 @@ const popupLocationList = [{
   name: '1010切眼',
   sub: '工作人员数量: 13人',
   position: { x: 278.81202800325644, y: 0, z: -360.275618 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '501综采工作面',
   sub: '工作人员数量: 13人',
   position: { x: 220, y: 0, z: 42 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '627综采工作面',
   sub: '工作人员数量: 13人',
   position: { x: -18.530259199427906, y: 0, z: -149.209289 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '820进风顺槽',
   sub: '工作人员数量: 13人',
   position: { x: -368, y: 0, z: 316 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '634进风顺槽',
   sub: '工作人员数量: 13人',
   position: { x: -350, y: 0, z: -331 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '632回风顺槽',
   sub: '工作人员数量: 13人',
   position: { x: -311, y: 0, z: -342 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '1012进风顺槽(反掘)',
   sub: '工作人员数量: 13人',
   position: { x: -65, y: 0, z: -391 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '1012进风顺槽',
   sub: '工作人员数量: 13人',
   position: { x: -22, y: 0, z: -392 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '1000工作面',
   sub: '工作人员数量: 13人',
   position: { x: 371, y: 0, z: -222 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '1#中央变电所',
   sub: '',
   position: { x: 224, y: 0, z: 309 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '2#中央变电所',
   sub: '',
   position: { x: -216, y: 0, z: 178 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '北二2#变电所',
   sub: '',
   position: { x: -165, y: 0, z: -231 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '3#中央变电所',
   sub: '',
   position: { x: 424, y: 0, z: -244 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '西采区变电所',
   sub: '',
   position: { x: -36, y: 0, z: 229 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '八盘区变电所',
   sub: '',
   position: { x: -394, y: 0, z: 351 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '永久避险硐室',
   sub: '',
   position: { x: 310, y: 0, z: 78 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '北一避难硐室',
   sub: '',
   position: { x: 317, y: 0, z: 120 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '排矸硐室',
   sub: '',
   position: { x: 415, y: 0, z: -215 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '1000机头硐室',
   sub: '',
   position: { x: 410, y: 0, z: -218 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '北二避难硐室',
   sub: '',
   position: { x: -209, y: 0, z: -54 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '816回风机头硐室',
   sub: '',
   position: { x: -389, y: 0, z: -312 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '二号车场',
   sub: '',
   position: { x: 177, y: 0, z: 491 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '三号车场',
   sub: '',
   position: { x: 255, y: 0, z: 298 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '七号车场',
   sub: '',
   position: { x: -224, y: 0, z: 161 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }, {
   name: '压风机房',
   sub: '',
   position: { x: 445, y: 0, z: -182 },
+  regionRate: {
+    total: 95,
+    member: Math.floor(Math.random() * 10) + 90,
+    device: Math.floor(Math.random() * 10) + 90,
+    environment: Math.floor(Math.random() * 10) + 90,
+    manager: Math.floor(Math.random() * 10) + 90
+  }
 }]
 
 // Environment popup 的对应

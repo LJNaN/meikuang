@@ -251,10 +251,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       window.container = evt
       CACHE.container.sceneList = STATE.sceneList
       CACHE.container.attach(STATE.sceneList.text)
-      console.log(STATE.roomModelName)
-
-
-
+      
 
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
@@ -279,6 +276,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initLocationPopup()
       API.initEnvironmentPopup()
       API.initMonitorIconList()
+      console.log(STATE.roomModelName)
+      console.log(CACHE.container.sceneList)
       // API.testBox()
       // API.loadGUI()
       CACHE.container.loadingBar.style.visibility = 'hidden'
@@ -291,7 +290,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
   events.ondbclick = (e) => {
     if (e.objects.length) {
       const obj = e.objects[0].object
-      console.log('obj: ', obj);
+      
     }
   }
 

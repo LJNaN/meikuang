@@ -18,7 +18,7 @@
 
     <SingleActive :options="options2"></SingleActive>
 
-    <div class="environment publicBtn" @click="environment">显示环境信息</div>
+    <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div>
   </div>
 </template>
 
@@ -52,9 +52,13 @@ const options2 = {
   }
 }
 
-function environment() {
-  API.showPopup([STATE.sceneList.personPopup], false)
-  router.push('/quyufengxian')
+function showRegionalRisk() {
+  API.showPopup([
+    STATE.sceneList.personPopup,
+    STATE.sceneList.locationPopup,
+    STATE.sceneList.monitorIcon
+  ], false)
+  router.push('/regionalrisk')
 }
 
 const perserList = [
@@ -74,6 +78,12 @@ function handlePerson(index) {
 }
 
 window.handlePerson = handlePerson
+
+
+// 本来是进入环境  其实是进入区域风险  名字写错了 但是甲方已经在用这个名字了  不几把管
+window.enterEnvironment = () => {
+  showRegionalRisk()
+}
 
 onMounted(() => {
 
@@ -117,7 +127,7 @@ onMounted(() => {
   margin-right: 0.5vw;
 }
 
-.environment {
+.regionalRisk {
   position: fixed;
   bottom: 3%;
   right: 1vw;

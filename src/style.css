@@ -17,6 +17,16 @@
   top: -108% !important;
 }
 
+.popup3d_location_region p {
+  font-size: 2.6vh;
+}
+
+.popup3d_location_region .popup-close {
+  right: 1.5vw !important;
+  top: -43vh !important;
+  scale: 1.5;
+}
+
 .popup3d_person_detail {
   pointer-events: none !important;
 }
