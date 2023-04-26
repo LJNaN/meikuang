@@ -196,7 +196,7 @@ function initLocationPopup() {
               pointer-events: all;
               cursor: pointer;
               font-family: YouSheBiaoTiHei;
-              font-size: 2.2vh;
+              font-size: 3vh;
               text-align: center;">${e.name}
             </p>
             <p style="font-size: 1vh; margin-top: 0.5vh;">${e.sub}</p>
@@ -467,7 +467,7 @@ function initEnvironmentPopup() {
             align-items: center;
           ">
             <p style="position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
-            <div style="width: 75%; height: 45%; margin-top: 15%; display: flex; flex-direction: column; justify-content: space-around;">
+            <div style="width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
             </div>
           </div>
@@ -696,7 +696,7 @@ function initPersonPopup() {
           ">
             <p style="position: absolute; top: 21%;font-family: YouSheBiaoTiHei;font-size:2.3vh;">${e.info.title}</p>
             <div
-              style="width: 75%; height: 34%; margin-top: 18%; display: flex; flex-direction: column; justify-content: space-around;">
+              style="width: 75%; height: 34%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
               <p style="font-size: 0.6vw">${e.info.value1}</p>
               <p style="font-size: 0.6vw">${e.info.value2}</p>
@@ -869,7 +869,7 @@ function enterRoom(name = '') {
 
 
     function afterCamera() {
-      if (name.includes('切眼') || name.includes('1012进风顺槽') || name === '1000工作面') {
+      if (name.includes('切眼') || name.includes('1012进风顺槽') || name === '1000回风顺槽') {
         STATE.animationFlag = true
         STATE.router.push('/qieyan')
 
@@ -911,9 +911,11 @@ function enterRoom(name = '') {
       cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
       let zongcaiMoveMesh = []
+      let bladePoint1 = null
+      let bladePoint2 = null
       if (name.includes('综采')) {
-        const bladePoint1 = new API.bladePoints()
-        const bladePoint2 = new API.bladePoints()
+        bladePoint1 = new API.bladePoints()
+        bladePoint2 = new API.bladePoints()
 
         item.model.children.forEach(child => {
           if (child.isMesh && ['CMJ', 'CMJ-1', 'CMJ-2'].includes(child.name)) {
@@ -938,6 +940,8 @@ function enterRoom(name = '') {
 
       const animation = () => {
         if (STATE.animationFlag) {
+          if (bladePoint1) bladePoint1.play = true
+          if (bladePoint2) bladePoint2.play = true
 
           // 综采的左右移动
           if (zongcaiMoveMesh.length) {
@@ -981,13 +985,18 @@ function enterRoom(name = '') {
 
 
           // 齿轮旋转
-          item.rotateMesh.forEach(e2 => {
-            if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
-              e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
-            } else {
-              e2.mesh.rotation[e2.position] += e2.num
-            }
-          })
+          if(item.rotateMesh) {
+            item.rotateMesh.forEach(e2 => {
+              if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
+                e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
+              } else {
+                e2.mesh.rotation[e2.position] += e2.num
+              }
+            })
+          }
+        } else {
+          if (bladePoint1) bladePoint1.play = false
+          if (bladePoint2) bladePoint2.play = false
         }
       }
       renderAnimationList.push({ name, animation })
@@ -1014,6 +1023,7 @@ function back(type) {
     if (CACHE.timer) {
       clearTimeout(CACHE.timer)
     }
+    CACHE.regionalRateMode = false
 
     renderAnimationList = []
     CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
@@ -1066,6 +1076,7 @@ class bladePoints {
     this.particleCount = particleCount
     this.particlesGeometry = null
     this.point = {}
+    this.play = true
     // 设置初始速度和时间
     this.initialVelocities = new Float32Array(this.particleCount).fill(0).map(() => Math.random() * 10);
     this.times = new Float32Array(this.particleCount).fill(0);
@@ -1170,14 +1181,20 @@ class bladePoints {
         pos.array[i * 3 + 2] = currentPosition.z;
 
         // 如果粒子达到一定高度，将其重新设置回初始位置
-        if (currentPosition.y < -10) {
-          pos.array[i * 3] = (Math.random() - 0.5) * 5;
-          pos.array[i * 3 + 1] = (Math.random() - 0.5) * 10;
-          pos.array[i * 3 + 2] = (Math.random() - 0.5) * 5;
-          this.times[i] = 0;
-          this.initialVelocities[i] = Math.random() * 10;
+        if (this.play) {
+          if (!this.point.visible) this.point.visible = true
+          if (currentPosition.y < -10) {
+            pos.array[i * 3] = (Math.random() - 0.5) * 5;
+            pos.array[i * 3 + 1] = (Math.random() - 0.5) * 10;
+            pos.array[i * 3 + 2] = (Math.random() - 0.5) * 5;
+            this.times[i] = 0;
+            this.initialVelocities[i] = Math.random() * 10;
+          } else {
+            this.times[i] += 0.1;
+          }
         } else {
           this.times[i] += 0.1;
+          if (this.point.visible && currentPosition.y < -50) this.point.visible = false
         }
       }
 
@@ -1204,7 +1221,6 @@ function pause3D(flag = false) {
 
 
 let renderAnimationList = []
-
 const render = () => {
   const singleFrameTime = STATE.clock.getDelta()
   const elapsedTime = STATE.clock.getElapsedTime()

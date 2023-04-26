@@ -36,10 +36,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
         // minDistance: 0,
         maxDistance: 5000,
-        maxPolarAngle: STATE.initialState.maxPolarAngle,
-        minPolarAngle: STATE.initialState.minPolarAngle,
-        // maxPolarAngle: 3.14,
-        // minPolarAngle: 0,
+        // maxPolarAngle: STATE.initialState.maxPolarAngle,
+        // minPolarAngle: STATE.initialState.minPolarAngle,
+        maxPolarAngle: 3.14,
+        minPolarAngle: 0,
         enableDamping: false,
         dampingFactor: 0,
       }
@@ -92,7 +92,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     },
     onProgress: (model) => {
       STATE.sceneList[model.name] = model
-      if (model.name === 'jjgzm') {
+      if (model.name === 'jjgzm') {  // 101切眼 √
         model.visible = false
         model.scale.set(10, 10, 10)
         STATE.roomModelName.forEach(e => {
@@ -105,7 +105,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             STATE.clickObjects.push(child)
 
             STATE.roomModelName.forEach(e => {
-              if (e.rotateMeshName.includes(child.name)) {
+              if (e.rotateMeshName?.includes(child.name)) {
                 if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
                   e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
                 } else {
@@ -116,7 +116,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         })
 
-      } else if (model.name === 'zcgzm') {
+      } else if (model.name === 'zcgzm') { // 综采 √
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -133,7 +133,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.material.side = 0
             } else {
               STATE.roomModelName.forEach(e => {
-                if (e.rotateMeshName.includes(child.name)) {
+                if (e.rotateMeshName?.includes(child.name)) {
                   e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
                   e.rotateMesh.push({ mesh: child, position: 'x', num: 0.1 })
                 }
@@ -141,7 +141,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             }
           }
         })
-      } else if (model.name === 'ts') {
+      } else if (model.name === 'ts') { // 酮室 √
         model.visible = false
         model.scale.set(7, 7, 7)
         STATE.roomModelName.forEach(e => {
@@ -155,7 +155,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'jxcc') {
+      } else if (model.name === 'jxcc') { // 井下车场 √
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -169,9 +169,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'sbf') {
+      } else if (model.name === 'sbf') { // 水泵房
         model.visible = false
-      } else if (model.name === 'yfjf') {
+      } else if (model.name === 'yfjf') { // 压风机房 √
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -190,9 +190,21 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.opacity = 0.2
           }
         })
-      } else if (model.name === 'tfjf') {
+      } else if (model.name === 'tfjf') { // 通风机房 √
         model.visible = false
-      } else if (model.name === 'bds') {
+        model.scale.set(5, 5, 5)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'xd003_1') {
+            child.material.side = 0
+          }
+        })
+      } else if (model.name === 'bds') { // 变电所 √
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -206,14 +218,39 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'wsb') {
+      } else if (model.name === 'wsb') { // 瓦斯泵 √
         model.visible = false
         model.scale.set(5, 5, 5)
-      } else if (model.name === 'ysdx') {
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'wsczbzf_2') {
+            child.material.transparent = true
+            child.material.opacity = 0.5
+          } else if (child.name === 'wsczbzf_4') {
+            child.material.transparent = true
+            child.material.opacity = 0.2
+          }
+        })
+      } else if (model.name === 'ysdx') { // 运输大巷 √
         model.visible = false
         model.scale.set(5, 5, 5)
-        
-      } else if (model.name === 'mkxdw') {
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'ysdx_5') {
+            child.material.side = 0
+          }
+        })
+      } else if (model.name === 'mkxdw') { // 主场景 √
         model.traverse(child => {
           if (child && child.isMesh) {
             STATE.clickObjects.push(child)
@@ -278,8 +315,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initMonitorIconList()
       console.log(STATE.roomModelName)
       console.log(CACHE.container.sceneList)
-      // API.testBox()
-      // API.loadGUI()
+      API.testBox()
+      API.loadGUI()
       CACHE.container.loadingBar.style.visibility = 'hidden'
       API.render()
       callback && callback()

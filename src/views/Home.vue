@@ -55,9 +55,9 @@ const options2 = {
 function showRegionalRisk() {
   API.showPopup([
     STATE.sceneList.personPopup,
-    STATE.sceneList.locationPopup,
     STATE.sceneList.monitorIcon
   ], false)
+  API.showPopup([STATE.sceneList.locationPopup])
   router.push('/regionalrisk')
 }
 
