@@ -1052,7 +1052,13 @@ const popupEnvironmentList = [{
 const currentPopup = []
 
 // 监控摄像头icon
-const monitorIconList = [{
+const monitorList = [{
+  name: '1',
+  position: { x: 0, y: 0, z: 0 }
+}]
+
+// 人员定位基站
+const baseStationList = [{
   name: '1',
   position: { x: 540, y: 10, z: 107 }
 }, {
@@ -1061,12 +1067,6 @@ const monitorIconList = [{
 }, {
   name: '3',
   position: { x: 39, y: 10, z: 391 }
-}]
-
-// 人员定位基站
-const baseStationList = [{
-  name: '1',
-  position: { x: 0, y: 0, z: 0 }
 }]
 
 // 人员监管
@@ -1127,7 +1127,7 @@ export const STATE = {
   popupEnvironmentMap,
   personShowType,
   currentPopup,
-  monitorIconList,
+  monitorList,
   baseStationList,
   personList,
   personMap,

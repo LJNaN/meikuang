@@ -27,6 +27,12 @@
   scale: 1.5;
 }
 
+.popup3d_monitor_detail .popup-close {
+  right: 7% !important;
+  top: -71.5% !important;
+  scale: 2;
+}
+
 .popup3d_person_detail {
   pointer-events: none !important;
 }

@@ -142,7 +142,7 @@ function showFlag(type, flag) {
       API.showPopup([STATE.sceneList.environmentPopup])
       API.showPopup([
         STATE.sceneList.personPopup,
-        STATE.sceneList.monitorIcon,
+        STATE.sceneList.monitorPopup,
         STATE.sceneList.locationPopup
       ], false)
     } else {
@@ -151,14 +151,14 @@ function showFlag(type, flag) {
 
   } else if (type === 'monitor') {
     if (flag) {
-      API.showPopup([STATE.sceneList.monitorIcon])
+      API.showPopup([STATE.sceneList.monitorPopup])
       API.showPopup([
         STATE.sceneList.personPopup,
         STATE.sceneList.environmentPopup,
         STATE.sceneList.locationPopup
       ], false)
     } else {
-      API.showPopup([STATE.sceneList.monitorIcon], false)
+      API.showPopup([STATE.sceneList.monitorPopup], false)
     }
 
   } else if (type === 'location') {
@@ -167,7 +167,7 @@ function showFlag(type, flag) {
       API.showPopup([
         STATE.sceneList.personPopup,
         STATE.sceneList.environmentPopup,
-        STATE.sceneList.monitorIcon
+        STATE.sceneList.monitorPopup
       ], false)
     } else {
       API.showPopup([STATE.sceneList.locationPopup], false)

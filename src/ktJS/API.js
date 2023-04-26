@@ -505,7 +505,7 @@ function showPopup(groups = [], isShow = true) {
   })
 
   groups.forEach(group => {
-    // 如果里面还有组  主要是针对 monitorIcon
+    // 如果里面还有组  主要是针对 monitorPopup
     if (group.type && group.type === 'Group') {
       group.visible = isShow
       group.children.forEach(item => {
@@ -531,30 +531,137 @@ function showPopup(groups = [], isShow = true) {
 }
 
 // 加载监控摄像头
-function initMonitorIconList() {
-  STATE.monitorIconList.forEach(e => {
-    const icon = new Bol3D.POI.Icon({
-      position: [e.position.x, e.position.y, e.position.z],
-      url: './assets/3d/image/29.png',
-      scale: [15, 15],
-      color: 0xffffff
-    })
+function initmonitorList() {
+  STATE.monitorList.forEach((e, index) => {
+    const popup = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+          margin:0;
+          cursor: pointer;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transform: translate(0, -17%);
+        ">
 
-    if (!STATE.sceneList.monitorIcon) {
-      STATE.sceneList.monitorIcon = new Bol3D.Group()
+          <div style="
+            background: url('./assets/3d/image/7.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:6vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+          </div>
+    
+          <div style="
+            background: url('./assets/3d/image/2.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:13vh;
+            position: relative;
+            top: -5vh;
+          ">
+          </div>
+  
+          <div style="
+            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            width: 7vw;
+            height:5vh;
+            position: relative;
+            top: -7vh;
+          ">
+          </div>
+        </div>
+      `,
+      position: [0, 0, 0],
+      className: 'popup3dclass',
+      scale: [0.1, 0.1, 0.1],
+      closeVisible: 'hidden'
+    })
+    // 加group来间接改变popup的中心点
+    const group = new Bol3D.Group()
+    group.add(popup)
+    group.position.set(e.position.x, 0, e.position.z)
+    group.name = 'monitor_group_' + e.id
+    popup.name = e.id
+    popup.visible = false
+
+
+
+    popup.element.addEventListener('dblclick', (() => {
+      STATE.currentPopup.forEach(e2 => {
+        CACHE.container.remove(e2)
+      })
+
+      cameraAnimation({
+        cameraState: {
+          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
+          target: { x: e.position.x, y: e.position.y + 50, z: e.position.z }
+        }
+      })
+
+      // 设置点击之后的弹窗
+      const popup2 = new Bol3D.POI.Popup3D({
+        value: `
+        <div style="
+          margin:0;
+          cursor: pointer;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transform: translate(0, -80%);
+        ">
+
+          <div style="
+            background: url('./assets/3d/image/15.png') center / 100% 100% no-repeat;
+            width: 30vw;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          ">
+            <video
+              src="./assets/3d/image/46.mp4"
+              autoplay
+              muted
+              controls
+              id="monitorVideo"
+              style="width:87%; height: 70%;position:absolute; top: 17%">
+            </video>
+          </div>
+        </div>
+        `,
+        position: [e.position.x, 0, e.position.z],
+        className: 'popup3dclass popup3d_monitor_detail',
+        scale: [0.2, 0.2, 0.2],
+        closeVisible: 'show'
+      })
+      STATE.currentPopup.push(popup2)
+      CACHE.container.attach(popup2)
+      setTimeout(() => {
+        const monitorVideoDom = document.getElementById('monitorVideo')
+        console.log('monitorVideoDom: ', monitorVideoDom);
+        if (monitorVideoDom) {
+          monitorVideoDom.play()
+        }
+      }, 200)
+    }))
+
+    CACHE.container.attach(group)
+
+    // if(e.id === '001487') {
+    //   setModelPosition(group)
+    // }
+
+    if (!STATE.sceneList.monitorPopup) {
+      STATE.sceneList.monitorPopup = []
     }
-    STATE.sceneList.monitorIcon.add(icon)
-
+    STATE.sceneList.monitorPopup.push(group)
   })
-  container.attach(STATE.sceneList.monitorIcon)
-
-
-  setTimeout(() => {
-    STATE.sceneList.monitorIcon.children.forEach(e => {
-      e.material.transparent = false
-      e.material.alphaToCoverage = true
-    })
-  }, 1000);
 }
 
 // 加载监管人员
@@ -728,6 +835,33 @@ function initPersonPopup() {
     }
     STATE.sceneList.personPopup.push(group)
   })
+}
+
+// 加载人员定位基站
+function initBaseStationPopup() {
+  STATE.baseStationList.forEach(e => {
+    const icon = new Bol3D.POI.Icon({
+      position: [e.position.x, e.position.y, e.position.z],
+      url: './assets/3d/image/29.png',
+      scale: [15, 15],
+      color: 0xffffff
+    })
+
+    if (!STATE.sceneList.baseStationPopup) {
+      STATE.sceneList.baseStationPopup = new Bol3D.Group()
+    }
+    STATE.sceneList.baseStationPopup.add(icon)
+
+  })
+  container.attach(STATE.sceneList.baseStationPopup)
+
+
+  setTimeout(() => {
+    STATE.sceneList.baseStationPopup.children.forEach(e => {
+      e.material.transparent = false
+      e.material.alphaToCoverage = true
+    })
+  }, 1000);
 }
 
 // 0 全部 1 重点 2 加强 3 一般 4 日常
@@ -905,7 +1039,7 @@ function enterRoom(name = '') {
         STATE.sceneList.environmentPopup,
         STATE.sceneList.locationPopup,
         STATE.sceneList.personPopup,
-        STATE.sceneList.monitorIcon
+        STATE.sceneList.monitorPopup
       ], false)
 
       cameraAnimation({ cameraState: item.cameraState, duration: 0 })
@@ -985,7 +1119,7 @@ function enterRoom(name = '') {
 
 
           // 齿轮旋转
-          if(item.rotateMesh) {
+          if (item.rotateMesh) {
             item.rotateMesh.forEach(e2 => {
               if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
                 e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
@@ -1014,7 +1148,7 @@ function back(type) {
     showPopup([
       STATE.sceneList.personPopup,
       STATE.sceneList.locationPopup,
-      STATE.sceneList.monitorIcon
+      STATE.sceneList.monitorPopup
     ])
     STATE.personShowType = []
     showPerson(0)
@@ -1043,7 +1177,7 @@ function back(type) {
     showPopup([
       STATE.sceneList.locationPopup,
       STATE.sceneList.personPopup,
-      STATE.sceneList.monitorIcon
+      STATE.sceneList.monitorPopup
     ], true)
 
     if (type === 'zongcai') {
@@ -1239,8 +1373,9 @@ export const API = {
   cameraAnimation,
   initLocationPopup,
   initEnvironmentPopup,
-  initMonitorIconList,
+  initmonitorList,
   initPersonPopup,
+  initBaseStationPopup,
   loadGUI,
   showPopup,
   testBox,
