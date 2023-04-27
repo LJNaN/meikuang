@@ -474,6 +474,7 @@ function initEnvironmentPopup() {
             <p style="position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
             <div style="width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
+              ${e.id}
             </div>
           </div>
         </div>
@@ -992,6 +993,7 @@ function enterRoom(name = '') {
   const item = STATE.roomModelName.find(e => name.includes(e.name))
 
   if (item) {
+    STATE.currentScene = name
     const popup = STATE.popupLocationList.find(e => e.name === name)
     const popupCameraState = {
       position: { x: popup.position.x, y: popup.position.y, z: popup.position.z },
@@ -1051,8 +1053,8 @@ function enterRoom(name = '') {
         bladePoint2 = new API.bladePoints()
 
         item.model.children.forEach(child => {
-          if (child.isMesh && ['CMJ', 'CMJ-1', 'CMJ-2'].includes(child.name)) {
-            if (child.name === 'CMJ') {
+          if (child.isMesh && ['CMJ', 'CMJz', 'CMJy', 'CMJ-1', 'CMJ-2'].includes(child.name)) {
+            if (child.name === 'CMJ' || child.name === 'CMJy' || child.name === 'CMJz') {
               child.userData.move = true
               child.userData.directionLeft = false
             } else if (child.name === 'CMJ-1') {
@@ -1156,6 +1158,7 @@ function back(type) {
     if (CACHE.timer) {
       clearTimeout(CACHE.timer)
     }
+    STATE.currentScene = ''
     CACHE.regionalRateMode = false
 
     renderAnimationList = []
@@ -1276,7 +1279,7 @@ class bladePoints {
     void main() {
         vec4 textureColor = texture2D(pointTexture, gl_PointCoord);
         // if (textureColor.a < 0.5) discard;
-        gl_FragColor = vec4(textureColor.r * 0.5, textureColor.g * 0.5, textureColor.b * 0.5, textureColor.a);
+        gl_FragColor = vec4(textureColor.r * 0.1, textureColor.g * 0.1, textureColor.b * 0.1, textureColor.a);
         #include <logdepthbuf_fragment>
     }
   `;
@@ -1341,7 +1344,7 @@ class bladePoints {
   }
 }
 
-
+// 暂停所有3D活动
 function pause3D(flag = false) {
   if (flag) {
     CACHE.container.renderer.setAnimationLoop(null)
@@ -1350,6 +1353,17 @@ function pause3D(flag = false) {
     CACHE.container.renderer.setAnimationLoop(CACHE.container.animation)
     STATE.pause3D = flag
     render()
+  }
+}
+
+/**
+ * 其他标签透明化
+ * @param {Object3D} popup popup
+ * @param {Boolean} type 是否透明
+ */
+function opacityPopup(popup, type) {
+  if (popup.isObject3D) {
+    popup.element.style.opacity = type ? 0.3 : 1
   }
 }
 
@@ -1383,5 +1397,6 @@ export const API = {
   showPerson,
   bladePoints,
   pause3D,
+  opacityPopup,
   render
 }

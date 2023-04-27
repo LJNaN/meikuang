@@ -281,6 +281,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             }
           }
         })
+        container.loadingBar.style.visibility = 'hidden'
       }
     },
     onLoad: (evt) => {
@@ -318,7 +319,6 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       console.log(CACHE.container.sceneList)
       API.testBox()
       API.loadGUI()
-      CACHE.container.loadingBar.style.visibility = 'hidden'
       API.render()
       callback && callback()
     }

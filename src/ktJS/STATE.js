@@ -281,7 +281,7 @@ const popupLocationList = [
   }, {
     name: '1012进风顺槽',
     sub: '工作人员数量: 13人',
-    position: { x: -22, y: 0, z: -392 },
+    position: { x: 328, y: 0, z: -396 },
     regionRate: {
       total: 95,
       member: Math.floor(Math.random() * 10) + 90,
@@ -740,7 +740,8 @@ const popupLocationList = [
       environment: Math.floor(Math.random() * 10) + 90,
       manager: Math.floor(Math.random() * 10) + 90
     }
-  }]
+  }
+]
 
 // Environment popup 的对应
 const popupEnvironmentMap = [{
@@ -816,7 +817,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 304, y: 0, z: 86 },
+  position: { x: 298, y: 0, z: 83 },
   id: '000026',
   info: [{
     name: 'CH4浓度',
@@ -840,7 +841,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 167, y: 0, z: 38 },
+  position: { x: 172, y: 0, z: 34 },
   id: '008474',
   info: [{
     name: 'CH4浓度',
@@ -848,39 +849,131 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 161, y: 0, z: 34 },
+  position: { x: 161, y: 0, z: 27 },
   id: '003319',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'
   }]
-}, {
-  name: 'FC',
-  position: { x: 161, y: 0, z: 36 },
-  id: '005381',
+},
+{
+  name: 'CO',
+  position: { x: 159, y: 0, z: 36 },
+  id: '005382',
   info: [{
-    name: '粉尘浓度',
-    value: '10mg/m³'
+    name: 'CO浓度',
+    value: '0.9%'
   }]
-}, {
-  name: 'T',
-  position: { x: 425, y: 0, z: -257 },
-  id: '003913',
-  info: [{
-    name: '温度',
-    value: '28℃'
-  }]
-}, {
+},
+{
   name: 'CH4',
-  position: { x: 395, y: 0, z: -338 },
-  id: '000773',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 424, y: 0, z: -240 },
+  id: '003909',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'
   }]
 }, {
   name: 'CH4',
-  position: { x: 345, y: 0, z: -339 },
+  position: { x: 383, y: 0, z: -312 },
+  id: '004459',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: 400, y: 0, z: -312 },
+  id: '004460',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: 412, y: 0, z: -311 },
+  id: '004461',
+  info: [{
+    name: '温度',
+    value: '22℃'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 418, y: 0, z: -312 },
+  id: '004464',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 394, y: 0, z: -312 },
+  id: '004465',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 368, y: 0, z: -314 },
+  id: '004640',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 362, y: 0, z: -314 },
+  id: '004497',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}
+  , {
+  name: 'CH4',
+  position: { x: 262, y: 0, z: -314 },
+  id: '000003',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 245, y: 0, z: -314 },
+  id: '004695',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 215, y: 0, z: -314 },
   id: '000005',
   info: [{
     name: 'CH4浓度',
@@ -888,15 +981,49 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 279, y: 0, z: -340 },
-  id: '000003',
+  position: { x: 199, y: 0, z: -314 },
+  id: '004639',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'
   }]
 }, {
   name: 'CH4',
-  position: { x: 182, y: 0, z: -340 },
+  position: { x: 140, y: 0, z: -294 },
+  id: '004619',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 153, y: 0, z: -359 },
+  id: '004339',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 140, y: 0, z: -359 },
+  id: '000542',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CH4',
+  position: { x: 268, y: 0, z: -314 },
+  id: '004470',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 298, y: 0, z: -314 },
   id: '000001',
   info: [{
     name: 'CH4浓度',
@@ -904,13 +1031,111 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
+  position: { x: 309, y: 0, z: -314 },
+  id: '004469',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 319, y: 0, z: -314 },
+  id: '004467',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
   position: { x: 24, y: 0, z: -142 },
   id: '004133',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'
   }]
+},
+{
+  name: 'FC',
+  position: { x: 169, y: 0, z: 45 },
+  id: '005381',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
 }, {
+  name: 'CO',
+  position: { x: 425, y: 0, z: -257 },
+  id: '000509',
+  info: [{
+    name: 'CO浓度',
+    value: '0.2%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 394, y: 0, z: -259 },
+  id: '000498',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+}, {
+  name: 'CO',
+  position: { x: 394, y: 0, z: -265 },
+  id: '000499',
+  info: [{
+    name: 'CO浓度',
+    value: '24PPM'
+  }]
+},
+{
+  name: 'T',
+  position: { x: 394, y: 0, z: -269 },
+  id: '000500',
+  info: [{
+    name: '温度',
+    value: '12℃'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 375, y: 0, z: -260 },
+  id: '000760',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 370, y: 0, z: -266 },
+  id: '000774',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'FC',
+  position: { x: 356, y: 0, z: -264 },
+  id: '000496',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: 356, y: 0, z: -271 },
+  id: '000495',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
   name: 'CO',
   position: { x: 25, y: 0, z: -146 },
   id: '005215',
@@ -928,7 +1153,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 16, y: 0, z: 146 },
+  position: { x: 12, y: 0, z: -140 },
   id: '002304',
   info: [{
     name: 'CH4浓度',
@@ -958,9 +1183,18 @@ const popupEnvironmentList = [{
     name: '温度',
     value: '28℃'
   }]
+},
+{
+  name: 'T',
+  position: { x: 144, y: 0, z: 414 },
+  id: '003477',
+  info: [{
+    name: '温度',
+    value: '28℃'
+  }]
 }, {
   name: 'CO',
-  position: { x: 26, y: 0, z: 391 },
+  position: { x: 213, y: 0, z: 397 },
   id: '001031',
   info: [{
     name: 'CO浓度',
@@ -976,7 +1210,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 301, y: 0, z: 82 },
+  position: { x: 295, y: 0, z: 74 },
   id: '000054',
   info: [{
     name: 'CH4浓度',
@@ -984,7 +1218,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CH4',
-  position: { x: 299, y: 0, z: 81 },
+  position: { x: 295, y: 0, z: 59 },
   id: '008476',
   info: [{
     name: 'CH4浓度',
@@ -992,7 +1226,7 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'CO',
-  position: { x: 299, y: 0, z: 82 },
+  position: { x: 289, y: 0, z: 61 },
   id: '009082',
   info: [{
     name: 'CO浓度',
@@ -1000,21 +1234,14 @@ const popupEnvironmentList = [{
   }]
 }, {
   name: 'T',
-  position: { x: 299, y: 0, z: 83 },
+  position: { x: 285, y: 0, z: 71 },
   id: '009091',
   info: [{
     name: '温度',
     value: '28℃'
   }]
-}, {
-  name: 'CH4',
-  position: { x: 424, y: 0, z: -240 },
-  id: '003909',
-  info: [{
-    name: 'CH4浓度',
-    value: '0.9%'
-  }]
-}, {
+},
+{
   name: 'T',
   position: { x: 423, y: 0, z: -239 },
   id: '003913',
@@ -1022,31 +1249,558 @@ const popupEnvironmentList = [{
     name: '温度',
     value: '28℃'
   }]
-}, {
-  name: 'CH4',
-  position: { x: 424, y: 0, z: -240 },
-  id: '003909',
+},
+
+{
+  name: 'T',
+  position: { x: 467, y: 0, z: -377 },
+  id: '000111',
   info: [{
-    name: 'CH4浓度',
-    value: '0.9%'
+    name: '温度',
+    value: '15℃'
   }]
-}, {
+},
+{
   name: 'CO',
-  position: { x: 405, y: 0, z: -200 },
-  id: '000509',
+  position: { x: 466, y: 0, z: -378 },
+  id: '000108',
   info: [{
     name: 'CO浓度',
     value: '0.2%'
   }]
-}, {
+},
+{
   name: 'CH4',
-  position: { x: 424, y: 0, z: -240 },
-  id: '003909',
+  position: { x: 468, y: 0, z: -377 },
+  id: '000002',
   info: [{
     name: 'CH4浓度',
     value: '0.9%'
   }]
-}]
+},
+{
+  name: 'FC',
+  position: { x: -278, y: 0, z: 328 },
+  id: '005352',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -278, y: 0, z: 318 },
+  id: '005351',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -300, y: 0, z: 329 },
+  id: '000913',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -310, y: 0, z: 329 },
+  id: '005359',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -329, y: 0, z: 338 },
+  id: '005359',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -326, y: 0, z: 335 },
+  id: '005368',
+  info: [{
+    name: '温度',
+    value: '23℃'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -355, y: 0, z: 352 },
+  id: '000912',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -349, y: 0, z: 330 },
+  id: '000913',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'FC',
+  position: { x: -288, y: 0, z: 316 },
+  id: '000614',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -285, y: 0, z: 310 },
+  id: '000613',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -319, y: 0, z: 335 },
+  id: '000616',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -318, y: 0, z: 320 },
+  id: '000671',
+  info: [{
+    name: '温度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -318, y: 0, z: 314 },
+  id: '000618',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -324, y: 0, z: 331 },
+  id: '000770',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -336, y: 0, z: 314 },
+  id: '000771',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -388, y: 0, z: -259 },
+  id: '004868',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -347, y: 0, z: -235 },
+  id: '005261',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -304, y: 0, z: -212 },
+  id: '005075',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -197, y: 0, z: -119 },
+  id: '004866',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -213, y: 0, z: -163 },
+  id: '004857',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -210, y: 0, z: -165 },
+  id: '004859',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -204, y: 0, z: -158 },
+  id: '004858',
+  info: [{
+    name: '温度',
+    value: '13℃'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -227, y: 0, z: -170 },
+  id: '004888',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -237, y: 0, z: -177 },
+  id: '005019',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -265, y: 0, z: -193 },
+  id: '005020',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -175, y: 0, z: -180 },
+  id: '002466',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -168, y: 0, z: -197 },
+  id: '002441',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -147, y: 0, z: -174 },
+  id: '003542',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -141, y: 0, z: -169 },
+  id: '002306',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -133, y: 0, z: -181 },
+  id: '003637',
+  info: [{
+    name: '温度',
+    value: '12℃'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -124, y: 0, z: -189 },
+  id: '002308',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -101, y: 0, z: -161 },
+  id: '002464',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -67, y: 0, z: -151 },
+  id: '002479',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -53, y: 0, z: -145 },
+  id: '003274',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -36, y: 0, z: -143 },
+  id: '000487',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -21, y: 0, z: -135 },
+  id: '003275',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -5, y: 0, z: -127 },
+  id: '003042',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -132, y: 0, z: -308 },
+  id: '004309',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -146, y: 0, z: -308 },
+  id: '004305',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -157, y: 0, z: -308 },
+  id: '000252',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -186, y: 0, z: -310 },
+  id: '004828',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -193, y: 0, z: -310 },
+  id: '004805',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -208, y: 0, z: -310 },
+  id: '005413',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -222, y: 0, z: -310 },
+  id: '005377',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -314, y: 0, z: -315 },
+  id: '004804',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -325, y: 0, z: -315 },
+  id: '004806',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -326, y: 0, z: -312 },
+  id: '004307',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -326, y: 0, z: -315 },
+  id: '004247',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -326, y: 0, z: -318 },
+  id: '004306',
+  info: [{
+    name: '温度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -333, y: 0, z: -316 },
+  id: '005419',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'FC',
+  position: { x: -342, y: 0, z: -313 },
+  id: '004740',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -342, y: 0, z: -319 },
+  id: '004739',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'FC',
+  position: { x: -327, y: 0, z: -320 },
+  id: '000368',
+  info: [{
+    name: '粉尘浓度',
+    value: '10mg/m³'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -327, y: 0, z: -324 },
+  id: '000362',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -321, y: 0, z: -320 },
+  id: '000490',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CO',
+  position: { x: -316, y: 0, z: -318 },
+  id: '000322',
+  info: [{
+    name: 'CO浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'CH4',
+  position: { x: -316, y: 0, z: -322 },
+  id: '000320',
+  info: [{
+    name: 'CH4浓度',
+    value: '0.9%'
+  }]
+},
+{
+  name: 'T',
+  position: { x: -316, y: 0, z: -325 },
+  id: '000321',
+  info: [{
+    name: '温度',
+    value: '13℃'
+  }]
+},
+]
 
 // 当前展示的popup 主要是第二层popup
 const currentPopup = []
@@ -1128,6 +1882,9 @@ let animationFlag = true
 // 渲染开关
 let pause3D = false
 
+// 当前场景
+let currentScene = ''
+
 export const STATE = {
   initialState,
   sceneList,
@@ -1147,5 +1904,6 @@ export const STATE = {
   router,
   animationFlag,
   pause3D,
+  currentScene,
   clock
 }

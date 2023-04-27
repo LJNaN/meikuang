@@ -17,7 +17,7 @@
       </div>
 
     </div>
-
+    
     <el-badge :value="12" class="alert">
       <SingleActive :options="options1"></SingleActive>
     </el-badge>
@@ -97,6 +97,11 @@ let leftDetailItemIndex = ref(-1)
 let leftDetailShow = ref(false)
 
 function handleLeft(index) {
+  // 取消透明
+  STATE.sceneList.locationPopup.forEach(e => {
+    API.opacityPopup(e.children[0], false)
+  })
+
   // 取消高亮
   if (leftIndex.value === index) {
     if (index === 0) {
@@ -176,19 +181,44 @@ function showFlag(type, flag) {
 }
 
 function handleLeftItem(item, index) {
+  // 如果已经有点击
+  if (leftDetailItemIndex.value === index) {
+    leftDetailItemIndex.value = -1
+    STATE.sceneList.locationPopup.forEach(e => {
+      API.opacityPopup(e.children[0], false)
+    })
+  } else {
+    leftDetailItemIndex.value = index
+    const child = STATE.popupLocationList.find(e => e.name === item.name)
+    if (child) {
+      // 移动镜头
+      const cameraState = {
+        position: { x: child.position.x + 200, y: 200, z: child.position.z + 200 },
+        target: { x: child.position.x, y: 20, z: child.position.z }
+      }
+      API.cameraAnimation({ cameraState })
 
-  leftDetailItemIndex.value = index
-  const child = STATE.popupLocationList.find(e => e.name === item.name)
-  if (child) {
-    const cameraState = {
-      position: { x: child.position.x + 200, y: 200, z: child.position.z + 200 },
-      target: { x: child.position.x, y: 20, z: child.position.z }
+      // 其他标签透明化
+      const itemIndex = STATE.sceneList.locationPopup.findIndex(e => e.name === ('location_group_' + child.name))
+      if (itemIndex >= 0) {
+        STATE.sceneList.locationPopup.forEach((e, index) => {
+          if (itemIndex === index) {
+            API.opacityPopup(e.children[0], false)
+          } else {
+            API.opacityPopup(e.children[0], true)
+          }
+        })
+      }
     }
-    API.cameraAnimation({ cameraState })
   }
+
 }
 
 function back() {
+  STATE.sceneList.locationPopup.forEach(e => {
+    API.opacityPopup(e.children[0], false)
+  })
+
   API.back('hideQuyufengxian')
   router.push('/')
 }

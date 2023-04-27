@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <PersonInfo></PersonInfo>
     <SingleActive :options="options1"></SingleActive>
     <SingleActive :options="options2"></SingleActive>
   </div>
@@ -13,14 +14,13 @@ import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from "@/components/SingleActive.vue";
+import PersonInfo from "@/components/personInfo.vue";
 
 let animationFlag = ref(true)
 
 function back() {
   API.back('zongcai')
-  setTimeout(() => {
-    router.push('/')
-  }, 500);
+  router.push('/')
 }
 
 function handleAnimationFlag() {
@@ -82,5 +82,4 @@ onMounted(() => {
   width: 10vw;
   background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
 }
-
 </style>

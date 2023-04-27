@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <PersonInfo></PersonInfo>
     <SingleActive :options="options1"></SingleActive>
   </div>
 </template>
@@ -10,15 +11,14 @@ import { onMounted, ref } from "vue";
 import { API } from '@/ktJS/API'
 import router from '@/router/index'
 import SingleActive from "@/components/SingleActive.vue";
+import PersonInfo from "@/components/personInfo.vue";
 
 
 
 
 function back() {
   API.back()
-  setTimeout(() => {
-    router.push('/')
-  }, 500);
+  router.push('/')
 }
 
 const options1 = {
@@ -60,5 +60,4 @@ onMounted(() => {
   width: 10vw;
   background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
 }
-
 </style>
