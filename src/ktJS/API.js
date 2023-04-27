@@ -338,11 +338,16 @@ function initLocationPopup() {
       closeVisible: 'show'
     })
     popup2.visible = false
+    STATE.currentPopup.push(popup2)
     group.add(popup2)
 
     // 双击popup 判断是弹窗还是他妈的直接进去
     popup.element.addEventListener("dblclick", () => {
       if (CACHE.regionalRateMode) {
+        STATE.currentPopup.forEach(e => {
+          e.visible = false
+          CACHE.container.remove(e)
+        })
         popup2.visible = true
         const cameraState = {
           position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
@@ -395,7 +400,7 @@ function initEnvironmentPopup() {
           </div>
     
           <div style="
-            background: url('./assets/3d/image/2.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/54.png') center / 100% 100% no-repeat;
             width: 6vw;
             height:13vh;
             position: relative;
@@ -404,7 +409,7 @@ function initEnvironmentPopup() {
           </div>
   
           <div style="
-            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/55.png') center / 100% 100% no-repeat;
             width: 7vw;
             height:5vh;
             position: relative;
@@ -546,7 +551,7 @@ function initmonitorList() {
         ">
 
           <div style="
-            background: url('./assets/3d/image/7.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/56.png') center / 100% 100% no-repeat;
             width: 6vw;
             height:6vw;
             display: flex;
@@ -557,7 +562,7 @@ function initmonitorList() {
           </div>
     
           <div style="
-            background: url('./assets/3d/image/2.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/57.png') center / 100% 100% no-repeat;
             width: 6vw;
             height:13vh;
             position: relative;
@@ -566,7 +571,7 @@ function initmonitorList() {
           </div>
   
           <div style="
-            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/58.png') center / 100% 100% no-repeat;
             width: 7vw;
             height:5vh;
             position: relative;
@@ -587,8 +592,6 @@ function initmonitorList() {
     group.name = 'monitor_group_' + e.id
     popup.name = e.id
     popup.visible = false
-
-
 
     popup.element.addEventListener('dblclick', (() => {
       STATE.currentPopup.forEach(e2 => {
@@ -644,7 +647,6 @@ function initmonitorList() {
       CACHE.container.attach(popup2)
       setTimeout(() => {
         const monitorVideoDom = document.getElementById('monitorVideo')
-        console.log('monitorVideoDom: ', monitorVideoDom);
         if (monitorVideoDom) {
           monitorVideoDom.play()
         }
@@ -652,10 +654,6 @@ function initmonitorList() {
     }))
 
     CACHE.container.attach(group)
-
-    // if(e.id === '001487') {
-    //   setModelPosition(group)
-    // }
 
     if (!STATE.sceneList.monitorPopup) {
       STATE.sceneList.monitorPopup = []
@@ -1039,7 +1037,8 @@ function enterRoom(name = '') {
         STATE.sceneList.environmentPopup,
         STATE.sceneList.locationPopup,
         STATE.sceneList.personPopup,
-        STATE.sceneList.monitorPopup
+        STATE.sceneList.monitorPopup,
+        STATE.sceneList.baseStationPopup
       ], false)
 
       cameraAnimation({ cameraState: item.cameraState, duration: 0 })
@@ -1177,7 +1176,8 @@ function back(type) {
     showPopup([
       STATE.sceneList.locationPopup,
       STATE.sceneList.personPopup,
-      STATE.sceneList.monitorPopup
+      STATE.sceneList.monitorPopup,
+      STATE.sceneList.baseStationPopup
     ], true)
 
     if (type === 'zongcai') {

@@ -746,31 +746,31 @@ const popupLocationList = [
 const popupEnvironmentMap = [{
   shortName: 'CH4',
   name: 'GJG100J型甲烷传感器',
-  imgUrl: '12'
+  imgUrl: '51'
 }, {
   shortName: 'CO2',
   name: 'KGQ9二氧化碳传感器',
-  imgUrl: '8'
+  imgUrl: '47'
 }, {
   shortName: 'CO',
   name: 'KGA5一氧化碳传感器',
-  imgUrl: '10'
+  imgUrl: '49'
 }, {
   shortName: 'T',
   name: 'KG3007A温度传感器',
-  imgUrl: '9'
+  imgUrl: '48'
 }, {
   shortName: 'YW',
   name: 'KGQ5烟雾传感器',
-  imgUrl: '11'
+  imgUrl: '50'
 }, {
   shortName: 'FC',
   name: 'GCG1000粉尘传感器',
-  imgUrl: '13'
+  imgUrl: '52'
 }, {
   shortName: 'FY',
   name: 'KJY3A负压传感器',
-  imgUrl: '14'
+  imgUrl: '53'
 }]
 
 // Environment popup 弹窗
@@ -1051,10 +1051,19 @@ const popupEnvironmentList = [{
 // 当前展示的popup 主要是第二层popup
 const currentPopup = []
 
-// 监控摄像头icon
+// 监控摄像头
 const monitorList = [{
   name: '1',
-  position: { x: 0, y: 0, z: 0 }
+  position: { x: 10, y: 0, z: -131 }
+}, {
+  name: '2',
+  position: { x: 234, y: 0, z: 44 }
+}, {
+  name: '3',
+  position: { x: 304, y: 0, z: -356 }
+}, {
+  name: '4',
+  position: { x: -350, y: 0, z: -324 }
 }]
 
 // 人员定位基站
@@ -1100,10 +1109,10 @@ const personList = [
 
 // 人员监管相关的配置
 const personMap = [
-  { name: '重点监管', level: 1, img: [34, 35, 40, 18] },
-  { name: '加强监管', level: 2, img: [36, 37, 41, 20] },
-  { name: '需关注', level: 3, img: [30, 31, 38, 22] },
-  { name: '安全', level: 4, img: [32, 33, 39, 24] }
+  { name: '重点监管', level: 1, img: [34, 35, 40, 59] },
+  { name: '加强监管', level: 2, img: [36, 37, 41, 60] },
+  { name: '需关注', level: 3, img: [30, 31, 38, 61] },
+  { name: '安全', level: 4, img: [32, 33, 39, 62] }
 ]
 
 // 0 显示全部
