@@ -101,10 +101,10 @@ const roomModelName = [
       target: { x: 12, y: 2, z: -67 }
     },
     light: {
-      ambientLight: 5,
+      ambientLight: 8.8,
       directionLight: {
         position: { x: 28, y: 78, z: -170 },
-        intensity: 0.5
+        intensity: 0.9
       }
     }
   }, {
@@ -116,10 +116,10 @@ const roomModelName = [
       target: { x: 1.364810008556404, y: 0, z: 10.44429 }
     },
     light: {
-      ambientLight: 2.4,
+      ambientLight: 7.9,
       directionLight: {
         position: { x: -199, y: 153, z: 490 },
-        intensity: 1.1
+        intensity: 2.6
       }
     }
   }, {
@@ -161,7 +161,7 @@ const roomModelName = [
       target: { x: 12, y: 6, z: 30 }
     },
     light: {
-      ambientLight: 1.8,
+      ambientLight: 3.2,
       directionLight: {
         position: { x: -104, y: 99, z: -180 },
         intensity: 1.1
@@ -1869,6 +1869,39 @@ const personMap = [
   { name: '安全', level: 4, img: [32, 33, 39, 62] }
 ]
 
+// 报警列表
+const alertList = [{
+  id: 1,
+  position: '1000综采工作面',
+  position2: '2#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}, {
+  id: 2,
+  position: '627综采工作面',
+  position2: '2#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}, {
+  id: 3,
+  position: '1000综采工作面',
+  position2: '2#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}, {
+  id: 4,
+  position: '1000综采工作面',
+  position2: '1#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}, {
+  id: 5,
+  position: '627综采工作面',
+  position2: '1#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}, {
+  id: 6,
+  position: '627综采工作面',
+  position2: '3#煤层',
+  value: '此区域有重点监管作业人员，请及时处理！'
+}]
+
 // 0 显示全部
 let personShowType = [0, 1, 2, 3, 4]
 
@@ -1903,6 +1936,7 @@ export const STATE = {
   PUBLIC_PATH,
   router,
   animationFlag,
+  alertList,
   pause3D,
   currentScene,
   clock

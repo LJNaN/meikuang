@@ -6,13 +6,14 @@
 
 
 <script setup>
-import { onMounted, ref, computed, reactive, watch } from "vue";
+import { onMounted, ref, computed, reactive, watch, defineEmits } from "vue";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 
 const props = defineProps(["options"])
 const options = props.options
+const emits = defineEmits(["btnClick"])
 
 let active = ref(options.active || false)
 const bgimg = props.bgimg || [6, 5]
@@ -28,12 +29,15 @@ style.background = background
 function handle() {
   options.cb && options.cb()
   active.value = !active.value
+  emits("btnClick", {
+    text: options.text,
+    active: active.value
+  })
 }
 
 
 let text = ref(options.text)
 watch(props, (nweProps) => {
-  
   text.value = nweProps.options.text
 })
 

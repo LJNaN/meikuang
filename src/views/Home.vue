@@ -12,11 +12,7 @@
       </div>
     </div>
 
-    <el-badge :value="12" class="alert">
-      <SingleActive :options="options1"></SingleActive>
-    </el-badge>
-
-    <SingleActive :options="options2"></SingleActive>
+    <alertAndRoam></alertAndRoam>
 
     <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div>
   </div>
@@ -29,28 +25,9 @@ import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
-import SingleActive from '@/components/SingleActive.vue'
+import alertAndRoam from '@/components/alertAndRoam.vue'
 
 
-const options1 = {
-  text: '报警信息',
-  style: {
-    right: '1%',
-    top: '3%',
-    width: '10vw',
-    height: '5vh'
-  }
-}
-
-const options2 = {
-  text: '场景巡游',
-  style: {
-    right: '1%',
-    top: '9%',
-    width: '10vw',
-    height: '5vh'
-  }
-}
 
 function showRegionalRisk() {
   API.showPopup([
@@ -85,6 +62,8 @@ window.handlePerson = handlePerson
 window.enterEnvironment = () => {
   showRegionalRisk()
 }
+
+
 
 onMounted(() => {
 
@@ -137,18 +116,4 @@ onMounted(() => {
   background: url('/assets/3d/image/5.png') center / 100% 100% no-repeat;
 }
 
-.alert {
-  position: fixed;
-  right: 1%;
-  top: 3%;
-  transform: translateY(-3%);
-  width: 10vw;
-  height: 5vh;
-}
-
-:deep(.el-badge__content.is-fixed) {
-  right: auto;
-  left: calc(var(--el-badge-size) / 0.5 * -1);
-  background-color: #ad1805;
-}
 </style>

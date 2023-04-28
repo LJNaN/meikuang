@@ -15,14 +15,10 @@
           {{ item2.name }}
         </div>
       </div>
-
     </div>
     
-    <el-badge :value="12" class="alert">
-      <SingleActive :options="options1"></SingleActive>
-    </el-badge>
-
-    <SingleActive :options="options2"></SingleActive>
+    
+    <alertAndRoam></alertAndRoam>
 
     <SingleActive :options="options3"></SingleActive>
   </div>
@@ -37,6 +33,7 @@ import { CACHE } from '@/ktJS/CACHE'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from '@/components/SingleActive.vue'
+import alertAndRoam from '@/components/alertAndRoam.vue'
 
 const options1 = {
   text: '报警信息',
@@ -238,15 +235,6 @@ onMounted(() => {
   position: absolute;
 }
 
-.alert {
-  position: fixed;
-  right: 1%;
-  top: 3%;
-  transform: translateY(-3%);
-  width: 10vw;
-  height: 5vh;
-}
-
 .left {
   position: fixed;
   display: flex;
@@ -299,9 +287,4 @@ onMounted(() => {
   background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
 }
 
-:deep(.el-badge__content.is-fixed) {
-  right: auto;
-  left: calc(var(--el-badge-size) / 0.5 * -1);
-  background-color: #ad1805;
-}
 </style>

@@ -1208,7 +1208,7 @@ function back(type) {
  * 挖煤刀片的粒子效果
  */
 class bladePoints {
-  constructor(particleCount = 500) {
+  constructor(particleCount = 1000) {
     this.velocities = null
     this.particleCount = particleCount
     this.particlesGeometry = null

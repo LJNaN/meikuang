@@ -317,8 +317,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initBaseStationPopup()
       console.log(STATE.roomModelName)
       console.log(CACHE.container.sceneList)
-      API.testBox()
-      API.loadGUI()
+      // API.testBox()
+      // API.loadGUI()
       API.render()
       callback && callback()
     }
