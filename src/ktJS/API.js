@@ -474,7 +474,6 @@ function initEnvironmentPopup() {
             <p style="position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
             <div style="width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
-              ${e.id}
             </div>
           </div>
         </div>
