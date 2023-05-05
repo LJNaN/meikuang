@@ -23,37 +23,28 @@ window.pause3D = (flag) => {
     style="position: fixed; display: flex; justify-content: center; align-items: center; z-index: 2; left: 50%; top: 50%;">
 
     <div style="
-            margin:0;
-            cursor: pointer;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          ">
+      pointer-events: all;
+      cursor: pointer;
+      margin:0;
+      color: #ffffff;
+    ">
 
       <div style="
-              background: url('./assets/3d/image/40.png') center / 100% 100% no-repeat;
-              width: 12vw;
-              height:8vw;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-            ">
-        <p style="position: absolute; top: 24%;font-family: YouSheBiaoTiHei;">1009综采工作面</p>
-        <div
-          style="width: 75%; height: 34%; margin-top: 24%; display: flex; flex-direction: column; justify-content: space-around;">
-          <div style="display: flex; justify-content: space-between;">
-            <p style="font-size: 0.85vw">qrwqw</p>
-            <p style="font-size: 0.85vw">qrwqw</p>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <p style="font-size: 0.85vw">qrwqw</p>
-            <p style="font-size: 0.85vw"> | </p>
-            <p style="font-size: 0.85vw">qrwqw</p>
-            <p style="font-size: 0.85vw"> | </p>
-            <p style="font-size: 0.85vw">qrwqw</p>
-          </div>
+        position: absolute;
+        background: url('./assets/3d/image/44.png') center / 100% 100% no-repeat;
+        width: 20vw;
+        height: 46vh;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        padding: 3vh 2vw;
+      ">
+        <p style="font-size: 5vh; font-family: YouSheBiaoTiHei; text-align: center; margin-top: 13%;">设备信息</p>
+        <div style="display: flex; flex-direction: column; justify-content: space-around; margin-top: 4%; height: 67%;">
+          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
+          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
+          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
+          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
         </div>
       </div>
     </div>

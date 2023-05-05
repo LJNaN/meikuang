@@ -57,7 +57,7 @@ const options1 = {
 
 
 onMounted(() => {
-
+  // API.initMainMachinePopup('zongcai')
 });
 </script>
 

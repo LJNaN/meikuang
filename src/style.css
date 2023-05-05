@@ -42,6 +42,12 @@
   top: 0 !important;
 }
 
+.popup3d_main_machine .popup-close {
+  scale: 2;
+  right: -10vw !important;
+  top: -18vh !important;
+}
+
 .publicBtn {
   pointer-events: all;
   cursor: pointer;

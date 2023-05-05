@@ -79,7 +79,15 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     toneMapping: {
       toneMappingExposure: 0.596
     },
-    outlineEnabled: false,
+    outlineEnabled: true, // 需要开启该参数
+    outline: {
+      edgeStrength: 3,
+      edgeGlow: 0,
+      edgeThickness: 1,
+      pulsePeriod: 0,
+      visibleEdgeColor: '#61cef6',
+      hiddenEdgeColor: '#61cef6'
+    },
     dofEnabled: false,
     msaa: {
       supersampling: false
@@ -101,9 +109,24 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         })
         model.traverse(child => {
-          if (child.isMesh) {
-            STATE.clickObjects.push(child)
+          // 主体点击
+          const mainMeshName = STATE.roomModelName.find(e => e.modelName === 'jjgzm').mainMeshName
+          if (mainMeshName.includes(child.name)) {
+            if (child.type === 'Group' || child.type === 'Object3D') {
+              child.traverse(child2 => {
+                if (child2.isMesh) {
+                  STATE.clickObjects.push(child2)
+                  child2.userData.modelName = 'jjgzm'
+                }
+              })
+            } else if (child.isMesh) {
+              STATE.clickObjects.push(child)
+              child.userData.modelName = 'jjgzm'
+            }
+          }
 
+
+          if (child.isMesh) {
             STATE.roomModelName.forEach(e => {
               if (e.rotateMeshName?.includes(child.name)) {
                 if (child.name === 'XuanZ_01' || child.name === 'XuanZ_02') {
@@ -125,8 +148,27 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         })
         model.traverse(child => {
+          // 主体点击
+          const mainMeshName = STATE.roomModelName.find(e => e.modelName === 'zcgzm').mainMeshName
+          if (mainMeshName.includes(child.name)) {
+            if (child.type === 'Group' || child.type === 'Object3D') {
+              child.traverse(child2 => {
+                if (child2.isMesh) {
+                  STATE.clickObjects.push(child2)
+                  child2.userData.modelName = 'zcgzm'
+                }
+              })
+            } else if (child.isMesh) {
+              STATE.clickObjects.push(child)
+              child.userData.modelName = 'zcgzm'
+            }
+          }
+
+          if (child.name === 'ji001') {
+            child.name = 'CMJGroup'
+          }
+
           if (child.isMesh) {
-            STATE.clickObjects.push(child)
             if (child.name === 'xd') {
               // child.material.transparent = true
               // child.material.opacity = 0.5
@@ -253,7 +295,6 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       } else if (model.name === 'mkxdw') { // 主场景 √
         model.traverse(child => {
           if (child && child.isMesh) {
-            STATE.clickObjects.push(child)
 
             const textArr = ["1009", "624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
             const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm']
@@ -289,7 +330,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       window.container = evt
       CACHE.container.sceneList = STATE.sceneList
       CACHE.container.attach(STATE.sceneList.text)
-      
+
 
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
@@ -315,8 +356,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initEnvironmentPopup()
       API.initmonitorList()
       API.initBaseStationPopup()
-      console.log(STATE.roomModelName)
-      console.log(CACHE.container.sceneList)
+
+
       // API.testBox()
       // API.loadGUI()
       API.render()
@@ -328,9 +369,61 @@ export const sceneOnLoad = ({ domElement, callback }) => {
   events.ondbclick = (e) => {
     if (e.objects.length) {
       const obj = e.objects[0].object
-      
+      console.log('obj: ', obj);
+
+      // 点击出现弹窗 主要是切眼和综采机器的交互
+      if (obj.userData.modelName === 'zcgzm') {
+        const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
+        let popup = CMJGroup.children.find(e => e.name === 'machine_group_zongcai')
+        if (popup) {
+          CMJGroup.remove(popup)
+          popup.children[0].element.remove()
+          popup = null
+          STATE.sceneList.mainMachinePopup = null
+        }
+        API.initMainMachinePopup('zongcai')
+
+      } else if (obj.userData.modelName === 'jjgzm') {
+        let popup = STATE.sceneList.mainMachinePopup
+        if (popup) {
+          popup.parent.remove(popup)
+          popup.children[0].element.remove()
+          popup = null
+        }
+        API.initMainMachinePopup('qieyan')
+      }
     }
   }
 
-  events.onhover = (e) => { }
+  events.onhover = (e) => {
+    if (e.objects.length) {
+      const obj = e.objects[0].object
+
+      // 边缘光  主要是切眼和综采机器的交互
+      STATE.outlineObjects = []
+      if (obj.userData.modelName) {
+        const scene = STATE.roomModelName.find(e2 => e2.modelName === obj.userData.modelName)
+        const mainMeshName = scene.mainMeshName
+
+        scene.model.traverse(child => {
+          if (mainMeshName.includes(child.name)) {
+            if (child.type === 'Group' || child.type === 'Object3D') {
+              child.traverse(child2 => {
+                if (child2.isMesh) {
+                  STATE.outlineObjects.push(child2)
+                }
+              })
+            } else if (child.isMesh) {
+              STATE.outlineObjects.push(child)
+            }
+
+          }
+        })
+        container.outlineObjects = STATE.outlineObjects
+      }
+    } else {
+      STATE.outlineObjects = []
+      container.outlineObjects = []
+    }
+  }
 }

@@ -6,7 +6,7 @@
 
 
 <script setup>
-import { onMounted, ref, computed, reactive, watch, defineEmits } from "vue";
+import { onMounted, ref, computed, reactive, watch } from "vue";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'

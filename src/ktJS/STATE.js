@@ -27,6 +27,7 @@ const initialState = {
 }
 
 const clickObjects = []
+const outlineObjects = []
 
 const clock = new Bol3D.Clock()
 clock.running = true
@@ -34,6 +35,14 @@ clock.running = true
 const sceneList = {}
 
 // 室内名称与模型对应 可能要带旋转动画
+// name 包含的名字
+// modelName 模型文件名
+// model 在 progress 里把模型对象赋给这个 model
+// rotateMeshName 要旋转的动画的 mesh 名
+// rotateMesh 要旋转的动画的 mesh 对象
+// mainMeshName 点击主体的 mesh 名字或者 group 名字
+// cameraState 相机预设位置
+// light 光源预设
 const roomModelName = [
   {
     name: '综采',
@@ -41,6 +50,8 @@ const roomModelName = [
     model: null,
     rotateMeshName: ['CMJ-1', 'CMJ-2'],
     rotateMesh: [],
+    mainMeshName: ['CMJ-1','CMJ-2','CMJy','CMJz','CMJ'],
+    mainMachinePopup: null,
     cameraState: {
       position: { x: 21.432011683782665, y: 30.51447994396291, z: -472.446148798 },
       target: { x: 27.443543167349613, y: 28, z: -405 }
@@ -58,36 +69,20 @@ const roomModelName = [
     model: null,
     rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
     rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
     cameraState: {
       position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
       target: { x: -325, y: 17, z: 0 }
     }
   }, {
-    name: '1012进风顺槽(反掘)',
+    name: '槽',
     modelName: 'jjgzm',
     model: null,
     rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
     rotateMesh: [],
-    cameraState: {
-      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
-      target: { x: -325, y: 17, z: 0 }
-    }
-  }, {
-    name: '1012进风顺槽',
-    modelName: 'jjgzm',
-    model: null,
-    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
-    rotateMesh: [],
-    cameraState: {
-      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
-      target: { x: -325, y: 17, z: 0 }
-    }
-  }, {
-    name: '1000回风顺槽',
-    modelName: 'jjgzm',
-    model: null,
-    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
-    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
     cameraState: {
       position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
       target: { x: -325, y: 17, z: 0 }
@@ -1805,6 +1800,9 @@ const popupEnvironmentList = [{
 // 当前展示的popup 主要是第二层popup
 const currentPopup = []
 
+// 内部两个场景的机器的弹窗
+const mainMachinePopup = null
+
 // 监控摄像头
 const monitorList = [{
   name: '1',
@@ -1926,12 +1924,14 @@ export const STATE = {
   popupEnvironmentMap,
   personShowType,
   currentPopup,
+  mainMachinePopup,
   monitorList,
   baseStationList,
   personList,
   personMap,
   bloomList,
   clickObjects,
+  outlineObjects,
   roomModelName,
   PUBLIC_PATH,
   router,

@@ -939,6 +939,74 @@ function showPerson(type) {
   }
 }
 
+// 会动的那两个机器的弹窗
+function initMainMachinePopup(name) {
+  if (name === 'zongcai' || name === 'qieyan') {
+    const mockInfo = [
+      { name: '采煤机速度', value: '9.22m/min' },
+      { name: '当前位置', value: '71.1m' },
+      { name: '总支架数', value: '65.506架' },
+      { name: '运动方向', value: '顺风运行' },
+      { name: '左滚筒高度', value: '0.93m' },
+      { name: '右滚筒高度', value: '2.08' }
+    ]
+    let text = ''
+    mockInfo.forEach(e => {
+      text += `<div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">${e.name}:</p><p style="font-size: 3vh;">${e.value}</p></div>`
+    })
+    const popup = new Bol3D.POI.Popup3D({
+      value: `
+      <div style="
+        pointer-events: all;
+        cursor: pointer;
+        margin:0;
+        color: #ffffff;
+      ">
+
+        <div style="
+          position: absolute;
+          background: url('./assets/3d/image/44.png') center / 100% 100% no-repeat;
+          width: 20vw;
+          height: 46vh;
+          transform: translate(-50%, -50%);
+          display: flex;
+          flex-direction: column;
+          padding: 3vh 2vw;
+        ">
+          <p style="font-size: 5vh; font-family: YouSheBiaoTiHei; text-align: center; margin-top: 11%;">设备信息</p>
+          <div style="display: flex; flex-direction: column; justify-content: space-around; margin-top: 3%; height: 67%;">
+            ${text}
+          </div>
+        </div>
+      </div>
+        `,
+      position: [0, 0, 0],
+      className: 'popup3dclass popup3d_main_machine',
+      scale: name === 'zongcai' ? [0.06, 0.06, 0.06] : [0.1, 0.1, 0.1],
+      closeVisible: 'show'
+    })
+
+    const group = new Bol3D.Group()
+    group.add(popup)
+    group.position.set(0, 0, 0)
+    group.name = 'machine_group_' + name
+
+    CACHE.container.attach(group)
+    STATE.sceneList.mainMachinePopup = group
+
+    if(name === 'zongcai') {
+      const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
+      if(CMJGroup) {
+        group.position.set(0, 2.1, 0)
+        CMJGroup.add(group)
+      }
+    } else if (name === 'qieyan') {
+      group.position.set(-320, 31, 0)
+    }
+  }
+}
+
+
 /**
  * 测试用盒子
  */
@@ -1002,13 +1070,14 @@ function enterRoom(name = '') {
 
 
     function afterCamera() {
-      if (name.includes('切眼') || name.includes('1012进风顺槽') || name === '1000回风顺槽') {
+      if (name.includes('切眼') || name.includes('槽')) {
         STATE.animationFlag = true
         STATE.router.push('/qieyan')
 
       } else if (name.includes('综采')) {
         STATE.animationFlag = true
         STATE.router.push('/zongcai')
+
       } else {
         STATE.router.push('/other')
       }
@@ -1044,32 +1113,35 @@ function enterRoom(name = '') {
 
       cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
-      let zongcaiMoveMesh = []
+      let CMJGroup = null
       let bladePoint1 = null
       let bladePoint2 = null
       if (name.includes('综采')) {
         bladePoint1 = new API.bladePoints()
         bladePoint2 = new API.bladePoints()
 
-        item.model.children.forEach(child => {
-          if (child.isMesh && ['CMJ', 'CMJz', 'CMJy', 'CMJ-1', 'CMJ-2'].includes(child.name)) {
-            if (child.name === 'CMJ' || child.name === 'CMJy' || child.name === 'CMJz') {
-              child.userData.move = true
-              child.userData.directionLeft = false
-            } else if (child.name === 'CMJ-1') {
+        
+        CMJGroup = item.model.children.find(e => e.name === 'CMJGroup')
+        if (CMJGroup) {
+          CMJGroup.userData.move = true
+          CMJGroup.userData.directionLeft = false
+          CMJGroup = CMJGroup
+
+          CMJGroup.children.forEach(child => {
+            if (child.name === 'CMJ-1') {
               let wordPosition = new Bol3D.Vector3()
               child.getWorldPosition(wordPosition)
               bladePoint1.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
               child.userData.points = bladePoint1
+
             } else if (child.name === 'CMJ-2') {
               let wordPosition = new Bol3D.Vector3()
               child.getWorldPosition(wordPosition)
               bladePoint2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
               child.userData.points = bladePoint2
             }
-            zongcaiMoveMesh.push(child)
-          }
-        })
+          })
+        }
       }
 
       const animation = () => {
@@ -1078,43 +1150,37 @@ function enterRoom(name = '') {
           if (bladePoint2) bladePoint2.play = true
 
           // 综采的左右移动
-          if (zongcaiMoveMesh.length) {
-            const CMJ = zongcaiMoveMesh.find(e => e.name === 'CMJ')
-            let directionLeft = CMJ.userData.directionLeft
-            let move = CMJ.userData.move
+          if (CMJGroup) {
+            let directionLeft = CMJGroup.userData.directionLeft
+            let move = CMJGroup.userData.move
 
-            zongcaiMoveMesh.forEach(child => {
-              if (child.name === 'CMJ') {
-                if (move) {
-                  if (child.position.z > -55) {
-                    child.userData.move = false
-                    child.userData.directionLeft = false
-                    CACHE.timer = setTimeout(() => {
-                      child.position.z = -55
-                      child.userData.move = true
-                    }, 2000);
+            if (move) {
+              if (CMJGroup.position.z > -55) {
+                CMJGroup.userData.move = false
+                CMJGroup.userData.directionLeft = false
+                CACHE.timer = setTimeout(() => {
+                  CMJGroup.position.z = -55
+                  CMJGroup.userData.move = true
+                }, 2000);
 
-                  } else if (child.position.z < -85) {
-                    child.userData.move = false
-                    child.userData.directionLeft = true
-                    CACHE.timer = setTimeout(() => {
-                      child.position.z = -85
-                      child.userData.move = true;
-                    }, 2000);
-                  }
-                }
+              } else if (CMJGroup.position.z < -85) {
+                CMJGroup.userData.move = false
+                CMJGroup.userData.directionLeft = true
+                CACHE.timer = setTimeout(() => {
+                  CMJGroup.position.z = -85
+                  CMJGroup.userData.move = true;
+                }, 2000);
               }
+              CMJGroup.position.z += directionLeft ? 0.05 : -0.05
 
-              if (move) {
-                child.position.z += directionLeft ? 0.05 : -0.05
-
+              CMJGroup.children.forEach(child => {
                 if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
                   let wordPosition = new Bol3D.Vector3()
                   child.getWorldPosition(wordPosition)
                   child.userData.points.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
                 }
-              }
-            })
+              })
+            }
           }
 
 
@@ -1154,19 +1220,24 @@ function back(type) {
     showPerson(0)
 
   } else {
+    // 清空计时器 清空默认场景名字 关闭环境信息
     if (CACHE.timer) {
       clearTimeout(CACHE.timer)
     }
     STATE.currentScene = ''
     CACHE.regionalRateMode = false
 
+    // 清空动画序列
     renderAnimationList = []
+
+    // 恢复初始灯光与控制器状态
     CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
     CACHE.container.directionLights[0].position.set(...STATE.initialState.directionLights[0].position)
     CACHE.container.directionLights[0].intensity = STATE.initialState.directionLights[0].intensity
-
     CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
     CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
+
+    // 显示场景
     for (let key in STATE.sceneList) {
       if (key === 'mkxdw' || key === 'text') {
         STATE.sceneList[key].visible = true
@@ -1175,6 +1246,7 @@ function back(type) {
       }
     }
 
+    // 显示标签
     showPopup([
       STATE.sceneList.locationPopup,
       STATE.sceneList.personPopup,
@@ -1182,8 +1254,10 @@ function back(type) {
       STATE.sceneList.baseStationPopup
     ], true)
 
+    // 销毁粒子
     if (type === 'zongcai') {
-      STATE.sceneList.zcgzm.children.find(e => {
+      const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
+      CMJGroup.children.forEach(e => {
         if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
           if (e.userData.points.point) {
             let points = e.userData.points
@@ -1191,12 +1265,20 @@ function back(type) {
             points.point.material.dispose()
             CACHE.container.scene.remove(points.point)
             points.point = null
-
           }
         }
       })
     }
 
+    // 删除弹窗
+    if(STATE.sceneList.mainMachinePopup) {
+      const popup = STATE.sceneList.mainMachinePopup
+      popup.parent.remove(popup)
+      popup.children[0].element.remove()
+      STATE.sceneList.mainMachinePopup = null
+    }
+
+    // 恢复选中状态
     STATE.personShowType = []
     showPerson(0)
     cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
@@ -1389,6 +1471,7 @@ export const API = {
   initmonitorList,
   initPersonPopup,
   initBaseStationPopup,
+  initMainMachinePopup,
   loadGUI,
   showPopup,
   testBox,
