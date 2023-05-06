@@ -982,7 +982,7 @@ function initMainMachinePopup(name) {
         `,
       position: [0, 0, 0],
       className: 'popup3dclass popup3d_main_machine',
-      scale: name === 'zongcai' ? [0.06, 0.06, 0.06] : [0.1, 0.1, 0.1],
+      scale: name === 'zongcai' ? [0.045, 0.045, 0.045] : [0.1, 0.1, 0.1],
       closeVisible: 'show'
     })
 
