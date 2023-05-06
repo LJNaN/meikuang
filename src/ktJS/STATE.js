@@ -12,7 +12,7 @@ const initialState = {
   // minPolarAngle: 0,
   ambientLight: {
     color: '#ffffff',
-    intensity: 3
+    intensity: 1
   },
   directionLights: [{
     color: 0xedeacc,
@@ -23,6 +23,35 @@ const initialState = {
     far: 15000,
     bias: -0.001,
     distance: 8000
+  }],
+  pointLights: [{
+    color: 0xffffff,
+    intensity: 1,
+    decay: 1,
+    position: [-74, 60, -22],
+    near: 1,
+    far: 10000
+  }, {
+    color: 0xffffff,
+    intensity: 1,
+    decay: 1,
+    position: [455, 60, 154],
+    near: 1,
+    far: 10000
+  }, {
+    color: 0xffffff,
+    intensity: 1,
+    decay: 1,
+    position: [135, 60, 441],
+    near: 1,
+    far: 10000
+  }, {
+    color: 0xffffff,
+    intensity: 1,
+    decay: 1,
+    position: [-498, 60, 380],
+    near: 1,
+    far: 10000
   }],
 }
 
@@ -50,7 +79,7 @@ const roomModelName = [
     model: null,
     rotateMeshName: ['CMJ-1', 'CMJ-2'],
     rotateMesh: [],
-    mainMeshName: ['CMJ-1','CMJ-2','CMJy','CMJz','CMJ'],
+    mainMeshName: ['CMJ-1', 'CMJ-2', 'CMJy', 'CMJz', 'CMJ'],
     mainMachinePopup: null,
     cameraState: {
       position: { x: 21.432011683782665, y: 30.51447994396291, z: -472.446148798 },

@@ -14,7 +14,7 @@
 
     <alertAndRoam></alertAndRoam>
 
-    <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div>
+    <!-- <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div> -->
   </div>
 </template>
 

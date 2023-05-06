@@ -84,7 +84,7 @@ onMounted(() => {
   top: 2%;
   height: 40vh;
   width: 41vw;
-  background: url('./assets/3d/image/64.png') center / 100% 100% no-repeat;
+  background: url('/assets/3d/image/64.png') center / 100% 100% no-repeat;
 
 }
 

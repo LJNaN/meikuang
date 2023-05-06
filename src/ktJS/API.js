@@ -994,9 +994,9 @@ function initMainMachinePopup(name) {
     CACHE.container.attach(group)
     STATE.sceneList.mainMachinePopup = group
 
-    if(name === 'zongcai') {
+    if (name === 'zongcai') {
       const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
-      if(CMJGroup) {
+      if (CMJGroup) {
         group.position.set(0, 2.1, 0)
         CMJGroup.add(group)
       }
@@ -1059,7 +1059,9 @@ function setModelPosition(mesh) {
 function enterRoom(name = '') {
   const item = STATE.roomModelName.find(e => name.includes(e.name))
 
+  // 如果找到匹配的
   if (item) {
+    // 更改当前场景 相机移动到标签上
     STATE.currentScene = name
     const popup = STATE.popupLocationList.find(e => e.name === name)
     const popupCameraState = {
@@ -1068,8 +1070,14 @@ function enterRoom(name = '') {
     }
     cameraAnimation({ cameraState: popupCameraState, callback: afterCamera, duration: 500 })
 
-
+    // 相机移动完之后
     function afterCamera() {
+      // 关点光源
+      CACHE.container.pointLights.forEach(e => {
+        e.visible = false
+      })
+
+      // 跳路由
       if (name.includes('切眼') || name.includes('槽')) {
         STATE.animationFlag = true
         STATE.router.push('/qieyan')
@@ -1081,28 +1089,28 @@ function enterRoom(name = '') {
       } else {
         STATE.router.push('/other')
       }
-      STATE.sceneList.text.visible = false
 
+      // 隐藏场景与文字 设定旋转角度 显示内部场景
+      STATE.sceneList.text.visible = false
       CACHE.container.orbitControls.maxPolarAngle = Math.PI
       CACHE.container.orbitControls.minPolarAngle = 0
       CACHE.container.sceneList.mkxdw.visible = false
       item.model.visible = true
 
-
+      // 设定场景配套的光源
       if (item.light) {
         if (item.light.ambientLight != undefined) {
-
           CACHE.container.ambientLight.intensity = item.light.ambientLight
         }
-        if (item.light.directionLight != undefined) {
 
+        if (item.light.directionLight != undefined) {
           const lightPosition = item.light.directionLight.position
           CACHE.container.directionLights[0].position.set(lightPosition.x, lightPosition.y, lightPosition.z)
           CACHE.container.directionLights[0].intensity = item.light.directionLight.intensity
         }
-
       }
 
+      // 隐藏标签 相机移动到预设位置
       showPopup([
         STATE.sceneList.environmentPopup,
         STATE.sceneList.locationPopup,
@@ -1113,14 +1121,16 @@ function enterRoom(name = '') {
 
       cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
+      // 主要是配合综采的
       let CMJGroup = null
       let bladePoint1 = null
       let bladePoint2 = null
       if (name.includes('综采')) {
+        // 俩刀片的粒子效果
         bladePoint1 = new API.bladePoints()
         bladePoint2 = new API.bladePoints()
 
-        
+        // 整个组移动
         CMJGroup = item.model.children.find(e => e.name === 'CMJGroup')
         if (CMJGroup) {
           CMJGroup.userData.move = true
@@ -1220,6 +1230,12 @@ function back(type) {
     showPerson(0)
 
   } else {
+
+    // 开灯
+    CACHE.container.pointLights.forEach(e => {
+      e.visible = true
+    })
+
     // 清空计时器 清空默认场景名字 关闭环境信息
     if (CACHE.timer) {
       clearTimeout(CACHE.timer)
@@ -1239,10 +1255,12 @@ function back(type) {
 
     // 显示场景
     for (let key in STATE.sceneList) {
-      if (key === 'mkxdw' || key === 'text') {
-        STATE.sceneList[key].visible = true
-      } else {
-        STATE.sceneList[key].visible = false
+      if(STATE.sceneList[key]) {
+        if (key === 'mkxdw' || key === 'text') {
+          STATE.sceneList[key].visible = true
+        } else {
+          STATE.sceneList[key].visible = false
+        }
       }
     }
 
@@ -1271,7 +1289,7 @@ function back(type) {
     }
 
     // 删除弹窗
-    if(STATE.sceneList.mainMachinePopup) {
+    if (STATE.sceneList.mainMachinePopup) {
       const popup = STATE.sceneList.mainMachinePopup
       popup.parent.remove(popup)
       popup.children[0].element.remove()
@@ -1472,6 +1490,7 @@ export const API = {
   initPersonPopup,
   initBaseStationPopup,
   initMainMachinePopup,
+  setModelPosition,
   loadGUI,
   showPopup,
   testBox,

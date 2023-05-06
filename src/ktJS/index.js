@@ -34,19 +34,20 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         autoRotate: false,
         autoRotateSpeed: 1,
         target: [STATE.initialState.target.x, STATE.initialState.target.y, STATE.initialState.target.z],
-        // minDistance: 0,
+        minDistance: 20,
         maxDistance: 5000,
-        // maxPolarAngle: STATE.initialState.maxPolarAngle,
-        // minPolarAngle: STATE.initialState.minPolarAngle,
-        maxPolarAngle: 3.14,
-        minPolarAngle: 0,
+        maxPolarAngle: STATE.initialState.maxPolarAngle,
+        minPolarAngle: STATE.initialState.minPolarAngle,
+        // maxPolarAngle: 3.14,
+        // minPolarAngle: 0,
         enableDamping: false,
         dampingFactor: 0,
       }
     },
     lights: {
       directionLights: STATE.initialState.directionLights,
-      ambientLight: STATE.initialState.ambientLight
+      ambientLight: STATE.initialState.ambientLight,
+      pointLights: STATE.initialState.pointLights
     },
     background: {
       type: 'panorama',
@@ -315,7 +316,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             } else if (child.name === 'hangdao') {
               child.material.transparent = true
               child.material.opacity = 0.4
-              STATE.bloomList.push(child)
+              // STATE.bloomList.push(child)
             } else {
               child.material.transparent = true
               child.material.opacity = 0.2
@@ -378,8 +379,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         if (popup) {
           CMJGroup.remove(popup)
           popup.children[0].element.remove()
-          popup = null
-          STATE.sceneList.mainMachinePopup = null
+          delete STATE.sceneList.mainMachinePopup
         }
         API.initMainMachinePopup('zongcai')
 
@@ -388,7 +388,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         if (popup) {
           popup.parent.remove(popup)
           popup.children[0].element.remove()
-          popup = null
+          delete STATE.sceneList.mainMachinePopup
         }
         API.initMainMachinePopup('qieyan')
       }

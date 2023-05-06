@@ -1,5 +1,5 @@
 <template>
-  <el-badge :value="alertList.length" class="alert">
+  <el-badge :value="6" class="alert">
     <SingleActive :options="options1" @btnClick="btnClick"></SingleActive>
   </el-badge>
 
