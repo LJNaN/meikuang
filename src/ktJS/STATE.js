@@ -863,30 +863,44 @@ const popupLocationList = [
 const popupEnvironmentMap = [{
   shortName: 'CH4',
   name: 'GJG100J型甲烷传感器',
+  threshold: 1,
+  unit: '%',
   imgUrl: '51'
 }, {
   shortName: 'CO2',
   name: 'KGQ9二氧化碳传感器',
+  threshold: 1.5,
+  unit: '%',
   imgUrl: '47'
 }, {
   shortName: 'CO',
   name: 'KGA5一氧化碳传感器',
+  threshold: 24,
+  unit: 'ppm',
   imgUrl: '49'
 }, {
   shortName: 'T',
   name: 'KG3007A温度传感器',
+  threshold: 30,
+  unit: '℃',
   imgUrl: '48'
 }, {
   shortName: 'YW',
   name: 'KGQ5烟雾传感器',
+  threshold: 30,
+  unit: '℃',
   imgUrl: '50'
 }, {
   shortName: 'FC',
   name: 'GCG1000粉尘传感器',
+  threshold: 1000,
+  unit: 'mg/m³',
   imgUrl: '52'
 }, {
   shortName: 'FY',
   name: 'KJY3A负压传感器',
+  threshold: [0,24],
+  unit: 'MPa',
   imgUrl: '53'
 }]
 
@@ -897,7 +911,7 @@ const popupEnvironmentList = [{
   id: '001487',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '1.8'
   }]
 }, {
   name: 'CH4',
@@ -905,7 +919,7 @@ const popupEnvironmentList = [{
   id: '000902',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -913,7 +927,7 @@ const popupEnvironmentList = [{
   id: '001424',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -921,7 +935,7 @@ const popupEnvironmentList = [{
   id: '008507',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -929,7 +943,7 @@ const popupEnvironmentList = [{
   id: '008512',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -937,7 +951,7 @@ const popupEnvironmentList = [{
   id: '000026',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -945,7 +959,7 @@ const popupEnvironmentList = [{
   id: '000176',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -953,7 +967,7 @@ const popupEnvironmentList = [{
   id: '000569',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -961,7 +975,7 @@ const popupEnvironmentList = [{
   id: '008474',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -969,7 +983,7 @@ const popupEnvironmentList = [{
   id: '003319',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -978,7 +992,7 @@ const popupEnvironmentList = [{
   id: '005382',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -987,7 +1001,7 @@ const popupEnvironmentList = [{
   id: '003909',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -996,7 +1010,7 @@ const popupEnvironmentList = [{
   id: '003909',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1005,7 +1019,7 @@ const popupEnvironmentList = [{
   id: '003909',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1013,7 +1027,7 @@ const popupEnvironmentList = [{
   id: '004459',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1022,7 +1036,7 @@ const popupEnvironmentList = [{
   id: '004460',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1031,7 +1045,7 @@ const popupEnvironmentList = [{
   id: '004461',
   info: [{
     name: '温度',
-    value: '22℃'
+    value: '22'
   }]
 },
 {
@@ -1040,7 +1054,7 @@ const popupEnvironmentList = [{
   id: '004464',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1049,7 +1063,7 @@ const popupEnvironmentList = [{
   id: '004465',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1058,7 +1072,7 @@ const popupEnvironmentList = [{
   id: '004640',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1067,7 +1081,7 @@ const popupEnvironmentList = [{
   id: '004497',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }
   , {
@@ -1076,7 +1090,7 @@ const popupEnvironmentList = [{
   id: '000003',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1085,7 +1099,7 @@ const popupEnvironmentList = [{
   id: '004695',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1093,7 +1107,7 @@ const popupEnvironmentList = [{
   id: '000005',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1101,7 +1115,7 @@ const popupEnvironmentList = [{
   id: '004639',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1109,7 +1123,7 @@ const popupEnvironmentList = [{
   id: '004619',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1118,7 +1132,7 @@ const popupEnvironmentList = [{
   id: '004339',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CO',
@@ -1126,7 +1140,7 @@ const popupEnvironmentList = [{
   id: '000542',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1134,7 +1148,7 @@ const popupEnvironmentList = [{
   id: '004470',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1143,7 +1157,7 @@ const popupEnvironmentList = [{
   id: '000001',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1151,7 +1165,7 @@ const popupEnvironmentList = [{
   id: '004469',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1160,7 +1174,7 @@ const popupEnvironmentList = [{
   id: '004467',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1169,7 +1183,7 @@ const popupEnvironmentList = [{
   id: '004133',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1178,7 +1192,7 @@ const popupEnvironmentList = [{
   id: '005381',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 }, {
   name: 'CO',
@@ -1186,7 +1200,7 @@ const popupEnvironmentList = [{
   id: '000509',
   info: [{
     name: 'CO浓度',
-    value: '0.2%'
+    value: '0.2'
   }]
 },
 {
@@ -1195,7 +1209,7 @@ const popupEnvironmentList = [{
   id: '000498',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CO',
@@ -1203,7 +1217,7 @@ const popupEnvironmentList = [{
   id: '000499',
   info: [{
     name: 'CO浓度',
-    value: '24PPM'
+    value: '22'
   }]
 },
 {
@@ -1212,7 +1226,7 @@ const popupEnvironmentList = [{
   id: '000500',
   info: [{
     name: '温度',
-    value: '12℃'
+    value: '12'
   }]
 },
 {
@@ -1221,7 +1235,7 @@ const popupEnvironmentList = [{
   id: '000760',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1230,7 +1244,7 @@ const popupEnvironmentList = [{
   id: '000774',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1239,7 +1253,7 @@ const popupEnvironmentList = [{
   id: '000496',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 },
 {
@@ -1248,7 +1262,7 @@ const popupEnvironmentList = [{
   id: '000495',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1257,7 +1271,7 @@ const popupEnvironmentList = [{
   id: '005215',
   info: [{
     name: 'CO浓度',
-    value: '24PPM'
+    value: '26'
   }]
 }, {
   name: 'FC',
@@ -1265,7 +1279,7 @@ const popupEnvironmentList = [{
   id: '005216',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 }, {
   name: 'CH4',
@@ -1273,7 +1287,7 @@ const popupEnvironmentList = [{
   id: '002304',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1281,7 +1295,7 @@ const popupEnvironmentList = [{
   id: '002407',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1289,7 +1303,7 @@ const popupEnvironmentList = [{
   id: '001509',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'T',
@@ -1297,7 +1311,7 @@ const popupEnvironmentList = [{
   id: '001058',
   info: [{
     name: '温度',
-    value: '28℃'
+    value: '28'
   }]
 },
 {
@@ -1306,7 +1320,7 @@ const popupEnvironmentList = [{
   id: '003477',
   info: [{
     name: '温度',
-    value: '28℃'
+    value: '28'
   }]
 }, {
   name: 'CO',
@@ -1314,7 +1328,7 @@ const popupEnvironmentList = [{
   id: '001031',
   info: [{
     name: 'CO浓度',
-    value: '0.2%'
+    value: '0.2'
   }]
 }, {
   name: 'CO',
@@ -1322,7 +1336,7 @@ const popupEnvironmentList = [{
   id: '005379',
   info: [{
     name: 'CO浓度',
-    value: '0.2%'
+    value: '0.2'
   }]
 }, {
   name: 'CH4',
@@ -1330,7 +1344,7 @@ const popupEnvironmentList = [{
   id: '000054',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CH4',
@@ -1338,7 +1352,7 @@ const popupEnvironmentList = [{
   id: '008476',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 }, {
   name: 'CO',
@@ -1346,7 +1360,7 @@ const popupEnvironmentList = [{
   id: '009082',
   info: [{
     name: 'CO浓度',
-    value: '0.2%'
+    value: '0.2'
   }]
 }, {
   name: 'T',
@@ -1354,7 +1368,7 @@ const popupEnvironmentList = [{
   id: '009091',
   info: [{
     name: '温度',
-    value: '28℃'
+    value: '33'
   }]
 },
 {
@@ -1363,7 +1377,7 @@ const popupEnvironmentList = [{
   id: '003913',
   info: [{
     name: '温度',
-    value: '28℃'
+    value: '28'
   }]
 },
 
@@ -1373,7 +1387,7 @@ const popupEnvironmentList = [{
   id: '000111',
   info: [{
     name: '温度',
-    value: '15℃'
+    value: '15'
   }]
 },
 {
@@ -1382,7 +1396,7 @@ const popupEnvironmentList = [{
   id: '000108',
   info: [{
     name: 'CO浓度',
-    value: '0.2%'
+    value: '0.2'
   }]
 },
 {
@@ -1391,7 +1405,7 @@ const popupEnvironmentList = [{
   id: '000002',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1400,7 +1414,7 @@ const popupEnvironmentList = [{
   id: '005352',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 },
 {
@@ -1409,7 +1423,7 @@ const popupEnvironmentList = [{
   id: '005351',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1418,7 +1432,7 @@ const popupEnvironmentList = [{
   id: '000913',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1427,7 +1441,7 @@ const popupEnvironmentList = [{
   id: '005359',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1436,7 +1450,7 @@ const popupEnvironmentList = [{
   id: '005359',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1445,7 +1459,7 @@ const popupEnvironmentList = [{
   id: '005368',
   info: [{
     name: '温度',
-    value: '23℃'
+    value: '23'
   }]
 },
 {
@@ -1454,7 +1468,7 @@ const popupEnvironmentList = [{
   id: '000912',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1463,7 +1477,7 @@ const popupEnvironmentList = [{
   id: '000913',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1472,7 +1486,7 @@ const popupEnvironmentList = [{
   id: '000614',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 },
 {
@@ -1481,7 +1495,7 @@ const popupEnvironmentList = [{
   id: '000613',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1490,7 +1504,7 @@ const popupEnvironmentList = [{
   id: '000616',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1499,7 +1513,7 @@ const popupEnvironmentList = [{
   id: '000671',
   info: [{
     name: '温度',
-    value: '0.9%'
+    value: '22'
   }]
 },
 {
@@ -1508,7 +1522,7 @@ const popupEnvironmentList = [{
   id: '000618',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1517,7 +1531,7 @@ const popupEnvironmentList = [{
   id: '000770',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1526,7 +1540,7 @@ const popupEnvironmentList = [{
   id: '000771',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1535,7 +1549,7 @@ const popupEnvironmentList = [{
   id: '004868',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1544,7 +1558,7 @@ const popupEnvironmentList = [{
   id: '005261',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1553,7 +1567,7 @@ const popupEnvironmentList = [{
   id: '005075',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1562,7 +1576,7 @@ const popupEnvironmentList = [{
   id: '004866',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1571,7 +1585,7 @@ const popupEnvironmentList = [{
   id: '004857',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1580,7 +1594,7 @@ const popupEnvironmentList = [{
   id: '004859',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1589,7 +1603,7 @@ const popupEnvironmentList = [{
   id: '004858',
   info: [{
     name: '温度',
-    value: '13℃'
+    value: '13'
   }]
 },
 {
@@ -1598,7 +1612,7 @@ const popupEnvironmentList = [{
   id: '004888',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1607,7 +1621,7 @@ const popupEnvironmentList = [{
   id: '005019',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1616,7 +1630,7 @@ const popupEnvironmentList = [{
   id: '005020',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1625,7 +1639,7 @@ const popupEnvironmentList = [{
   id: '002466',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1634,7 +1648,7 @@ const popupEnvironmentList = [{
   id: '002441',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1643,7 +1657,7 @@ const popupEnvironmentList = [{
   id: '003542',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1652,7 +1666,7 @@ const popupEnvironmentList = [{
   id: '002306',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1661,7 +1675,7 @@ const popupEnvironmentList = [{
   id: '003637',
   info: [{
     name: '温度',
-    value: '12℃'
+    value: '12'
   }]
 },
 {
@@ -1670,7 +1684,7 @@ const popupEnvironmentList = [{
   id: '002308',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1679,7 +1693,7 @@ const popupEnvironmentList = [{
   id: '002464',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1688,7 +1702,7 @@ const popupEnvironmentList = [{
   id: '002479',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1697,7 +1711,7 @@ const popupEnvironmentList = [{
   id: '003274',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1706,7 +1720,7 @@ const popupEnvironmentList = [{
   id: '000487',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1715,7 +1729,7 @@ const popupEnvironmentList = [{
   id: '003275',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1724,7 +1738,7 @@ const popupEnvironmentList = [{
   id: '003042',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1733,7 +1747,7 @@ const popupEnvironmentList = [{
   id: '004309',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1742,7 +1756,7 @@ const popupEnvironmentList = [{
   id: '004305',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1751,7 +1765,7 @@ const popupEnvironmentList = [{
   id: '000252',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1760,7 +1774,7 @@ const popupEnvironmentList = [{
   id: '004828',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1769,7 +1783,7 @@ const popupEnvironmentList = [{
   id: '004805',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1778,7 +1792,7 @@ const popupEnvironmentList = [{
   id: '005413',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1787,7 +1801,7 @@ const popupEnvironmentList = [{
   id: '005377',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1796,7 +1810,7 @@ const popupEnvironmentList = [{
   id: '004804',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1805,7 +1819,7 @@ const popupEnvironmentList = [{
   id: '004806',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1814,7 +1828,7 @@ const popupEnvironmentList = [{
   id: '004307',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1823,7 +1837,7 @@ const popupEnvironmentList = [{
   id: '004247',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1832,7 +1846,7 @@ const popupEnvironmentList = [{
   id: '004306',
   info: [{
     name: '温度',
-    value: '0.9%'
+    value: '22'
   }]
 },
 {
@@ -1841,7 +1855,7 @@ const popupEnvironmentList = [{
   id: '005419',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1850,7 +1864,7 @@ const popupEnvironmentList = [{
   id: '004740',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 },
 {
@@ -1859,7 +1873,7 @@ const popupEnvironmentList = [{
   id: '004739',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1868,7 +1882,7 @@ const popupEnvironmentList = [{
   id: '000368',
   info: [{
     name: '粉尘浓度',
-    value: '10mg/m³'
+    value: '10'
   }]
 },
 {
@@ -1877,7 +1891,7 @@ const popupEnvironmentList = [{
   id: '000362',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1886,7 +1900,7 @@ const popupEnvironmentList = [{
   id: '000490',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1895,7 +1909,7 @@ const popupEnvironmentList = [{
   id: '000322',
   info: [{
     name: 'CO浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1904,7 +1918,7 @@ const popupEnvironmentList = [{
   id: '000320',
   info: [{
     name: 'CH4浓度',
-    value: '0.9%'
+    value: '0.9'
   }]
 },
 {
@@ -1913,7 +1927,7 @@ const popupEnvironmentList = [{
   id: '000321',
   info: [{
     name: '温度',
-    value: '13℃'
+    value: '13'
   }]
 },
 ]

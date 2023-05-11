@@ -150,6 +150,15 @@ function showFlag(type, flag) {
         STATE.sceneList.monitorPopup,
         STATE.sceneList.locationPopup
       ], false)
+
+      // 显示超标的
+      STATE.sceneList.environmentPopup.forEach(e => {
+        if(e.userData.isExceeding) {
+          e.userData.initDetailPopup()
+        }
+      })
+      
+
     } else {
       API.showPopup([STATE.sceneList.environmentPopup], false)
     }

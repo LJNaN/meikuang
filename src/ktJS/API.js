@@ -379,6 +379,25 @@ function initLocationPopup() {
 function initEnvironmentPopup() {
   STATE.popupEnvironmentList.forEach((e, index) => {
     const map = STATE.popupEnvironmentMap.find(e2 => e2.shortName === e.name)
+
+    // 超标
+    let isExceeding = false
+    if (map.threshold) {
+      if (map.shortName === 'FY') {
+        e.info.forEach(e2 => {
+          if (e2.value <= map.threshold[0] || e2.value >= map.threshold[1]) {
+            isExceeding = true
+          }
+        })
+      } else {
+        e.info.forEach(e2 => {
+          if (e2.value > map.threshold) {
+            isExceeding = true
+          }
+        })
+      }
+    }
+
     const popup = new Bol3D.POI.Popup3D({
       value: `
         <div style="
@@ -432,17 +451,14 @@ function initEnvironmentPopup() {
     group.add(popup)
     group.position.set(e.position.x, 0, e.position.z)
     group.name = 'environment_group_' + e.id
+    group.userData.isExceeding = isExceeding
+    group.userData.initDetailPopup = initDetailPopup
     popup.name = e.id
     popup.visible = false
 
 
 
     popup.element.addEventListener('dblclick', (() => {
-      // 清除之前的所有弹窗
-      STATE.currentPopup.forEach(e2 => {
-        CACHE.container.remove(e2)
-      })
-
       // 移动镜头
       cameraAnimation({
         cameraState: {
@@ -450,20 +466,42 @@ function initEnvironmentPopup() {
           target: { x: e.position.x, y: e.position.y + 20, z: e.position.z }
         }
       })
+      
+      // 清除之前的所有弹窗
+      STATE.currentPopup.forEach(e2 => {
+        CACHE.container.remove(e2)
+      })
 
+      
       // 其他标签透明
       STATE.sceneList.environmentPopup.forEach(e2 => {
         opacityPopup(e2.children[0], true)
       })
       opacityPopup(popup, false)
 
-
+      initDetailPopup()
+    }))
+    
+    function initDetailPopup() {
 
       // 设置点击之后的弹窗
       let contentText = ``
       if (e.info) e.info.forEach(e2 => {
-        contentText += `<p style="font-size: 1.6vh;">${e2.name}: ${e2.value}</p>`
+        contentText += `<p style="font-size: 1.6vh;">${e2.name}: ${e2.value}${map.unit}</p>`
       })
+
+      // 警告效果
+      let alertText = ``
+      if (isExceeding) {
+        alertText = `<div style="
+          z-index: 4;
+          position: absolute;
+          background: url('./assets/3d/image/83.png') center / 100% 100% no-repeat;
+          width: 23vw;
+          height:15vh;
+          animation: environment_alert 2s infinite;
+        ">`
+      }
 
       // 其他标签恢复透明
       function closeCallBack() {
@@ -493,10 +531,14 @@ function initEnvironmentPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
-            <div style="width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
+            <p style="z-index: 5;position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
+            <div style="z-index: 5;width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
             </div>
+          </div>
+
+          ${alertText}
+          
           </div>
         </div>
         `,
@@ -508,7 +550,7 @@ function initEnvironmentPopup() {
       })
       STATE.currentPopup.push(popup2)
       CACHE.container.attach(popup2)
-    }))
+    }
 
     CACHE.container.attach(group)
 
@@ -1512,7 +1554,7 @@ const render = () => {
   const elapsedTime = STATE.clock.getElapsedTime()
 
   renderAnimationList.forEach(e => e.animation())
-  
+
 
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
