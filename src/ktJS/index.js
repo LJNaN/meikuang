@@ -2,6 +2,7 @@ import { API } from './API.js'
 import { CACHE } from './CACHE.js'
 import { STATE } from './STATE.js'
 import { DATA } from './DATA.js'
+import TU from './threeUtils.js'
 
 let container
 
@@ -65,7 +66,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       '/model/ts.glb', // 硐室
       '/model/jxcc.glb', // 井下车场
       '/model/yfjf.glb', // 压风机房
-      // '/model/sbf.glb', // 水泵房
+      '/model/sbf.glb', // 水泵房
       '/model/tfjf.glb', // 通风机房
       '/model/bds.glb', // 变电所
       '/model/ysdx.glb', // 运输大巷
@@ -101,7 +102,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     },
     onProgress: (model) => {
       STATE.sceneList[model.name] = model
-      if (model.name === 'jjgzm') {  // 101切眼 √
+      if (model.name === 'jjgzm') {  // 101切眼
         model.visible = false
         model.scale.set(10, 10, 10)
         STATE.roomModelName.forEach(e => {
@@ -140,7 +141,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         })
 
-      } else if (model.name === 'zcgzm') { // 综采 √
+      } else if (model.name === 'zcgzm') { // 综采
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -184,7 +185,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             }
           }
         })
-      } else if (model.name === 'ts') { // 酮室 √
+      } else if (model.name === 'ts') { // 酮室
         model.visible = false
         model.scale.set(7, 7, 7)
         STATE.roomModelName.forEach(e => {
@@ -198,9 +199,23 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'jxcc') { // 井下车场 √
+      } else if (model.name === 'jxcc') { // 车场
         model.visible = false
         model.scale.set(5, 5, 5)
+        STATE.roomModelName.forEach(e => {
+          if (e.modelName === model.name) {
+            e.model = model
+          }
+        })
+
+        model.traverse(child => {
+          if (child.name === 'hd003_2') {
+            child.material.side = 0
+          }
+        })
+      } else if (model.name === 'sbf') { // 水泵房
+        model.visible = false
+        model.scale.set(10, 10, 10)
         STATE.roomModelName.forEach(e => {
           if (e.modelName === model.name) {
             e.model = model
@@ -212,9 +227,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'sbf') { // 水泵房
-        model.visible = false
-      } else if (model.name === 'yfjf') { // 压风机房 √
+
+      } else if (model.name === 'yfjf') { // 压风机房
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -233,7 +247,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.opacity = 0.2
           }
         })
-      } else if (model.name === 'tfjf') { // 通风机房 √
+      } else if (model.name === 'tfjf') { // 通风机
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -243,11 +257,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         })
 
         model.traverse(child => {
-          if (child.name === 'xd003_1') {
+          if (child.name === '对象008') {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'bds') { // 变电所 √
+      } else if (model.name === 'bds') { // 变电所
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -257,11 +271,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         })
 
         model.traverse(child => {
-          if (child.name === 'xd003') {
+          if (child.name === 'bdshangdao_3') {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'wsb') { // 瓦斯泵 √
+      } else if (model.name === 'wsb') { // 瓦斯泵
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -279,7 +293,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.opacity = 0.2
           }
         })
-      } else if (model.name === 'ysdx') { // 运输大巷 √
+      } else if (model.name === 'ysdx') { // 运输大巷
         model.visible = false
         model.scale.set(5, 5, 5)
         STATE.roomModelName.forEach(e => {
@@ -289,11 +303,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         })
 
         model.traverse(child => {
-          if (child.name === 'ysdx_5') {
+          if (child.name === 'ding_2') {
             child.material.side = 0
           }
         })
-      } else if (model.name === 'mkxdw') { // 主场景 √
+      } else if (model.name === 'mkxdw') { // 主场景
         model.traverse(child => {
           if (child && child.isMesh) {
 
@@ -357,17 +371,21 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initEnvironmentPopup()
       API.initmonitorList()
       API.initBaseStationPopup()
+      
+      console.log(STATE.roomModelName)
+      console.log(STATE.sceneList)
 
+      TU.init(container, Bol3D)
 
-      // API.testBox()
-      // API.loadGUI()
+      API.testBox()
+      API.loadGUI()
       API.render()
       callback && callback()
     }
   })
 
   const events = new Bol3D.Events(container)
-  events.ondbclick = (e) => {
+  events.ondblclick = (e) => {
     if (e.objects.length) {
       const obj = e.objects[0].object
       console.log('obj: ', obj);

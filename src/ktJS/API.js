@@ -1,5 +1,6 @@
 import { STATE } from './STATE.js'
 import { CACHE } from './CACHE.js'
+import TU from './threeUtils.js'
 
 // 相机动画（传指定state）
 const targetPos = new Bol3D.Vector3()
@@ -180,7 +181,7 @@ function initLocationPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          transform: translate(0, -27%);
+          transform: translate(0, -14%);
         ">
 
           <div style="
@@ -196,7 +197,7 @@ function initLocationPopup() {
               pointer-events: all;
               cursor: pointer;
               font-family: YouSheBiaoTiHei;
-              font-size: 3vh;
+              font-size: 2.5vh;
               text-align: center;">${e.name}
             </p>
             <p style="font-size: 1vh; margin-top: 0.5vh;">${e.sub}</p>
@@ -210,11 +211,13 @@ function initLocationPopup() {
           </div>
   
           <div style="
-            background: url('./assets/3d/image/3.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/69.png') center / 100% 100% no-repeat;
             width: 7vw;
-            height:5vh;
+            height:7vw;
             position: relative;
-            top: -3vh;
+            top: -6vh;
+            animation: myrotate 8s linear infinite;
+            scale: 1 0.4;
           ">
           </div>
         </div>
@@ -385,7 +388,6 @@ function initEnvironmentPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          transform: translate(0, -17%);
         ">
 
           <div style="
@@ -409,11 +411,13 @@ function initEnvironmentPopup() {
           </div>
   
           <div style="
-            background: url('./assets/3d/image/55.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/71.png') center / 100% 100% no-repeat;
             width: 7vw;
-            height:5vh;
+            height:7vw;
             position: relative;
-            top: -7vh;
+            top: -13vh;
+            animation: myrotate 8s linear infinite;
+            scale: 1 0.4;
           ">
           </div>
         </div>
@@ -434,22 +438,40 @@ function initEnvironmentPopup() {
 
 
     popup.element.addEventListener('dblclick', (() => {
+      // 清除之前的所有弹窗
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
 
+      // 移动镜头
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
-          target: e.position
+          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          target: { x: e.position.x, y: e.position.y + 20, z: e.position.z }
         }
       })
+
+      // 其他标签透明
+      STATE.sceneList.environmentPopup.forEach(e2 => {
+        opacityPopup(e2.children[0], true)
+      })
+      opacityPopup(popup, false)
+
+
 
       // 设置点击之后的弹窗
       let contentText = ``
       if (e.info) e.info.forEach(e2 => {
         contentText += `<p style="font-size: 1.6vh;">${e2.name}: ${e2.value}</p>`
       })
+
+      // 其他标签恢复透明
+      function closeCallBack() {
+        STATE.sceneList.environmentPopup.forEach(e2 => {
+          opacityPopup(e2.children[0], false)
+        })
+      }
+
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
         <div style="
@@ -481,7 +503,8 @@ function initEnvironmentPopup() {
         position: [e.position.x, 0, e.position.z],
         className: 'popup3dclass popup3d_enviroment_detail',
         scale: [0.2, 0.2, 0.2],
-        closeVisible: 'show'
+        closeVisible: 'show',
+        closeCallBack
       })
       STATE.currentPopup.push(popup2)
       CACHE.container.attach(popup2)
@@ -547,7 +570,6 @@ function initmonitorList() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          transform: translate(0, -17%);
         ">
 
           <div style="
@@ -571,11 +593,13 @@ function initmonitorList() {
           </div>
   
           <div style="
-            background: url('./assets/3d/image/58.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/70.png') center / 100% 100% no-repeat;
             width: 7vw;
-            height:5vh;
+            height:7vw;
             position: relative;
-            top: -7vh;
+            top: -13vh;
+            animation: myrotate 8s linear infinite;
+            scale: 1 0.4;
           ">
           </div>
         </div>
@@ -600,8 +624,8 @@ function initmonitorList() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
-          target: { x: e.position.x, y: e.position.y + 50, z: e.position.z }
+          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          target: { x: e.position.x, y: e.position.y + 42, z: e.position.z }
         }
       })
 
@@ -840,8 +864,8 @@ function initBaseStationPopup() {
   STATE.baseStationList.forEach(e => {
     const icon = new Bol3D.POI.Icon({
       position: [e.position.x, e.position.y, e.position.z],
-      url: './assets/3d/image/29.png',
-      scale: [15, 15],
+      url: './assets/3d/image/68.png',
+      scale: [30, 30],
       color: 0xffffff
     })
 
@@ -1068,7 +1092,8 @@ function enterRoom(name = '') {
       position: { x: popup.position.x, y: popup.position.y, z: popup.position.z },
       target: { x: popup.position.x, y: popup.position.y, z: popup.position.z }
     }
-    cameraAnimation({ cameraState: popupCameraState, callback: afterCamera, duration: 500 })
+    // cameraAnimation({ cameraState: popupCameraState, callback: afterCamera, duration: 500 })
+    afterCamera()
 
     // 相机移动完之后
     function afterCamera() {
@@ -1219,87 +1244,101 @@ function enterRoom(name = '') {
  * 退回主页面
  */
 function back(type) {
+  // 从现实环境信息里退出来
   if (type === 'hideRegionalRisk') {
-    showPopup([STATE.sceneList.environmentPopup], false)
-    showPopup([
-      STATE.sceneList.personPopup,
-      STATE.sceneList.locationPopup,
-      STATE.sceneList.monitorPopup
-    ])
-    STATE.personShowType = []
-    showPerson(0)
-
-  } else {
-
-    // 开灯
-    CACHE.container.pointLights.forEach(e => {
-      e.visible = true
+    STATE.sceneList.locationPopup.forEach(e => {
+      opacityPopup(e.children[0], false)
+    })
+    STATE.sceneList.environmentPopup.forEach(e => {
+      opacityPopup(e.children[0], false)
     })
 
-    // 清空计时器 清空默认场景名字 关闭环境信息
-    if (CACHE.timer) {
-      clearTimeout(CACHE.timer)
-    }
-    STATE.currentScene = ''
-    CACHE.regionalRateMode = false
-
-    // 清空动画序列
-    renderAnimationList = []
-
-    // 恢复初始灯光与控制器状态
-    CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
-    CACHE.container.directionLights[0].position.set(...STATE.initialState.directionLights[0].position)
-    CACHE.container.directionLights[0].intensity = STATE.initialState.directionLights[0].intensity
-    CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
-    CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
-
-    // 显示场景
-    for (let key in STATE.sceneList) {
-      if(STATE.sceneList[key]) {
-        if (key === 'mkxdw' || key === 'text') {
-          STATE.sceneList[key].visible = true
-        } else {
-          STATE.sceneList[key].visible = false
-        }
-      }
-    }
-
-    // 显示标签
     showPopup([
-      STATE.sceneList.locationPopup,
+      STATE.sceneList.environmentPopup,
+      STATE.sceneList.monitorPopup
+    ], false)
+    showPopup([
       STATE.sceneList.personPopup,
-      STATE.sceneList.monitorPopup,
-      STATE.sceneList.baseStationPopup
-    ], true)
+      STATE.sceneList.locationPopup
+    ])
 
-    // 销毁粒子
-    if (type === 'zongcai') {
-      const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
-      CMJGroup.children.forEach(e => {
-        if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
-          if (e.userData.points.point) {
-            let points = e.userData.points
-            points.point.geometry.dispose()
-            points.point.material.dispose()
-            CACHE.container.scene.remove(points.point)
-            points.point = null
-          }
-        }
-      })
-    }
-
-    // 删除弹窗
-    if (STATE.sceneList.mainMachinePopup) {
-      const popup = STATE.sceneList.mainMachinePopup
-      popup.parent.remove(popup)
-      popup.children[0].element.remove()
-      STATE.sceneList.mainMachinePopup = null
-    }
-
-    // 恢复选中状态
     STATE.personShowType = []
     showPerson(0)
-    cameraAnimation({ cameraState: STATE.initialState, duration: 0 })
+    cameraAnimation({ cameraState: STATE.initialState, duration: 500 })
+
+  } else {
+    cameraAnimation({ cameraState: STATE.initialState, callback: afterCamera, duration: 0 })
+
+    // 解决闪屏
+    function afterCamera() {
+      // 开灯
+      CACHE.container.pointLights.forEach(e => {
+        e.visible = true
+      })
+
+      // 清空计时器 清空默认场景名字 关闭环境信息
+      if (CACHE.timer) {
+        clearTimeout(CACHE.timer)
+      }
+      STATE.currentScene = ''
+      CACHE.regionalRateMode = false
+
+      // 清空动画序列
+      renderAnimationList = []
+
+      // 恢复初始灯光与控制器状态
+      CACHE.container.ambientLight.intensity = STATE.initialState.ambientLight.intensity
+      CACHE.container.directionLights[0].position.set(...STATE.initialState.directionLights[0].position)
+      CACHE.container.directionLights[0].intensity = STATE.initialState.directionLights[0].intensity
+      CACHE.container.orbitControls.maxPolarAngle = STATE.initialState.maxPolarAngle
+      CACHE.container.orbitControls.minPolarAngle = STATE.initialState.minPolarAngle
+
+      // 显示场景
+      for (let key in STATE.sceneList) {
+        if (STATE.sceneList[key]) {
+          if (key === 'mkxdw' || key === 'text') {
+            STATE.sceneList[key].visible = true
+          } else {
+            STATE.sceneList[key].visible = false
+          }
+        }
+      }
+
+      // 显示标签
+      showPopup([
+        STATE.sceneList.locationPopup,
+        STATE.sceneList.personPopup,
+        STATE.sceneList.baseStationPopup
+      ], true)
+
+      // 销毁粒子
+      if (type === 'zongcai') {
+        const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
+        CMJGroup.children.forEach(e => {
+          if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
+            if (e.userData.points.point) {
+              let points = e.userData.points
+              points.point.geometry.dispose()
+              points.point.material.dispose()
+              CACHE.container.scene.remove(points.point)
+              points.point = null
+            }
+          }
+        })
+      }
+
+      // 删除弹窗
+      if (STATE.sceneList.mainMachinePopup) {
+        const popup = STATE.sceneList.mainMachinePopup
+        popup.parent.remove(popup)
+        popup.children[0].element.remove()
+        STATE.sceneList.mainMachinePopup = null
+      }
+
+      // 恢复选中状态
+      STATE.personShowType = []
+      showPerson(0)
+    }
   }
 }
 
@@ -1473,6 +1512,7 @@ const render = () => {
   const elapsedTime = STATE.clock.getElapsedTime()
 
   renderAnimationList.forEach(e => e.animation())
+  
 
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
@@ -1483,6 +1523,7 @@ const render = () => {
 };
 
 export const API = {
+  ...TU,
   cameraAnimation,
   initLocationPopup,
   initEnvironmentPopup,

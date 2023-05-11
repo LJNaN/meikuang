@@ -6,10 +6,10 @@ const PUBLIC_PATH = './assets/3d'
 const initialState = {
   position: { x: -34.300395750067494, y: 1126.544139771621, z: 915.2762220579656 },
   target: { x: 26.63074872579247, y: -1.1237349734606397e-17, z: 59.90198556311061 },
-  maxPolarAngle: Math.PI * 0.45,
-  minPolarAngle: Math.PI * 0.05,
-  // maxPolarAngle: Math.PI,
-  // minPolarAngle: 0,
+  // maxPolarAngle: Math.PI * 0.45,
+  // minPolarAngle: Math.PI * 0.05,
+  maxPolarAngle: Math.PI,
+  minPolarAngle: 0,
   ambientLight: {
     color: '#ffffff',
     intensity: 1
@@ -73,7 +73,7 @@ const sceneList = {}
 // cameraState 相机预设位置
 // light 光源预设
 const roomModelName = [
-  {
+  { // 综采
     name: '综采',
     modelName: 'zcgzm',
     model: null,
@@ -92,7 +92,7 @@ const roomModelName = [
         intensity: 1.7
       }
     }
-  }, {
+  }, { // 切眼
     name: '切眼',
     modelName: 'jjgzm',
     model: null,
@@ -104,7 +104,7 @@ const roomModelName = [
       position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
       target: { x: -325, y: 17, z: 0 }
     }
-  }, {
+  }, { // 槽
     name: '槽',
     modelName: 'jjgzm',
     model: null,
@@ -116,13 +116,13 @@ const roomModelName = [
       position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
       target: { x: -325, y: 17, z: 0 }
     }
-  }, {
+  }, { // 变电所
     name: '变电所',
     modelName: 'bds',
     model: null,
     cameraState: {
-      position: { x: -9.183068727946065, y: 11.10052625603611, z: 54.63494743 },
-      target: { x: 12, y: 2, z: -67 }
+      position: { x: -48.221854032574456, y: 40.353003930757716, z: 62.45429719 },
+      target: { x: 19.691545329285407, y: 2, z: -33.688407 }
     },
     light: {
       ambientLight: 8.8,
@@ -131,13 +131,13 @@ const roomModelName = [
         intensity: 0.9
       }
     }
-  }, {
+  }, { // 硐室
     name: '硐室',
     modelName: 'ts',
     model: null,
     cameraState: {
-      position: { x: -0.3093126463213294, y: 11.727035310572795, z: 165.990725 },
-      target: { x: 1.364810008556404, y: 0, z: 10.44429 }
+      position: { x: -96.91712843512158, y: 76.7980542581137, z: 157.6325045 },
+      target: { x: 30.74700388270824, y: 0, z: 6.50756103 }
     },
     light: {
       ambientLight: 7.9,
@@ -146,22 +146,22 @@ const roomModelName = [
         intensity: 2.6
       }
     }
-  }, {
+  }, { // 车场
     name: '车场',
     modelName: 'jxcc',
     model: null,
     cameraState: {
-      position: { x: -10.988701731980953, y: 9.639845533042365, z: -339.09349 },
-      target: { x: 29.161178829448026, y: 9.573553611874645e-16, z: -188.6605 }
+      position: { x: -77.82871709470751, y: 67.4308210750754, z: 183.70195 },
+      target: { x: 42.51289541127099, y: 0, z: 22.438789 }
     },
     light: {
-      ambientLight: 2.4,
+      ambientLight: 5.8,
       directionLight: {
         position: { x: -199, y: 153, z: 490 },
-        intensity: 1.1
+        intensity: 4.2
       }
     }
-  }, {
+  }, { // 压风机房
     name: '压风机房',
     modelName: 'yfjf',
     model: null,
@@ -176,13 +176,13 @@ const roomModelName = [
         intensity: 2
       }
     }
-  }, {
+  }, { // 通风机
     name: '通风机',
     modelName: 'tfjf',
     model: null,
     cameraState: {
-      position: { x: -9.521073252546508, y: 13.908286516854734, z: 107.7863630 },
-      target: { x: 12, y: 6, z: 30 }
+      position: { x: -55.29220869605007, y: 23.719549173610112, z: 120.42761511 },
+      target: { x: 26.40600759705924, y: 0, z: 24.51415741 }
     },
     light: {
       ambientLight: 3.2,
@@ -191,7 +191,7 @@ const roomModelName = [
         intensity: 1.1
       }
     }
-  }, {
+  }, { // 瓦斯
     name: '瓦斯',
     modelName: 'wsb',
     model: null,
@@ -206,19 +206,34 @@ const roomModelName = [
         intensity: 1.9
       }
     }
-  }, {
+  }, { // 运输
     name: '运输',
     modelName: 'ysdx',
     model: null,
     cameraState: {
-      position: { x: -4.6352181327133835, y: 12.460919224437124, z: 315.5377954 },
-      target: { x: 8, y: 0, z: 178 }
+      position: { x: -59.62468487466124, y: 63.347928243285466, z: 254.18981 },
+      target: { x: 28.492693469905007, y: 0, z: 87.8841204 }
     },
     light: {
-      ambientLight: 1.4,
+      ambientLight: 5.4,
       directionLight: {
         position: { x: -96, y: 120, z: 220 },
         intensity: 1.3
+      }
+    }
+  }, { // 水泵房
+    name: '水泵房',
+    modelName: 'sbf',
+    model: null,
+    cameraState: {
+      position: { x: -112.99715238084531, y: 98.50776089024278, z: 254.42778191 },
+      target: { x: 62.85995962999729, y: 0, z: 12.2502832 }
+    },
+    light: {
+      ambientLight: 10,
+      directionLight: {
+        position: { x: 41, y: 93, z: -80 },
+        intensity: 1.7
       }
     }
   }]
@@ -227,7 +242,7 @@ const roomModelName = [
 const popupLocationList = [
   {
     name: '1010切眼',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 278.81202800325644, y: 0, z: -360.275618 },
     regionRate: {
       total: 95,
@@ -238,7 +253,7 @@ const popupLocationList = [
     }
   }, {
     name: '501综采工作面',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 220, y: 0, z: 42 },
     regionRate: {
       total: 95,
@@ -249,7 +264,7 @@ const popupLocationList = [
     }
   }, {
     name: '627综采工作面',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -18.530259199427906, y: 0, z: -149.209289 },
     regionRate: {
       total: 95,
@@ -260,7 +275,7 @@ const popupLocationList = [
     }
   }, {
     name: '820进风顺槽',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -368, y: 0, z: 316 },
     regionRate: {
       total: 95,
@@ -271,7 +286,7 @@ const popupLocationList = [
     }
   }, {
     name: '634进风顺槽',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -350, y: 0, z: -331 },
     regionRate: {
       total: 95,
@@ -282,7 +297,7 @@ const popupLocationList = [
     }
   }, {
     name: '632回风顺槽',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -311, y: 0, z: -342 },
     regionRate: {
       total: 95,
@@ -293,7 +308,7 @@ const popupLocationList = [
     }
   }, {
     name: '1012进风顺槽(反掘)',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -65, y: 0, z: -391 },
     regionRate: {
       total: 95,
@@ -304,7 +319,7 @@ const popupLocationList = [
     }
   }, {
     name: '1012进风顺槽',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 328, y: 0, z: -396 },
     regionRate: {
       total: 95,
@@ -315,7 +330,7 @@ const popupLocationList = [
     }
   }, {
     name: '1000回风顺槽',
-    sub: '工作人员数量: 13人',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 371, y: 0, z: -222 },
     regionRate: {
       total: 95,
@@ -326,7 +341,7 @@ const popupLocationList = [
     }
   }, {
     name: '1#中央变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 224, y: 0, z: 309 },
     regionRate: {
       total: 95,
@@ -337,7 +352,7 @@ const popupLocationList = [
     }
   }, {
     name: '2#中央变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -216, y: 0, z: 178 },
     regionRate: {
       total: 95,
@@ -348,7 +363,7 @@ const popupLocationList = [
     }
   }, {
     name: '北二2#变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -165, y: 0, z: -231 },
     regionRate: {
       total: 95,
@@ -359,7 +374,7 @@ const popupLocationList = [
     }
   }, {
     name: '3#中央变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 424, y: 0, z: -244 },
     regionRate: {
       total: 95,
@@ -370,7 +385,7 @@ const popupLocationList = [
     }
   }, {
     name: '西采区变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -36, y: 0, z: 229 },
     regionRate: {
       total: 95,
@@ -381,7 +396,7 @@ const popupLocationList = [
     }
   }, {
     name: '八盘区变电所',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -394, y: 0, z: 351 },
     regionRate: {
       total: 95,
@@ -392,7 +407,7 @@ const popupLocationList = [
     }
   }, {
     name: '永久避险硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 310, y: 0, z: 78 },
     regionRate: {
       total: 95,
@@ -403,7 +418,7 @@ const popupLocationList = [
     }
   }, {
     name: '北一避难硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 317, y: 0, z: 120 },
     regionRate: {
       total: 95,
@@ -414,7 +429,7 @@ const popupLocationList = [
     }
   }, {
     name: '排矸硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 415, y: 0, z: -215 },
     regionRate: {
       total: 95,
@@ -425,7 +440,7 @@ const popupLocationList = [
     }
   }, {
     name: '1000机头硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 410, y: 0, z: -218 },
     regionRate: {
       total: 95,
@@ -436,7 +451,7 @@ const popupLocationList = [
     }
   }, {
     name: '北二避难硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -209, y: 0, z: -54 },
     regionRate: {
       total: 95,
@@ -447,7 +462,7 @@ const popupLocationList = [
     }
   }, {
     name: '816回风机头硐室',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -389, y: 0, z: -312 },
     regionRate: {
       total: 95,
@@ -458,7 +473,7 @@ const popupLocationList = [
     }
   }, {
     name: '二号车场',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 177, y: 0, z: 491 },
     regionRate: {
       total: 95,
@@ -469,7 +484,7 @@ const popupLocationList = [
     }
   }, {
     name: '三号车场',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 255, y: 0, z: 298 },
     regionRate: {
       total: 95,
@@ -480,7 +495,7 @@ const popupLocationList = [
     }
   }, {
     name: '七号车场',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -224, y: 0, z: 161 },
     regionRate: {
       total: 95,
@@ -491,7 +506,7 @@ const popupLocationList = [
     }
   }, {
     name: '局部通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -386, y: 0, z: 303 },
     regionRate: {
       total: 95,
@@ -502,7 +517,7 @@ const popupLocationList = [
     }
   }, {
     name: '局部通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -358, y: 0, z: 316 },
     regionRate: {
       total: 95,
@@ -513,7 +528,7 @@ const popupLocationList = [
     }
   }, {
     name: '局部通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -376, y: 0, z: 279 },
     regionRate: {
       total: 95,
@@ -524,7 +539,7 @@ const popupLocationList = [
     }
   }, {
     name: '局部通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -305, y: 0, z: 203 },
     regionRate: {
       total: 95,
@@ -535,7 +550,7 @@ const popupLocationList = [
     }
   }, {
     name: '主要通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -338, y: 0, z: 146 },
     regionRate: {
       total: 95,
@@ -546,7 +561,7 @@ const popupLocationList = [
     }
   }, {
     name: '主要通风机',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -334, y: 0, z: 138 },
     regionRate: {
       total: 95,
@@ -557,7 +572,7 @@ const popupLocationList = [
     }
   }, {
     name: '北一2#抽采瓦斯泵',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 339, y: 0, z: -1 },
     regionRate: {
       total: 95,
@@ -568,7 +583,7 @@ const popupLocationList = [
     }
   }, {
     name: '四号瓦斯斜井',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 444, y: 0, z: -219 },
     regionRate: {
       total: 95,
@@ -579,7 +594,7 @@ const popupLocationList = [
     }
   }, {
     name: '北二2#抽采瓦斯泵',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: -193, y: 0, z: -157 },
     regionRate: {
       total: 95,
@@ -590,7 +605,7 @@ const popupLocationList = [
     }
   }, {
     name: '1009辅助运输顺槽',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 417, y: 0, z: -309 },
     regionRate: {
       total: 95,
@@ -601,7 +616,7 @@ const popupLocationList = [
     }
   }, {
     name: '1006辅助运输顺槽',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 386, y: 0, z: -168 },
     regionRate: {
       total: 95,
@@ -612,7 +627,7 @@ const popupLocationList = [
     }
   }, {
     name: '305运输巷',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 353, y: 0, z: 175 },
     regionRate: {
       total: 95,
@@ -623,7 +638,7 @@ const popupLocationList = [
     }
   }, {
     name: '304运输巷',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 346, y: 0, z: 200 },
     regionRate: {
       total: 95,
@@ -634,7 +649,7 @@ const popupLocationList = [
     }
   }, {
     name: '303运输顺槽',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 334, y: 0, z: 224 },
     regionRate: {
       total: 95,
@@ -645,7 +660,7 @@ const popupLocationList = [
     }
   }, {
     name: '302运输顺槽',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 327, y: 0, z: 247 },
     regionRate: {
       total: 95,
@@ -656,7 +671,7 @@ const popupLocationList = [
     }
   }, {
     name: '301运输顺槽',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 314, y: 0, z: 274 },
     regionRate: {
       total: 95,
@@ -667,7 +682,7 @@ const popupLocationList = [
     }
   }, {
     name: '300运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 353, y: 0, z: 301 },
     regionRate: {
       total: 95,
@@ -678,7 +693,7 @@ const popupLocationList = [
     }
   }, {
     name: '208运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 221, y: 0, z: 363 },
     regionRate: {
       total: 95,
@@ -689,7 +704,7 @@ const popupLocationList = [
     }
   }, {
     name: '402运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 266, y: 0, z: 371 },
     regionRate: {
       total: 95,
@@ -700,7 +715,7 @@ const popupLocationList = [
     }
   }, {
     name: '207运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 212, y: 0, z: 384 },
     regionRate: {
       total: 95,
@@ -711,7 +726,7 @@ const popupLocationList = [
     }
   }, {
     name: '406运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 256, y: 0, z: 392 },
     regionRate: {
       total: 95,
@@ -722,7 +737,7 @@ const popupLocationList = [
     }
   }, {
     name: '206运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 205, y: 0, z: 408 },
     regionRate: {
       total: 95,
@@ -733,7 +748,7 @@ const popupLocationList = [
     }
   }, {
     name: '406运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 249, y: 0, z: 423 },
     regionRate: {
       total: 95,
@@ -744,7 +759,7 @@ const popupLocationList = [
     }
   }, {
     name: '205运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 150, y: 0, z: 437 },
     regionRate: {
       total: 95,
@@ -755,8 +770,85 @@ const popupLocationList = [
     }
   }, {
     name: '204运输',
-    sub: '',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 186, y: 0, z: 474 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '八盘区水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: -392, y: 0, z: 311 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '2号中央水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: -197, y: 0, z: 230 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '1号中央水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: 62, y: 0, z: 259 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '2号水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: 177, y: 0, z: 505 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '西一临时水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: -98, y: 0, z: 201 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '北二水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: -257, y: 0, z: 97 },
+    regionRate: {
+      total: 95,
+      member: Math.floor(Math.random() * 10) + 90,
+      device: Math.floor(Math.random() * 10) + 90,
+      environment: Math.floor(Math.random() * 10) + 90,
+      manager: Math.floor(Math.random() * 10) + 90
+    }
+  }, {
+    name: '601水泵房',
+    sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
+    position: { x: -259, y: 0, z: 103 },
     regionRate: {
       total: 95,
       member: Math.floor(Math.random() * 10) + 90,

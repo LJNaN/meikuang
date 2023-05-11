@@ -16,8 +16,8 @@
         </div>
       </div>
     </div>
-    
-    
+
+
     <alertAndRoam></alertAndRoam>
 
     <SingleActive :options="options3"></SingleActive>
@@ -96,6 +96,9 @@ let leftDetailShow = ref(false)
 function handleLeft(index) {
   // 取消透明
   STATE.sceneList.locationPopup.forEach(e => {
+    API.opacityPopup(e.children[0], false)
+  })
+  STATE.sceneList.environmentPopup.forEach(e => {
     API.opacityPopup(e.children[0], false)
   })
 
@@ -212,11 +215,7 @@ function handleLeftItem(item, index) {
 }
 
 function back() {
-  STATE.sceneList.locationPopup.forEach(e => {
-    API.opacityPopup(e.children[0], false)
-  })
-
-  API.back('hideQuyufengxian')
+  API.back('hideRegionalRisk')
   router.push('/')
 }
 
@@ -286,5 +285,4 @@ onMounted(() => {
   width: 10vw;
   background: url('/assets/3d/image/4.png') center / 100% 100% no-repeat;
 }
-
 </style>

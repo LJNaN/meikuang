@@ -5,8 +5,9 @@
       <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
         <div class="control-icon" :style="{
             background:
-              (personShowType.includes(index) ? 'url(./assets/3d/image/' + item.bg[0] + '.png) center / 40% 40% no-repeat,' : '') +
-              'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
+              personShowType.includes(index)
+                ? 'url(./assets/3d/image/' + item.bg[2] + '.png) center / 100% 100% no-repeat'
+                : 'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
           }"></div>
         {{ item.name }}
       </div>
@@ -40,11 +41,11 @@ function showRegionalRisk() {
 }
 
 const perserList = [
-  { name: '全部', bg: ['26', '27'] },
-  { name: '重点监管', bg: ['18', '19'] },
-  { name: '加强监管', bg: ['20', '21'] },
-  { name: '需关注', bg: ['22', '23'] },
-  { name: '安全', bg: ['24', '25'] },
+  { name: '全部', bg: ['26', '27', '82'] },
+  { name: '重点监管', bg: ['18', '19', '78'] },
+  { name: '加强监管', bg: ['20', '21', '79'] },
+  { name: '需关注', bg: ['22', '23', '80'] },
+  { name: '安全', bg: ['24', '25', '81'] },
 ]
 
 let personShowType = ref([0, 1, 2, 3, 4])
@@ -58,7 +59,7 @@ function handlePerson(index) {
 window.handlePerson = handlePerson
 
 
-// 本来是进入环境  其实是进入区域风险  名字写错了 但是甲方已经在用这个名字了  不几把管
+// 进入环境  其实是进入区域风险  名字写错了 但是甲方已经在用这个名字了  不几把管
 window.enterEnvironment = () => {
   showRegionalRisk()
 }
