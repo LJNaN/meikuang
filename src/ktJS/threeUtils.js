@@ -59,6 +59,86 @@ class MapAnimation {
 
 }
 
+class Roam {
+  /**
+   * 描述
+   * @date 2023-05-10
+   * @param {any[object]} positionArr 位置数组 [{time：补间时间，position：相机 position 位置，target：相机 target 位置,onComplete：补间动画完成后的回调}]
+   */
+  constructor(positionArr, parameter={}) {
+    const { loop = false } = parameter;
+    this.loop = loop;
+    this.t1arr = [];
+    this.t2arr = [];
+    this.positionArr = positionArr;
+    this.init();
+  }
+  init() {
+    this.positionArr.forEach(item => {
+      var _t1 = new Bol3D.TWEEN.Tween(container.orbitCamera).to(
+        {
+          position: new Bol3D.Vector3(...item.position)
+        },
+        item.time
+      );
+      var _t2 = new Bol3D.TWEEN.Tween(container.orbitControls).to(
+        {
+          target: new Bol3D.Vector3(...item.target)
+        },
+        item.time
+      );
+      if (item.onComplete) {
+        _t1.onComplete(() => {
+          item.onComplete();
+        });
+      }
+      this.t1arr.push(_t1);
+      this.t2arr.push(_t2);
+    });
+
+    for (let index = 0; index < this.t1arr.length; index++) {
+      this.t1arr[index].chain(this.t1arr[index + 1]);
+      this.t2arr[index].chain(this.t2arr[index + 1]);
+    }
+    if (this.loop) {
+      this.t1arr[this.t1arr.length - 1].chain(this.t1arr[0]);
+      this.t2arr[this.t2arr.length - 1].chain(this.t2arr[0]);
+    }
+  }
+  /**
+   * 开始漫游
+   * @date 2023-05-10
+   */
+  start() {
+    this.t1arr[0].start();
+    this.t2arr[0].start();
+  }
+  /**
+   * 暂停漫游
+   * @date 2023-05-10
+   */
+  pause() {
+    this.t1arr.forEach(item => {
+      item.pause();
+    });
+    this.t2arr.forEach(item => {
+      item.pause();
+    });
+  }
+  /**
+   * 继续漫游
+   * @date 2023-05-10
+   */
+  resume() {
+    this.t1arr.forEach(item => {
+      item.resume();
+    });
+    this.t2arr.forEach(item => {
+      item.resume();
+    });
+  }
+}
+
 /** 模型聚焦
  * @date 2023-01-31
  * @param {array}    point       // 点坐标
@@ -249,6 +329,7 @@ function offFadeModel(target) {
 var toZhangHang = /*#__PURE__*/Object.freeze({
   __proto__: null,
   MapAnimation: MapAnimation,
+  Roam: Roam,
   focus: focus,
   toggleModel: toggleModel,
   showModel: showModel,
@@ -385,6 +466,7 @@ class FlyLine {
     if (gap) this.gap = gap;
 
     this.flyLine = this.init();
+    container.attach(this.flyLine);
   }
 
   init() {
@@ -507,10 +589,188 @@ class FlyLine {
   }
 }
 
+const powerSpheredVertexShader = `
+// 解决深度问题
+#include <logdepthbuf_pars_vertex>
+#include <common>
+
+// 获取时间 颜色 位置 uv信息等基本属性
+uniform float time;
+uniform float targetRadius;
+uniform float radius;
+uniform float speed;
+uniform float yScale;
+varying vec3 vColor;
+varying vec3 vPosition;
+varying vec2 vUv;
+varying float progress;
+
+void main() { 
+  // 输出位置 uv信息
+  vPosition = vec3(position.x, position.y, position.z);
+
+  vUv = vec2(uv.x, uv.y);
+  vUv.x += time * 0.5 * speed; 
+  vUv.y += time * 0.5 * speed; 
+  float scale = mod((time / (1.0 / speed)), 1.0) * (targetRadius / radius);
+  
+  progress = radius * scale / targetRadius;
+  
+  vPosition.x *= scale;
+  vPosition.y *= yScale * scale;
+  vPosition.z *= scale;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1.0);
+
+
+  // 解决深度问题
+  #include <logdepthbuf_vertex>
+} 
+`;
+
+const powerSpheredFragmentShader = `
+
+// 解决深度问题
+#include <logdepthbuf_pars_vertex>
+#include <common>
+
+uniform float time;
+uniform sampler2D u_tex;
+uniform vec3 myColor;
+uniform int halfSphere;
+uniform float opacity;
+
+varying vec3 vPosition;
+varying vec2 vUv;
+float x;
+float y;
+float z;
+
+varying float progress;
+
+void main() {
+    x = vPosition.x / 1.0 + 0.5;  // 除以模型长宽高的 x  +0.5是让坐标系变为0-1(居中)
+    y = vPosition.y / 1.0 + 0.5;  // 除以模型长宽高的 y  +0.5是让坐标系变为0-1(居中)
+    z = vPosition.z / 1.0 + 0.5;  // 除以模型长宽高的 z  +0.5是让坐标系变为0-1(居中)
+
+    // 用 position 位置信息
+    // gl_FragColor = vec4(x, y, z, 1.0);
+
+    // 用 uv 信息
+    // gl_FragColor = vec4(vUv.x, 0.8, vUv.y, 1.0);
+
+    vec4 baseColor = vec4(myColor,0.1);
+    // 基础色
+
+    vec4 color = baseColor;
+
+    // 动态纹理
+    vec4 maskA = texture(u_tex, vUv);
+    maskA.a = maskA.r;
+    color += maskA;
+    
+    if (halfSphere == 1 && y < 0.5) {
+        discard;
+    }
+
+    // 透明度
+    color.a =(-(progress-0.5) / sin((progress -0.5) * 6.0) + 1.3) * opacity;
+    gl_FragColor = color;
+
+    // 解决深度问题
+    // #include <logdepthbuf_vertex>
+}
+`;
+
+/**
+ * 一个丐版的能量球 没有边缘检测
+ * 
+ * render 中
+ * const dt = clock.getElapsedTime()
+ * powerSphere.animation(dt)
+ */
+class PowerSphere {
+  // 客制化属性
+  color = '#00ffff'
+  radius = 30
+  speed = 0.6
+  half = true
+  textureEnabled = false
+  textureUrl = './noise1.png'
+  textureSpeed = 5
+  opacity = 0.7
+  yScale = 0.8
+
+  // 几何体
+  sphere = null
+  minRadius = 1
+
+  /** 
+   * option 参数:
+   * @param {String} color 基础颜色
+   * @param {Float} radius 半径
+   * @param {Float} speed 速度
+   * @param {Boolean} half 开启半球
+   * @param {Boolean} textureEnabled 开启贴图
+   * @param {String} textureUrl 贴图地址
+   * @param {Float | Number} textureSpeed 贴图流动速度
+   * @param {Float} opacity 透明度 0-1
+   * @param {Float} yScale y轴缩放系数(y轴压扁)
+   */
+  constructor(option = {}) {
+    // 覆盖原有属性
+    const { color, radius, speed, half, textureEnabled, textureUrl, textureSpeed, opacity, yScale } = option;
+    if (color) this.color = color;
+    if (radius) this.radius = radius;
+    if (speed) this.speed = speed;
+    if (half) this.half = half;
+    if (textureEnabled) this.textureEnabled = textureEnabled;
+    if (textureUrl) this.textureUrl = textureUrl;
+    if (textureSpeed) this.textureSpeed = textureSpeed;
+    if (opacity) this.opacity = opacity;
+    if (yScale) this.yScale = yScale;
+
+    // sphere
+    let texture = null;
+    if (this.textureEnabled) {
+      const textureLoader = new Bol3D.TextureLoader();
+      texture = textureLoader.load('./noise1.png');
+      texture.wrapS = texture.wrapT = Bol3D.RepeatWrapping;
+    }
+    const spheredGeometry = new Bol3D.SphereGeometry(this.minRadius, 128, 128);
+    let myColor = new Bol3D.Color(this.color);
+    const spheredMaterial = new Bol3D.ShaderMaterial({
+      uniforms: {
+        u_tex: { value: null },
+        time: { value: 0 },
+        radius: { value: this.minRadius },
+        targetRadius: { value: this.radius },
+        myColor: { value: myColor },
+        halfSphere: { value: this.half ? 1 : 0 },
+        opacity: { value: this.opacity },
+        speed: { value: this.speed },
+        yScale: { value: this.yScale }
+      },
+      vertexShader: powerSpheredVertexShader,
+      fragmentShader: powerSpheredFragmentShader,
+      transparent: true,
+      side: Bol3D.DoubleSide
+    });
+    this.sphere = new Bol3D.Mesh(spheredGeometry, spheredMaterial);
+    this.sphere.position.set(10, 0, 10);
+    this.sphere.material.uniforms.u_tex.value = texture;
+    container.attach(this.sphere);
+  }
+
+  animation(dt) {
+    this.sphere.material.uniforms.time.value = dt;
+  }
+}
+
 var toJiangNan = /*#__PURE__*/Object.freeze({
   __proto__: null,
   shaderTemplate: shaderTemplate,
-  FlyLine: FlyLine
+  FlyLine: FlyLine,
+  PowerSphere: PowerSphere
 });
 
 const TU = {

@@ -29,7 +29,7 @@ import { ref } from 'vue'
 import SingleActive from '@/components/SingleActive.vue'
 import { STATE } from '@/ktJS/STATE'
 
-const alertList = ref(STATE.alertList)
+let alertList = ref(JSON.parse(JSON.stringify(STATE.alertList)))
 let alertShow = ref(false)
 
 
@@ -58,12 +58,15 @@ const options2 = {
 function btnClick(params) {
   if (params.text = '报警信息') {
     alertShow.value = params.active
+    if(params.active) {
+      alertList.value = JSON.parse(JSON.stringify(STATE.alertList))
+    }
   }
 }
 
 function handleClose(id) {
   const itemIndex = alertList.value.findIndex(e => e.id === id)
-  console.log('itemIndex: ', itemIndex);
+  
   if (itemIndex >= 0) {
     alertList.value.splice(itemIndex, 1)
   }

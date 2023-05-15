@@ -6,10 +6,10 @@ const PUBLIC_PATH = './assets/3d'
 const initialState = {
   position: { x: -34.300395750067494, y: 1126.544139771621, z: 915.2762220579656 },
   target: { x: 26.63074872579247, y: -1.1237349734606397e-17, z: 59.90198556311061 },
-  // maxPolarAngle: Math.PI * 0.45,
-  // minPolarAngle: Math.PI * 0.05,
-  maxPolarAngle: Math.PI,
-  minPolarAngle: 0,
+  maxPolarAngle: Math.PI * 0.45,
+  minPolarAngle: Math.PI * 0.05,
+  // maxPolarAngle: Math.PI,
+  // minPolarAngle: 0,
   ambientLight: {
     color: '#ffffff',
     intensity: 1

@@ -2,6 +2,7 @@ import { STATE } from './STATE.js'
 import { CACHE } from './CACHE.js'
 import TU from './threeUtils.js'
 
+
 // 相机动画（传指定state）
 const targetPos = new Bol3D.Vector3()
 const pos = new Bol3D.Vector3()
@@ -467,9 +468,11 @@ function initEnvironmentPopup() {
         }
       })
       
-      // 清除之前的所有弹窗
+      // 清除之前的所有弹窗 (报警的除外)
       STATE.currentPopup.forEach(e2 => {
-        CACHE.container.remove(e2)
+        if(!e2.userData.isExceeding) {
+          CACHE.container.remove(e2)
+        }
       })
 
       
@@ -548,6 +551,7 @@ function initEnvironmentPopup() {
         closeVisible: 'show',
         closeCallBack
       })
+      popup2.userData.isExceeding = isExceeding
       STATE.currentPopup.push(popup2)
       CACHE.container.attach(popup2)
     }
@@ -1547,6 +1551,13 @@ function opacityPopup(popup, type) {
   }
 }
 
+let powerSphere = null
+function afterOnload() {
+  powerSphere = new TU.PowerSphere()
+  console.log('powerSphere: ', powerSphere);
+
+}
+
 
 let renderAnimationList = []
 const render = () => {
@@ -1554,8 +1565,7 @@ const render = () => {
   const elapsedTime = STATE.clock.getElapsedTime()
 
   renderAnimationList.forEach(e => e.animation())
-
-
+  if(powerSphere) powerSphere.animation(elapsedTime)
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
@@ -1582,5 +1592,6 @@ export const API = {
   bladePoints,
   pause3D,
   opacityPopup,
+  afterOnload,
   render
 }

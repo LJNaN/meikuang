@@ -12,6 +12,12 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     container: domElement,
     viewState: 'orbit',
     hdrUrls: ['/hdr/2.hdr'],
+    renderer: {
+      alpha: false,
+      logarithmicDepthBuffer: true, // 解决z精度造成的重叠闪面（默认true）
+      antialias: true, // 抗锯齿
+      precision: 'highp',
+    },
     bloomEnabled: true,
     bloom: {
       bloomStrength: 0.5, // 强度
@@ -376,9 +382,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       console.log(STATE.sceneList)
 
       TU.init(container, Bol3D)
-
-      API.testBox()
-      API.loadGUI()
+      // API.afterOnload()
+      
+      // API.testBox()
+      // API.loadGUI()
       API.render()
       callback && callback()
     }
