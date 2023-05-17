@@ -38,8 +38,9 @@
 }
 
 .popup3d_person_detail .popup-close {
-  right: -20.5vw !important;
-  top: 0 !important;
+  right: -20vw !important;
+  top: -6vh !important;
+  scale: 2;
 }
 
 .popup3d_main_machine .popup-close {

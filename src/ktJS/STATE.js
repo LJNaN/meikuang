@@ -24,35 +24,28 @@ const initialState = {
     bias: -0.001,
     distance: 8000
   }],
-  pointLights: [{
-    color: 0xffffff,
-    intensity: 1,
-    decay: 1,
-    position: [-74, 60, -22],
-    near: 1,
-    far: 10000
+  spotLights: [{
+    color: 0xffdcb2,
+    intensity: 4,
+    position: [-637, 120, 339],
+    decay: 0.5,
+    angle: Math.PI / 2,
+    penumbra: 0.4
   }, {
-    color: 0xffffff,
-    intensity: 1,
-    decay: 1,
-    position: [455, 60, 154],
-    near: 1,
-    far: 10000
+    color: 0xffdcb2,
+    intensity: 4,
+    position: [650, 120, 295],
+    decay: 0.5,
+    angle: Math.PI / 2,
+    penumbra: 0.4
   }, {
-    color: 0xffffff,
-    intensity: 1,
-    decay: 1,
-    position: [135, 60, 441],
-    near: 1,
-    far: 10000
-  }, {
-    color: 0xffffff,
-    intensity: 1,
-    decay: 1,
-    position: [-498, 60, 380],
-    near: 1,
-    far: 10000
-  }],
+    color: 0xffdcb2,
+    intensity: 4,
+    position: [362, 120, -369],
+    decay: 0.5,
+    angle: Math.PI / 2,
+    penumbra: 0.4
+  }]
 }
 
 const clickObjects = []
@@ -196,8 +189,8 @@ const roomModelName = [
     modelName: 'wsb',
     model: null,
     cameraState: {
-      position: { x: -384.6690627414645, y: 174.49079152217837, z: -37.03028 },
-      target: { x: 55.536598513306814, y: -6.628203094673001e-15, z: 53.83176578 }
+      position: { x: 326.15120783126287, y: 151.09630862802288, z: 116.698578869 },
+      target: { x: -77.78204043089143, y: -2.192710163688989e-15, z: -98.921012 }
     },
     light: {
       ambientLight: 1.3,
@@ -899,7 +892,7 @@ const popupEnvironmentMap = [{
 }, {
   shortName: 'FY',
   name: 'KJY3A负压传感器',
-  threshold: [0,24],
+  threshold: [0, 24],
   unit: 'MPa',
   imgUrl: '53'
 }]
@@ -1996,10 +1989,10 @@ const personList = [
 
 // 人员监管相关的配置
 const personMap = [
-  { name: '重点监管', level: 1, img: [34, 35, 40, 59] },
-  { name: '加强监管', level: 2, img: [36, 37, 41, 60] },
-  { name: '需关注', level: 3, img: [30, 31, 38, 61] },
-  { name: '安全', level: 4, img: [32, 33, 39, 62] }
+  { name: '重点监管', level: 1, img: [34, 35, 40, 59, 85, 89] },
+  { name: '加强监管', level: 2, img: [36, 37, 41, 60, 84, 88] },
+  { name: '需关注', level: 3, img: [30, 31, 38, 61, 87, 91] },
+  { name: '安全', level: 4, img: [32, 33, 39, 62, 86, 90] }
 ]
 
 // 报警列表

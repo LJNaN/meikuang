@@ -467,15 +467,15 @@ function initEnvironmentPopup() {
           target: { x: e.position.x, y: e.position.y + 20, z: e.position.z }
         }
       })
-      
+
       // 清除之前的所有弹窗 (报警的除外)
       STATE.currentPopup.forEach(e2 => {
-        if(!e2.userData.isExceeding) {
+        if (!e2.userData.isExceeding) {
           CACHE.container.remove(e2)
         }
       })
 
-      
+
       // 其他标签透明
       STATE.sceneList.environmentPopup.forEach(e2 => {
         opacityPopup(e2.children[0], true)
@@ -484,7 +484,7 @@ function initEnvironmentPopup() {
 
       initDetailPopup()
     }))
-    
+
     function initDetailPopup() {
 
       // 设置点击之后的弹窗
@@ -740,23 +740,31 @@ function initPersonPopup() {
     const popup = new Bol3D.POI.Popup3D({
       value: `
       <div style="
-        pointer-events: all;
-        cursor: pointer;
         margin:0;
         color: #ffffff;
       ">
         
         <div style="
+          cursor: pointer;
+          pointer-events: all;
           position: absolute;
-          background: url('./assets/3d/image/${map.img[0]}.png') center / 100% 100% no-repeat;
-          width: 2vw;
-          height:8vh;
-          transform: translate(-50%, -50%);
-        ">
-        </div>
+          background: url('./assets/3d/image/${map.img[4]}.png') center / 100% 100% no-repeat;
+          width: 3vh;
+          height:3vh;
+          transform: translate(-50%, -258%);
+        "></div>
+
+        <div style="
+          position: absolute;
+          pointer-events: none;
+          background: url('./assets/3d/image/${map.img[5]}.png') center / 100% 100% no-repeat;
+          width: 0.3vw;
+          height:7vh;
+          transform: translate(-50%, -67%);
+        "></div>
       </div>
       `,
-      position: [0, 20, 0],
+      position: [0, 0, 0],
       className: 'popup3dclass',
       scale: [0.4, 0.4, 0.4],
       closeVisible: 'hidden'
@@ -830,17 +838,17 @@ function initPersonPopup() {
             color: #ffffff;
             position: relative;
             left: 0;
-            top: -3vh;
-            transform: translate(-50%, -50%);
+            top: -9vh;
+            transform: translate(-50%, 0%);
           ">
 
           <div style="
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
             width: 20vw;
-            height:3.5vh;
-            left: 1vw;
-            top: -3.5vh;
+            height:4.8vh;
+            left: 1.2vw;
+            top: -5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -861,7 +869,7 @@ function initPersonPopup() {
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
             width: 22vw;
-            height:17vh;
+            height:24vh;
             position: absolute;
             top: -0.5vh;
             display: flex;
@@ -873,21 +881,21 @@ function initPersonPopup() {
             <div
               style="width: 75%; height: 34%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
-              <p style="font-size: 0.6vw">${e.info.value1}</p>
-              <p style="font-size: 0.6vw">${e.info.value2}</p>
+              <p style="font-size: 1vw">${e.info.value1}</p>
+              <p style="font-size: 1vw">${e.info.value2}</p>
             </div>
             <div style="display: flex; justify-content: space-between;">
-              <p style="font-size: 0.6vw">${e.info.value3}</p>
-              <p style="font-size: 0.6vw"> | </p>
-              <p style="font-size: 0.6vw">${e.info.value4}</p>
-              <p style="font-size: 0.6vw"> | </p>
-              <p style="font-size: 0.6vw">${e.info.value5}</p>
+              <p style="font-size: 1vw">${e.info.value3}</p>
+              <p style="font-size: 1vw"> | </p>
+              <p style="font-size: 1vw">${e.info.value4}</p>
+              <p style="font-size: 1vw"> | </p>
+              <p style="font-size: 1vw">${e.info.value5}</p>
             </div>
           </div>
         </div>
       </div>
         `,
-        position: [e.position.x, 20, e.position.z],
+        position: [e.position.x, 0, e.position.z],
         className: 'popup3dclass popup3d_person_detail',
         scale: [0.22, 0.22, 0.22],
         closeVisible: 'show'
@@ -1143,8 +1151,8 @@ function enterRoom(name = '') {
 
     // 相机移动完之后
     function afterCamera() {
-      // 关点光源
-      CACHE.container.pointLights.forEach(e => {
+      // 关灯
+      CACHE.container.spotLights.forEach(e => {
         e.visible = false
       })
 
@@ -1196,10 +1204,14 @@ function enterRoom(name = '') {
       let CMJGroup = null
       let bladePoint1 = null
       let bladePoint2 = null
+      let bladePoint1_2 = null
+      let bladePoint2_2 = null
       if (name.includes('综采')) {
         // 俩刀片的粒子效果
-        bladePoint1 = new API.bladePoints()
-        bladePoint2 = new API.bladePoints()
+        bladePoint1 = new API.BladePoints(300, './assets/3d/image/92.png')
+        bladePoint1_2 = new API.BladePoints(300, './assets/3d/image/93.png')
+        bladePoint2 = new API.BladePoints(300, './assets/3d/image/92.png')
+        bladePoint2_2 = new API.BladePoints(300, './assets/3d/image/93.png')
 
         // 整个组移动
         CMJGroup = item.model.children.find(e => e.name === 'CMJGroup')
@@ -1213,13 +1225,15 @@ function enterRoom(name = '') {
               let wordPosition = new Bol3D.Vector3()
               child.getWorldPosition(wordPosition)
               bladePoint1.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              child.userData.points = bladePoint1
+              bladePoint1_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+              child.userData.points = [bladePoint1, bladePoint1_2]
 
             } else if (child.name === 'CMJ-2') {
               let wordPosition = new Bol3D.Vector3()
               child.getWorldPosition(wordPosition)
               bladePoint2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              child.userData.points = bladePoint2
+              bladePoint2_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+              child.userData.points = [bladePoint2, bladePoint2_2]
             }
           })
         }
@@ -1229,6 +1243,8 @@ function enterRoom(name = '') {
         if (STATE.animationFlag) {
           if (bladePoint1) bladePoint1.play = true
           if (bladePoint2) bladePoint2.play = true
+          if (bladePoint1_2) bladePoint1_2.play = true
+          if (bladePoint2_2) bladePoint2_2.play = true
 
           // 综采的左右移动
           if (CMJGroup) {
@@ -1258,7 +1274,9 @@ function enterRoom(name = '') {
                 if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
                   let wordPosition = new Bol3D.Vector3()
                   child.getWorldPosition(wordPosition)
-                  child.userData.points.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+                  child.userData.points.forEach(e => {
+                    e.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+                  })
                 }
               })
             }
@@ -1278,6 +1296,8 @@ function enterRoom(name = '') {
         } else {
           if (bladePoint1) bladePoint1.play = false
           if (bladePoint2) bladePoint2.play = false
+          if (bladePoint1_2) bladePoint1_2.play = false
+          if (bladePoint2_2) bladePoint2_2.play = false
         }
       }
       renderAnimationList.push({ name, animation })
@@ -1318,7 +1338,7 @@ function back(type) {
     // 解决闪屏
     function afterCamera() {
       // 开灯
-      CACHE.container.pointLights.forEach(e => {
+      CACHE.container.spotLights.forEach(e => {
         e.visible = true
       })
 
@@ -1362,13 +1382,12 @@ function back(type) {
         const CMJGroup = STATE.sceneList.zcgzm.children.find(e => e.name === 'CMJGroup')
         CMJGroup.children.forEach(e => {
           if (e.name === 'CMJ-1' || e.name === 'CMJ-2') {
-            if (e.userData.points.point) {
-              let points = e.userData.points
-              points.point.geometry.dispose()
-              points.point.material.dispose()
-              CACHE.container.scene.remove(points.point)
-              points.point = null
-            }
+            e.userData.points.forEach(e2 => {
+              e2.point.geometry.dispose()
+              e2.point.material.dispose()
+              CACHE.container.scene.remove(e2.point)
+              e2.point = null
+            })
           }
         })
       }
@@ -1391,18 +1410,20 @@ function back(type) {
 /**
  * 挖煤刀片的粒子效果
  */
-class bladePoints {
-  constructor(particleCount = 1000) {
+
+class BladePoints {
+  constructor(particleCount = 200, imageUrl = './92.png') {
     this.velocities = null
+    this.imageUrl = imageUrl
     this.particleCount = particleCount
     this.particlesGeometry = null
     this.point = {}
     this.play = true
     // 设置初始速度和时间
-    this.initialVelocities = new Float32Array(this.particleCount).fill(0).map(() => Math.random() * 10);
+    this.initialVelocities = new Float32Array(this.particleCount).fill(0).map(() => Math.random() * 2);
     this.times = new Float32Array(this.particleCount).fill(0);
     // 重力
-    this.gravity = -9.81;
+    this.gravity = -9.81 * 2;
     this.init()
   }
   init() {
@@ -1427,7 +1448,7 @@ class bladePoints {
     const sizes = new Float32Array(particleCount);
     // 设置粒子大小范围为0.05到1.5
     for (let i = 0; i < particleCount; i++) {
-      sizes[i] = Math.random() * 5 + 0.3;
+      sizes[i] = Math.random() * 8 + 0.3;
     }
     this.particlesGeometry.setAttribute('size', new Bol3D.BufferAttribute(sizes, 1));
 
@@ -1435,38 +1456,38 @@ class bladePoints {
 
     // 加载贴图
     const textureLoader = new Bol3D.TextureLoader();
-    const particleTexture = textureLoader.load('./assets/3d/image/28.png');
+    const particleTexture = textureLoader.load(this.imageUrl);
 
     // 创建粒子材质，并设置贴图
     const vertexShader = `
-    #include <logdepthbuf_pars_vertex>
-    #include <common>
+#include <logdepthbuf_pars_vertex>
+#include <common>
 
-    attribute float size;
-    varying vec2 vUv;
-    void main() {
-        vUv = uv;
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = size * (300.0 / -mvPosition.z);
-        gl_Position = projectionMatrix * mvPosition;
+attribute float size;
+varying vec2 vUv;
+void main() {
+    vUv = uv;
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    gl_PointSize = size * (300.0 / -mvPosition.z);
+    gl_Position = projectionMatrix * mvPosition;
 
-        #include <logdepthbuf_vertex>
-    }
-    
-  `;
+    #include <logdepthbuf_vertex>
+}
+
+`;
 
     const fragmentShader = `
-    #include <logdepthbuf_pars_fragment>
-    #include <common>
-    uniform sampler2D pointTexture;
-    varying vec2 vUv;
-    void main() {
-        vec4 textureColor = texture2D(pointTexture, gl_PointCoord);
-        // if (textureColor.a < 0.5) discard;
-        gl_FragColor = vec4(textureColor.r * 0.1, textureColor.g * 0.1, textureColor.b * 0.1, textureColor.a);
-        #include <logdepthbuf_fragment>
-    }
-  `;
+#include <logdepthbuf_pars_fragment>
+#include <common>
+uniform sampler2D pointTexture;
+varying vec2 vUv;
+void main() {
+    vec4 textureColor = texture2D(pointTexture, gl_PointCoord);
+    // if (textureColor.a < 0.5) discard;
+    gl_FragColor = vec4(textureColor.r * 0.2, textureColor.g * 0.2, textureColor.b * 0.2, textureColor.a);
+    #include <logdepthbuf_fragment>
+}
+`;
 
     const particleMaterial = new Bol3D.ShaderMaterial({
       uniforms: {
@@ -1474,7 +1495,8 @@ class bladePoints {
       },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
-      alphaToCoverage: true
+      alphaToCoverage: true,
+      transparent: true
     });
 
     const particles = new Bol3D.Points(this.particlesGeometry, particleMaterial);
@@ -1493,7 +1515,7 @@ class bladePoints {
 
         // 添加随机横向扩散（从立方体中心向四周扩散）
         const direction = new Bol3D.Vector3(pos.array[i * 3], 0, pos.array[i * 3 + 2]).normalize();
-        const spreadSpeed = Math.random() * 0.2;
+        const spreadSpeed = Math.random() * 0.6;
         const spreadVector = direction.multiplyScalar(spreadSpeed);
 
         currentPosition.add(new Bol3D.Vector3(spreadVector.x, this.velocities[i * 3 + 1] * 0.016, spreadVector.z));
@@ -1509,7 +1531,7 @@ class bladePoints {
             pos.array[i * 3 + 1] = (Math.random() - 0.5) * 10;
             pos.array[i * 3 + 2] = (Math.random() - 0.5) * 5;
             this.times[i] = 0;
-            this.initialVelocities[i] = Math.random() * 10;
+            this.initialVelocities[i] = Math.random() * 2;
           } else {
             this.times[i] += 0.1;
           }
@@ -1565,7 +1587,7 @@ const render = () => {
   const elapsedTime = STATE.clock.getElapsedTime()
 
   renderAnimationList.forEach(e => e.animation())
-  if(powerSphere) powerSphere.animation(elapsedTime)
+  if (powerSphere) powerSphere.animation(elapsedTime)
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
@@ -1589,7 +1611,7 @@ export const API = {
   testBox,
   back,
   showPerson,
-  bladePoints,
+  BladePoints,
   pause3D,
   opacityPopup,
   afterOnload,

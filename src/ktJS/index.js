@@ -54,7 +54,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     lights: {
       directionLights: STATE.initialState.directionLights,
       ambientLight: STATE.initialState.ambientLight,
-      pointLights: STATE.initialState.pointLights
+      spotLights:  STATE.initialState.spotLights
     },
     background: {
       type: 'panorama',
@@ -263,7 +263,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         })
 
         model.traverse(child => {
-          if (child.name === '对象008') {
+          if (child.name === 'xd003_1') {
             child.material.side = 0
           }
         })
@@ -377,13 +377,13 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initEnvironmentPopup()
       API.initmonitorList()
       API.initBaseStationPopup()
-      
+
       console.log(STATE.roomModelName)
       console.log(STATE.sceneList)
 
       TU.init(container, Bol3D)
       // API.afterOnload()
-      
+
       // API.testBox()
       // API.loadGUI()
       API.render()
