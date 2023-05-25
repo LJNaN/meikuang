@@ -88147,9 +88147,10 @@ void main() {
 	        const precision = attrs && attrs.renderer !== undefined && attrs.renderer.precision !== undefined ? attrs.renderer.precision : 'highp';
 	        const antialias = attrs && attrs.renderer !== undefined && attrs.renderer.antialias !== undefined ? attrs.renderer.antialias : true;
 	        const alpha = attrs && attrs.renderer !== undefined && attrs.renderer.alpha !== undefined ? attrs.renderer.alpha : false;
+	        const preserveDrawingBuffer = attrs && attrs.renderer !== undefined && attrs.renderer.preserveDrawingBuffer !== undefined ? attrs.renderer.preserveDrawingBuffer : false;
 	        // 3d renderer
 	        if (attrs && attrs.container != undefined) {
-	            this.renderer = new WebGLRenderer({ antialias, canvas: attrs.container, precision, logarithmicDepthBuffer, alpha });
+	            this.renderer = new WebGLRenderer({ antialias, canvas: attrs.container, precision, logarithmicDepthBuffer, alpha, preserveDrawingBuffer });
 	            this.containerWidth = attrs.containerWidth !== undefined ? attrs.containerWidth : attrs.container.clientWidth;
 	            this.containerHeight = attrs.containerHeight !== undefined ? attrs.containerHeight : attrs.container.clientHeight;
 	        }

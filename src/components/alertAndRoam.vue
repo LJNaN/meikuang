@@ -1,5 +1,5 @@
 <template>
-  <el-badge :value="6" class="alert">
+  <el-badge :value="0" class="alert">
     <SingleActive :options="options1" @btnClick="btnClick"></SingleActive>
   </el-badge>
 
@@ -29,7 +29,8 @@ import { ref } from 'vue'
 import SingleActive from '@/components/SingleActive.vue'
 import { STATE } from '@/ktJS/STATE'
 
-let alertList = ref(JSON.parse(JSON.stringify(STATE.alertList)))
+// let alertList = ref([...STATE.alertList])
+let alertList = ref([])
 let alertShow = ref(false)
 
 
@@ -59,7 +60,8 @@ function btnClick(params) {
   if (params.text = '报警信息') {
     alertShow.value = params.active
     if(params.active) {
-      alertList.value = JSON.parse(JSON.stringify(STATE.alertList))
+      // alertList.value = [...STATE.alertList]
+      alertList.value = []
     }
   }
 }

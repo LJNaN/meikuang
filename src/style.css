@@ -40,7 +40,7 @@
 .popup3d_person_detail .popup-close {
   right: -20vw !important;
   top: -6vh !important;
-  scale: 2;
+  scale: 1.5;
 }
 
 .popup3d_main_machine .popup-close {
@@ -56,6 +56,7 @@
   justify-content: center;
   align-items: center;
 }
+
 
 @font-face {
   font-family: 'YouSheBiaoTiHei';

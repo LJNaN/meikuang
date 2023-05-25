@@ -7,6 +7,7 @@ const env = import.meta.env
 axios.defaults.timeout = 60000
 axios.defaults.baseURL = ''
 const BASE_URL = env.DEV ? 'http://192.168.0.103:5173/api' : window.location.protocol == 'https:' ? 'https://www.kantu3d.com/gxq' : 'http://219.153.117.212:92'
+console.log('env.DEV: ', env.DEV);
 
 //http request 拦截器
 axios.interceptors.request.use(

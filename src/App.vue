@@ -23,7 +23,7 @@ window.pause3D = (flag) => {
     style="position: fixed; display: flex; justify-content: center; align-items: center; z-index: 2; left: 50%; top: 50%;">
 
     <div style="
-      pointer-events: all;
+      pointer-events: all; 
       cursor: pointer;
       margin:0;
       color: #ffffff;

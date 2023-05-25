@@ -1,6 +1,6 @@
 import { request } from './index'
 
-// example
-export function getRealData(params: {}) {
-  return request('/GetRealData', params, 'post')
+// 风险点列表
+export function getRiskPointList(params: {}) {
+  return request('/api/getRiskPointList', params, 'get')
 }

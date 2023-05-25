@@ -1,5 +1,5 @@
-let container = null;
-let Bol3D = null;
+let container$1 = null;
+let Bol3D$1 = null;
 /**
  * 初始化 TU
  * @date 2023-05-06
@@ -8,8 +8,8 @@ let Bol3D = null;
  * @returns {any}
  */
 function init(scene, bol3d) {
-  container = scene;
-  Bol3D = bol3d;
+  container$1 = scene;
+  Bol3D$1 = bol3d;
 }
 
 class MapAnimation {
@@ -61,11 +61,11 @@ class MapAnimation {
 
 class Roam {
   /**
-   * 描述
+   * 漫游
    * @date 2023-05-10
    * @param {any[object]} positionArr 位置数组 [{time：补间时间，position：相机 position 位置，target：相机 target 位置,onComplete：补间动画完成后的回调}]
    */
-  constructor(positionArr, parameter={}) {
+  constructor(positionArr, parameter = {}) {
     const { loop = false } = parameter;
     this.loop = loop;
     this.t1arr = [];
@@ -74,16 +74,17 @@ class Roam {
     this.init();
   }
   init() {
-    this.positionArr.forEach(item => {
-      var _t1 = new Bol3D.TWEEN.Tween(container.orbitCamera).to(
+    this.positionArr.forEach(position => {
+      const item = Object.assign({}, position);
+      var _t1 = new Bol3D$1.TWEEN.Tween(container$1.orbitCamera).to(
         {
-          position: new Bol3D.Vector3(...item.position)
+          position: new Bol3D$1.Vector3(...item.position)
         },
         item.time
       );
-      var _t2 = new Bol3D.TWEEN.Tween(container.orbitControls).to(
+      var _t2 = new Bol3D$1.TWEEN.Tween(container$1.orbitControls).to(
         {
-          target: new Bol3D.Vector3(...item.target)
+          target: new Bol3D$1.Vector3(...item.target)
         },
         item.time
       );
@@ -96,20 +97,33 @@ class Roam {
       this.t2arr.push(_t2);
     });
 
+    const finallyLength = this.t1arr.length - 1;
     for (let index = 0; index < this.t1arr.length; index++) {
-      this.t1arr[index].chain(this.t1arr[index + 1]);
-      this.t2arr[index].chain(this.t2arr[index + 1]);
+      const num = index + 1;
+      if (num <= finallyLength) {
+        this.t1arr[index].chain(this.t1arr[index + 1]);
+        this.t2arr[index].chain(this.t2arr[index + 1]);
+      }
+      if (this.loop) {
+        this.t1arr[finallyLength].chain(this.t1arr[0]);
+        this.t2arr[finallyLength].chain(this.t2arr[0]);
+      }
     }
-    if (this.loop) {
-      this.t1arr[this.t1arr.length - 1].chain(this.t1arr[0]);
-      this.t2arr[this.t2arr.length - 1].chain(this.t2arr[0]);
-    }
+  }
+  /**
+   * 终止漫游
+   * @date 2023-05-12
+   */
+  stop() {
+    this.t1arr.forEach(t => t.stop());
+    this.t2arr.forEach(t => t.stop());
   }
   /**
    * 开始漫游
    * @date 2023-05-10
    */
   start() {
+    this.stop();
     this.t1arr[0].start();
     this.t2arr[0].start();
   }
@@ -118,24 +132,16 @@ class Roam {
    * @date 2023-05-10
    */
   pause() {
-    this.t1arr.forEach(item => {
-      item.pause();
-    });
-    this.t2arr.forEach(item => {
-      item.pause();
-    });
+    this.t1arr.forEach(item => item.pause());
+    this.t2arr.forEach(item => item.pause());
   }
   /**
    * 继续漫游
    * @date 2023-05-10
    */
   resume() {
-    this.t1arr.forEach(item => {
-      item.resume();
-    });
-    this.t2arr.forEach(item => {
-      item.resume();
-    });
+    this.t1arr.forEach(item => item.resume());
+    this.t2arr.forEach(item => item.resume());
   }
 }
 
@@ -146,7 +152,7 @@ class Roam {
  * @param {number}   [times=1000]  // 聚焦动画时间 默认 1000 毫秒
  * @param {Function} [doit]        // 回调函数
  */
-function focus(point, look, times = 1000, doit) {
+ function focus(point, look, times = 1000, doit) {
   new Bol3D.TWEEN.Tween(container.orbitCamera)
     .to({
       position: new Bol3D.Vector3(...look)
@@ -326,10 +332,8 @@ function offFadeModel(target) {
   });
 }
 
-var toZhangHang = /*#__PURE__*/Object.freeze({
+var api = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  MapAnimation: MapAnimation,
-  Roam: Roam,
   focus: focus,
   toggleModel: toggleModel,
   showModel: showModel,
@@ -342,6 +346,12 @@ var toZhangHang = /*#__PURE__*/Object.freeze({
   onFadeModel: onFadeModel,
   offFadeModel: offFadeModel
 });
+
+const toZhangHang = {
+  MapAnimation,
+  Roam,
+  ...api,
+};
 
 /**
  * 输出一个shader基本框架
@@ -416,7 +426,6 @@ function shaderTemplate() {
   return shaderConfig
 }
 
-
 /**
  * 飞线动画
  * 
@@ -466,7 +475,7 @@ class FlyLine {
     if (gap) this.gap = gap;
 
     this.flyLine = this.init();
-    container.attach(this.flyLine);
+    container$1.attach(this.flyLine);
   }
 
   init() {
@@ -475,13 +484,13 @@ class FlyLine {
     const attrCindex = [];
     const attrCnumber = [];
 
-    const _source = new Bol3D.Vector3(this.source.x, this.source.y, this.source.z);
-    const _target = new Bol3D.Vector3(this.target.x, this.target.y, this.target.z);
+    const _source = new Bol3D$1.Vector3(this.source.x, this.source.y, this.source.z);
+    const _target = new Bol3D$1.Vector3(this.target.x, this.target.y, this.target.z);
     const _center = _target.clone().lerp(_source, 0.5);
     _center.y += this.height;
 
     const number = parseInt(_source.distanceTo(_center) + _target.distanceTo(_center)) * this.density;
-    const curve = new Bol3D.QuadraticBezierCurve3(
+    const curve = new Bol3D$1.QuadraticBezierCurve3(
       _source,
       _center,
       _target
@@ -505,21 +514,21 @@ class FlyLine {
       attrPositions.push(p.x, p.y, p.z);
     });
 
-    const geometry = new Bol3D.BufferGeometry();
+    const geometry = new Bol3D$1.BufferGeometry();
 
-    geometry.setAttribute('position', new Bol3D.Float32BufferAttribute(attrPositions, 3));
+    geometry.setAttribute('position', new Bol3D$1.Float32BufferAttribute(attrPositions, 3));
     // 传递当前所在位置
-    geometry.setAttribute('index', new Bol3D.Float32BufferAttribute(attrCindex, 1));
-    geometry.setAttribute('current', new Bol3D.Float32BufferAttribute(attrCnumber, 1));
+    geometry.setAttribute('index', new Bol3D$1.Float32BufferAttribute(attrCindex, 1));
+    geometry.setAttribute('current', new Bol3D$1.Float32BufferAttribute(attrCnumber, 1));
 
-    const shader = new Bol3D.ShaderMaterial({
+    const shader = new Bol3D$1.ShaderMaterial({
       transparent: true,
       depthWrite: false,
       depthTest: false,
-      blending: Bol3D.AdditiveBlending,
+      blending: Bol3D$1.AdditiveBlending,
       uniforms: {
         uColor: {
-          value: new Bol3D.Color(this.color) // 颜色
+          value: new Bol3D$1.Color(this.color) // 颜色
         },
         uRange: {
           value: this.range
@@ -541,6 +550,8 @@ class FlyLine {
         }
       },
       vertexShader: `
+      #include <logdepthbuf_pars_vertex>
+      #include <common>
       attribute float index;
       attribute float current;
       uniform float time;
@@ -571,16 +582,20 @@ class FlyLine {
           gl_Position = projectionMatrix * mvPosition; 
           // 大小
           gl_PointSize = size * 30.0 / (-mvPosition.z);
+          #include <logdepthbuf_vertex>
       }`,
       fragmentShader: `
+      #include <logdepthbuf_pars_fragment>
+      #include <common>
       varying vec3 vColor; 
       varying float vOpacity;
       void main() {
           gl_FragColor = vec4(vColor, vOpacity);
+          #include <logdepthbuf_fragment>
       }`
     });
 
-    const point = new Bol3D.Points(geometry, shader);
+    const point = new Bol3D$1.Points(geometry, shader);
     return point
   }
 
@@ -630,7 +645,7 @@ void main() {
 const powerSpheredFragmentShader = `
 
 // 解决深度问题
-#include <logdepthbuf_pars_vertex>
+#include <logdepthbuf_pars_fragment>
 #include <common>
 
 uniform float time;
@@ -677,7 +692,7 @@ void main() {
     gl_FragColor = color;
 
     // 解决深度问题
-    // #include <logdepthbuf_vertex>
+    #include <logdepthbuf_fragment>
 }
 `;
 
@@ -732,13 +747,13 @@ class PowerSphere {
     // sphere
     let texture = null;
     if (this.textureEnabled) {
-      const textureLoader = new Bol3D.TextureLoader();
+      const textureLoader = new Bol3D$1.TextureLoader();
       texture = textureLoader.load('./noise1.png');
-      texture.wrapS = texture.wrapT = Bol3D.RepeatWrapping;
+      texture.wrapS = texture.wrapT = Bol3D$1.RepeatWrapping;
     }
-    const spheredGeometry = new Bol3D.SphereGeometry(this.minRadius, 128, 128);
-    let myColor = new Bol3D.Color(this.color);
-    const spheredMaterial = new Bol3D.ShaderMaterial({
+    const spheredGeometry = new Bol3D$1.SphereGeometry(this.minRadius, 128, 128);
+    let myColor = new Bol3D$1.Color(this.color);
+    const spheredMaterial = new Bol3D$1.ShaderMaterial({
       uniforms: {
         u_tex: { value: null },
         time: { value: 0 },
@@ -753,12 +768,13 @@ class PowerSphere {
       vertexShader: powerSpheredVertexShader,
       fragmentShader: powerSpheredFragmentShader,
       transparent: true,
-      side: Bol3D.DoubleSide
+      side: Bol3D$1.DoubleSide
     });
-    this.sphere = new Bol3D.Mesh(spheredGeometry, spheredMaterial);
+    this.sphere = new Bol3D$1.Mesh(spheredGeometry, spheredMaterial);
     this.sphere.position.set(10, 0, 10);
     this.sphere.material.uniforms.u_tex.value = texture;
-    container.attach(this.sphere);
+    this.sphere.material.alphaToCoverage = true;
+    container$1.attach(this.sphere);
   }
 
   animation(dt) {
@@ -773,10 +789,127 @@ var toJiangNan = /*#__PURE__*/Object.freeze({
   PowerSphere: PowerSphere
 });
 
+/**
+ * 设置模型位置(position)，旋转(rotation)，缩放(scale),有该属性的物体亦可
+ * @param {object} mesh 待操作模型
+ */
+function setModelPosition(mesh) {
+    const controls = CACHE.container.transformControl;
+    const gui = new dat.GUI();
+    const options = {
+        transformModel: "translate"
+    };
+    gui.add(options, 'transformModel', ["translate", 'rotate', 'scale']).onChange(val => controls.setMode(val));
+    const positionX = gui.add(mesh.position, 'x').onChange(val => mesh.position.x = val).name('positionX');
+    const positionY = gui.add(mesh.position, 'y').onChange(val => mesh.position.y = val).name('positionY');
+    const positionZ = gui.add(mesh.position, 'z').onChange(val => mesh.position.z = val).name('positionZ');
+    const rotationX = gui.add(mesh.rotation, 'x').step(0.01).onChange(val => mesh.rotation.x = val).name('rotationX');
+    const rotationY = gui.add(mesh.rotation, 'y').step(0.01).onChange(val => mesh.rotation.y = val).name('rotationY');
+    const rotationZ = gui.add(mesh.rotation, 'z').step(0.01).onChange(val => mesh.rotation.z = val).name('rotationZ');
+    const scaleX = gui.add(mesh.scale, "x").step(0.1).onChange(val => mesh.scale.x = val).name('scaleX');
+    const scaleY = gui.add(mesh.scale, "y").step(0.1).onChange(val => mesh.scale.y = val).name('scaleY');
+    const scaleZ = gui.add(mesh.scale, "z").step(0.1).onChange(val => mesh.scale.z = val).name('scaleZ');
+    controls.attach(mesh);
+    controls.addEventListener("change", (e) => {
+        positionX.setValue(mesh.position.x);
+        positionY.setValue(mesh.position.y);
+        positionZ.setValue(mesh.position.z);
+        rotationX.setValue(mesh.rotation.x);
+        rotationY.setValue(mesh.rotation.y);
+        rotationZ.setValue(mesh.rotation.z);
+        scaleX.setValue(mesh.scale.x);
+        scaleY.setValue(mesh.scale.y);
+        scaleZ.setValue(mesh.scale.z);
+    });
+}
+
+/**
+ * 查看模型长宽高
+ * @param {object} mesh 待操作模型 
+ */
+function findModelXYZ(mesh) {
+    // 计算模型的 bounding box
+    const box = new Bol3D$1.Box3().setFromObject(container$1.sceneModels[0]);
+    // 获取 bounding box 的长宽高
+    const width = box.max.x - box.min.x;
+    const height = box.max.y - box.min.y;
+    const depth = box.max.z - box.min.z;
+    // 创建 Box3Helper 对象，并将其添加到场景中
+    const helper = new Bol3D$1.Box3Helper(box, 0xffff00);
+    container$1.attach(helper);
+    console.log(`模型的x为：${width} , y为${height} , z为${depth}`);
+}
+
+/**
+ * 显示orbitCamera的position和orbitControls的target
+ */
+function showTargetPositon() {
+    let mypt = {
+        position: "",
+        target: ""
+    };
+    const gui = new dat.GUI();
+    const guiPosition = gui.add(mypt, "position");
+    const guiTarget = gui.add(mypt, "target");
+
+    container$1.orbitControls.addEventListener("end", () => {
+        const position = container$1.orbitCamera.position;
+        const pString = '{x:' + position.x + ",y:" + position.y + ',z:' + position.z + "}";
+        guiPosition.setValue(pString);
+        const target = container$1.orbitControls.target;
+        const tString = '{x:' + target.x + ",y:" + target.y + ',z:' + target.z + "}";
+        guiTarget.setValue(tString);
+    });
+}
+
+/** 
+* 模型聚焦，获取模型中心位置，在此基础上调整相机位置\
+* @param  {object}  target  待显示信息的模型
+*/
+function modelFocused(model, params = {}) {
+    const { x = 200, y = 400, z = 200 } = params;
+    if (model) {
+        const box = new Bol3D$1.Box3().setFromObject(model);
+        const res = box.getCenter(new Bol3D$1.Vector3);
+        const cameraState = { position: { x: res.x + x, y: res.y + y, z: res.z + z }, target: { x: res.x, y: res.y, z: res.z } };
+        API.cameraAnimation({ cameraState });
+    }
+}
+
+
+/** 
+    * 鼠标悬浮在模型上，模型闪烁，注意开启outlineEnabled和outline配置项中的pulsePeriod控制脉冲周期。
+    * @param  {object}  target  待选中的模型
+    */
+function checkBlinking(target) {
+    let blink = null;
+    return (function () {
+        if (target && blink != target) {
+            blink = target;
+            CACHE.container.outlineObjects = [];
+            CACHE.container.outlineObjects.push(target);
+        }
+        if (!target) {
+            CACHE.container.outlineObjects = [];
+            blink = null;
+        }
+    })()
+}
+
+var toTanCheng = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  setModelPosition: setModelPosition,
+  findModelXYZ: findModelXYZ,
+  showTargetPositon: showTargetPositon,
+  modelFocused: modelFocused,
+  checkBlinking: checkBlinking
+});
+
 const TU = {
   init,
   ...toZhangHang,
-  ...toJiangNan
+  ...toJiangNan,
+  ...toTanCheng,
 };
 
 export { TU as default };

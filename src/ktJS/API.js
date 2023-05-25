@@ -185,7 +185,7 @@ function initLocationPopup() {
           transform: translate(0, -14%);
         ">
 
-          <div style="
+          <div class="location_title" style="
             background: url('./assets/3d/image/1.png') center / 100% 100% no-repeat;
             width: 16vw;
             height:10vh;
@@ -371,6 +371,59 @@ function initLocationPopup() {
       STATE.sceneList.locationPopup = []
     }
     STATE.sceneList.locationPopup.push(group)
+  })
+  // locationPopupTitleBounce()
+}
+
+// 上下浮动动画
+function locationPopupTitleBounce() {
+  const currentTimeHookArr = []
+  STATE.sceneList.locationPopup.forEach((e, index) => {
+    const element = e.children[0].element.getElementsByClassName('location_title')[0]
+
+    if (element) {
+      const keyframes = [
+        { transform: 'translateY(0)' },
+        { transform: 'translateY(-2vh)' }
+      ];
+      const options = {
+        iterations: Infinity, // 动画执行次数
+        iterationStart: 0, // 动画开始时间点
+        delay: 0, // 动画开始之前的延迟
+        endDelay: 0, // 动画结束之后的延迟
+        direction: 'alternate', // 动画是否在下一周期逆向播放
+        duration: 1000, // 动画时长
+        fill: 'forwards', // 动画前后保持的状态
+        easing: 'ease-in-out', // 动画缓动类型
+      }
+      let webAnimation = element.animate(keyframes, options);
+
+      // 存两个对象 ，为了拿currenttime
+      if (index === 0 || index === 1) {
+        currentTimeHookArr.push(webAnimation)
+      }
+
+      element.addEventListener('mouseover', () => {
+        webAnimation.pause();
+      })
+
+      element.addEventListener('mouseout', () => {
+        // 拿到真实的currenttime，要在其他popup上去拿
+        if (STATE.sceneList.locationPopup.length >= 2) {
+          const currentTime = index === 0 ? currentTimeHookArr[1].currentTime : currentTimeHookArr[0].currentTime
+          options.delay = options.duration * 2 - currentTime % (options.duration * 2)
+
+          webAnimation.cancel()
+          webAnimation = null
+          webAnimation = element.animate(keyframes, options)
+          if (index === 0) currentTimeHookArr[0] = webAnimation
+          else if (index === 1) currentTimeHookArr[1] = webAnimation
+          webAnimation.play()
+        } else {
+          webAnimation.play();
+        }
+      })
+    }
   })
 }
 
@@ -770,44 +823,45 @@ function initPersonPopup() {
       closeVisible: 'hidden'
     })
 
-    // 圆点
-    const popup3 = new Bol3D.POI.Popup3D({
-      value: `
-      <div style="
-        pointer-events: all;
-        margin:0;
-        cursor: pointer;
-        color: #ffffff;
-      ">
+    // 圆点（被去掉了）
+    // const popup3 = new Bol3D.POI.Popup3D({
+    //   value: `
+    //   <div style="
+    //     pointer-events: all;
+    //     margin:0;
+    //     cursor: pointer;
+    //     color: #ffffff;
+    //   ">
 
-        <div style="
-          position: absolute;
-          background: url('./assets/3d/image/${map.img[3]}.png') center / 100% 100% no-repeat;
-          width: 2vw;
-          height:2vw;
-          transform: translate(-50%, -50%);
-        ">
-        </div>
-      </div>
-      `,
-      position: [0, 0, 0],
-      className: 'popup3dclass',
-      scale: [0.4, 0.4, 0.4],
-      closeVisible: 'hidden'
-    })
-    popup3.element.addEventListener('dblclick', ((e) => {
-      const strSplit = e.target.style.backgroundImage.match(/\/\d{1,}.png/)
-      if (strSplit) {
-        const num = Number(strSplit[0].replace(/[^0-9]/ig, ''))
-        const personMap2 = STATE.personMap.find(e2 => e2.img.includes(num))
-        if (personMap2) window.handlePerson(personMap2.level)
-      }
-    }))
-    popup3.visible = false
+    //     <div style="
+    //       position: absolute;
+    //       background: url('./assets/3d/image/${map.img[3]}.png') center / 100% 100% no-repeat;
+    //       width: 2vw;
+    //       height:2vw;
+    //       transform: translate(-50%, -50%);
+    //     ">
+    //     </div>
+    //   </div>
+    //   `,
+    //   position: [0, 0, 0],
+    //   className: 'popup3dclass',
+    //   scale: [0.4, 0.4, 0.4],
+    //   closeVisible: 'hidden'
+    // })
+    // popup3.element.addEventListener('dblclick', ((e) => {
+    //   const strSplit = e.target.style.backgroundImage.match(/\/\d{1,}.png/)
+    //   if (strSplit) {
+    //     const num = Number(strSplit[0].replace(/[^0-9]/ig, ''))
+    //     const personMap2 = STATE.personMap.find(e2 => e2.img.includes(num))
+    //     if (personMap2) window.handlePerson(personMap2.level)
+    //   }
+    // }))
+    // popup3.visible = false
+
     // 加group来间接改变popup的中心点
     const group = new Bol3D.Group()
     group.add(popup)
-    group.add(popup3)
+    // group.add(popup3)
     group.position.set(e.position.x, 0, e.position.z)
     group.name = 'person_group_' + e.level + '_' + e.name
 
@@ -815,7 +869,7 @@ function initPersonPopup() {
     //   setModelPosition(group)
     // }
 
-    // 点击一根竖直的弹窗
+    // 点击头像
     popup.element.addEventListener('dblclick', (() => {
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
@@ -823,8 +877,8 @@ function initPersonPopup() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
-          target: e.position
+          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
 
@@ -846,9 +900,9 @@ function initPersonPopup() {
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
             width: 20vw;
-            height:4.8vh;
-            left: 1.2vw;
-            top: -5vh;
+            height:5.5vh;
+            left: 0.5vw;
+            top: -5.5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -924,16 +978,18 @@ function initBaseStationPopup() {
     })
 
     if (!STATE.sceneList.baseStationPopup) {
-      STATE.sceneList.baseStationPopup = new Bol3D.Group()
+      STATE.sceneList.baseStationPopup = []
     }
-    STATE.sceneList.baseStationPopup.add(icon)
-
+    STATE.sceneList.baseStationPopup.push(icon)
   })
-  container.attach(STATE.sceneList.baseStationPopup)
+
+  STATE.sceneList.baseStationPopup.forEach(e => {
+    container.attach(e)
+  })
 
 
   setTimeout(() => {
-    STATE.sceneList.baseStationPopup.children.forEach(e => {
+    STATE.sceneList.baseStationPopup.forEach(e => {
       e.material.transparent = false
       e.material.alphaToCoverage = true
     })
@@ -957,7 +1013,7 @@ function showPerson(type) {
       STATE.personShowType = [0, 1, 2, 3, 4]
       STATE.sceneList.personPopup.forEach(e => {
         e.children[0].visible = true
-        e.children[1].visible = false
+        // e.children[1].visible = false // 不显示光点
       })
     }
   } else {
@@ -989,16 +1045,16 @@ function showPerson(type) {
 
 
 
-  // 如果给清空了 显示光点
+  // 如果给清空了 显示光点（这个功能被干掉了）
   if (!STATE.personShowType.length) {
     STATE.personShowType = []
     STATE.sceneList.personPopup.map(e => {
       e.children[0].visible = false
-      e.children[1].visible = true
+      // e.children[1].visible = true // 不显示光点
     })
   } else {
     STATE.sceneList.personPopup.map(e => {
-      e.children[1].visible = false
+      // e.children[1].visible = false // 不显示光点
 
       let showFlag = false
       for (let i = 0; i < STATE.personShowType.length; i++) {
@@ -1084,6 +1140,39 @@ function initMainMachinePopup(name) {
   }
 }
 
+// canvas 截图 用于切换场景过渡
+function prtScreen() {
+  const canvas = CACHE.container.renderer.domElement
+  const imageDataUrl = canvas.toDataURL();
+
+  const img = document.createElement('img');
+  img.style.position = 'fixed'
+  img.style.height = '100vh'
+  img.style.width = '100vw'
+  img.style.left = '0'
+  img.style.top = '0'
+  img.style.pointerEvents = 'none'
+  img.style.zIndex = 100
+  img.src = imageDataUrl
+  document.body.appendChild(img);
+
+  const keyframes = [
+    { opacity: 1 },
+    { opacity: 0 }
+  ];
+  const options = {
+    iterations: 1, // 动画执行次数
+    duration: 300 // 动画时长
+  }
+  const webAnimation = img.animate(keyframes, options);
+
+  webAnimation.play()
+  webAnimation.onfinish = (() => {
+    img.remove()
+  })
+}
+
+
 
 /**
  * 测试用盒子
@@ -1139,6 +1228,8 @@ function enterRoom(name = '') {
 
   // 如果找到匹配的
   if (item) {
+    // 过渡
+    prtScreen()
     // 更改当前场景 相机移动到标签上
     STATE.currentScene = name
     const popup = STATE.popupLocationList.find(e => e.name === name)
@@ -1154,6 +1245,11 @@ function enterRoom(name = '') {
       // 关灯
       CACHE.container.spotLights.forEach(e => {
         e.visible = false
+      })
+
+      // 重点区域点进去的
+      STATE.sceneList.locationPopup.forEach(e => {
+        API.opacityPopup(e.children[0], false)
       })
 
       // 跳路由
@@ -1325,6 +1421,7 @@ function back(type) {
     ], false)
     showPopup([
       STATE.sceneList.personPopup,
+      STATE.sceneList.baseStationPopup,
       STATE.sceneList.locationPopup
     ])
 
@@ -1333,6 +1430,8 @@ function back(type) {
     cameraAnimation({ cameraState: STATE.initialState, duration: 500 })
 
   } else {
+    // 过渡
+    prtScreen()
     cameraAnimation({ cameraState: STATE.initialState, callback: afterCamera, duration: 0 })
 
     // 解决闪屏
@@ -1574,10 +1673,10 @@ function opacityPopup(popup, type) {
 }
 
 let powerSphere = null
+let flyLine = null
 function afterOnload() {
   powerSphere = new TU.PowerSphere()
-  console.log('powerSphere: ', powerSphere);
-
+  flyLine = new TU.FlyLine()
 }
 
 
@@ -1588,6 +1687,7 @@ const render = () => {
 
   renderAnimationList.forEach(e => e.animation())
   if (powerSphere) powerSphere.animation(elapsedTime)
+  if (flyLine) flyLine.animation(elapsedTime)
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
@@ -1611,9 +1711,10 @@ export const API = {
   testBox,
   back,
   showPerson,
-  BladePoints,
+  prtScreen,
   pause3D,
   opacityPopup,
   afterOnload,
+  BladePoints,
   render
 }

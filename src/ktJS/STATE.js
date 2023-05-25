@@ -114,8 +114,8 @@ const roomModelName = [
     modelName: 'bds',
     model: null,
     cameraState: {
-      position: { x: -48.221854032574456, y: 40.353003930757716, z: 62.45429719 },
-      target: { x: 19.691545329285407, y: 2, z: -33.688407 }
+      position: { x: -0.8806329269418267, y: 17.814846309338826, z: 60.1223121565 },
+      target: { x: 12.88431492840435, y: 2, z: -61.890060736 }
     },
     light: {
       ambientLight: 8.8,
@@ -129,8 +129,8 @@ const roomModelName = [
     modelName: 'ts',
     model: null,
     cameraState: {
-      position: { x: -96.91712843512158, y: 76.7980542581137, z: 157.6325045 },
-      target: { x: 30.74700388270824, y: 0, z: 6.50756103 }
+      position: { x: 0.3270075771528318, y: 12.93024355871586, z: 173.79397125035 },
+      target: { x: 2.848474487381654, y: -3.0351039132230924e-19, z: -38.010824 }
     },
     light: {
       ambientLight: 7.9,
@@ -144,8 +144,8 @@ const roomModelName = [
     modelName: 'jxcc',
     model: null,
     cameraState: {
-      position: { x: -77.82871709470751, y: 67.4308210750754, z: 183.70195 },
-      target: { x: 42.51289541127099, y: 0, z: 22.438789 }
+      position: { x: 0.4762330095310796, y: 8.648768408898812, z: 340.99870448 },
+      target: { x: 5.212103260699379, y: -1.5125165121968735e-14, z: 177.0878004 }
     },
     light: {
       ambientLight: 5.8,
@@ -174,8 +174,8 @@ const roomModelName = [
     modelName: 'tfjf',
     model: null,
     cameraState: {
-      position: { x: -55.29220869605007, y: 23.719549173610112, z: 120.42761511 },
-      target: { x: 26.40600759705924, y: 0, z: 24.51415741 }
+      position: { x: -10.815394061192443, y: 12.438939566707647, z: 93.88151088323951 },
+      target: { x: 41.63987032848906, y: 1.1148309349480146e-17, z: -15.332754537450171 }
     },
     light: {
       ambientLight: 3.2,
@@ -189,8 +189,8 @@ const roomModelName = [
     modelName: 'wsb',
     model: null,
     cameraState: {
-      position: { x: 326.15120783126287, y: 151.09630862802288, z: 116.698578869 },
-      target: { x: -77.78204043089143, y: -2.192710163688989e-15, z: -98.921012 }
+      position: { x: -354.6893875647948, y: 128.3503826821151, z: -102.67015683149427 },
+      target: { x: 48.317474120084555, y: 7.481945062577894e-16, z: -0.34080370572128793 }
     },
     light: {
       ambientLight: 1.3,
@@ -204,7 +204,7 @@ const roomModelName = [
     modelName: 'ysdx',
     model: null,
     cameraState: {
-      position: { x: -59.62468487466124, y: 63.347928243285466, z: 254.18981 },
+      position: { x: -6.192025997646759, y: 13.294844676753192, z: 304.76269419444634 },
       target: { x: 28.492693469905007, y: 0, z: 87.8841204 }
     },
     light: {
@@ -219,8 +219,8 @@ const roomModelName = [
     modelName: 'sbf',
     model: null,
     cameraState: {
-      position: { x: -112.99715238084531, y: 98.50776089024278, z: 254.42778191 },
-      target: { x: 62.85995962999729, y: 0, z: 12.2502832 }
+      position: { x: -21.36940180739913, y: 19.72616860295364, z: 129.61852800567192 },
+      target: { x: 69.6259692419141, y: 9.660158310423856e-16, z: -123.97609866477575 }
     },
     light: {
       ambientLight: 10,
@@ -718,7 +718,7 @@ const popupLocationList = [
       manager: Math.floor(Math.random() * 10) + 90
     }
   }, {
-    name: '406运输',
+    name: '404运输',
     sub: '工作人员数量: ' + Math.floor(Math.random() * 20) + '人',
     position: { x: 256, y: 0, z: 392 },
     regionRate: {

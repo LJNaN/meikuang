@@ -10,7 +10,7 @@
       <!-- 重点区域 -->
       <div v-show="leftDetailShow && leftIndex === 0" class="left-btn-detail">
         <div v-for="(item2, index2) in list1" :key="index2" class="left-btn-detail-item"
-          :style="{ background: 'url(' + './assets/3d/image/' + (leftDetailItemIndex === index2 ? '42' : '43') + '.png' + ') center / 100% 100% no-repeat' }"
+          :style="{ background: 'url(' + './assets/3d/image/' + (leftDetailItemIndex === index2 ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
           @click="handleLeftItem(item2, index2)">
           {{ item2.name }}
         </div>
