@@ -4,16 +4,16 @@
     <div class="control">
       <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
         <div class="control-icon" :style="{
-            background:
-              personShowType.includes(index)
-                ? 'url(./assets/3d/image/' + item.bg[2] + '.png) center / 100% 100% no-repeat'
-                : 'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
-          }"></div>
+          background:
+            personShowType.includes(index)
+              ? 'url(./assets/3d/image/' + item.bg[2] + '.png) center / 100% 100% no-repeat'
+              : 'url(./assets/3d/image/' + item.bg[1] + '.png) center / 100% 100% no-repeat'
+        }"></div>
         {{ item.name }}
       </div>
     </div>
 
-    <alertAndRoam></alertAndRoam>
+    <alertAndRoam type="home"></alertAndRoam>
 
     <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div>
   </div>
@@ -27,7 +27,59 @@ import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import alertAndRoam from '@/components/alertAndRoam.vue'
+import { getRysj, getAqjcAqmcList, getAqjcAqssList } from '@/axios/api'
 
+// 获取数据
+{
+  getRysj().then(e => {
+    STATE.sceneList.personPopup = []
+    const data = e.list.reduce((acc, cur) => {
+      acc.push({
+        name: cur.t1,
+        level: Number(cur.t8),
+        position: { x: Math.random() * 1000 - 500, y: 0, z: Math.random() * 1000 - 500 },
+        info: {
+          title: cur.t6,
+          value1: cur.t0,
+          value2: STATE.personMap.find(e2 => e2.level == cur.t8).name,
+          value3: cur.t2,
+          value4: cur.t3,
+          value5: cur.t4
+        }
+      })
+      return acc
+    }, [])
+    STATE.personList = data
+    API.initPersonPopup()
+  })
+
+
+  getAqjcAqmcList().then(e => {
+    STATE.sceneList.environmentPopup = []
+    const existingList = e.list
+      .map(e2 => STATE.popupEnvironmentList
+        .find(e3 => e3.id === e2.ssTransducerCode)
+      ).filter(e2 => e2)
+
+
+    getAqjcAqssList().then(e2 => {
+      existingList.forEach(e3 => {
+        const originData = e.list.find(e4 => e4.ssTransducerCode === e3.id)
+        e3.title = originData.ssTransducerPoint
+        e3.position = { x: Math.random() * 1000 - 500, y: 0, z: Math.random() * 1000 - 500 }
+        e3.info.name = originData.ssTransducerName
+        e3.info.unit = originData.ssAnalogUnit
+        const data = e2.list.find(e4 => e4.ssTransducerCode === e3.id)
+        if (data) {
+          e3.info.value = data.ssAnalogValue
+        }
+      })
+
+      STATE.popupEnvironmentList = existingList
+      API.initEnvironmentPopup()
+    })
+  })
+}
 
 
 function showRegionalRisk() {
@@ -116,5 +168,4 @@ onMounted(() => {
   width: 10vw;
   background: url('/assets/3d/image/5.png') center / 100% 100% no-repeat;
 }
-
 </style>

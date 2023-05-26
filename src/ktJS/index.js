@@ -55,7 +55,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     lights: {
       directionLights: STATE.initialState.directionLights,
       ambientLight: STATE.initialState.ambientLight,
-      spotLights:  STATE.initialState.spotLights
+      spotLights: STATE.initialState.spotLights
     },
     background: {
       type: 'panorama',
@@ -373,9 +373,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       delete CACHE.removed
 
       // 加载弹窗
-      API.initPersonPopup()
+      // API.initPersonPopup()
+      // API.initEnvironmentPopup()
       API.initLocationPopup()
-      API.initEnvironmentPopup()
       API.initmonitorList()
       API.initBaseStationPopup()
 
@@ -384,7 +384,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
       TU.init(container, Bol3D)
 
-      
+
+
       // setTimeout(() => {
       //   const t1 = new Bol3D.TWEEN.Tween(CACHE.container.orbitCamera.position)
       //   .to({

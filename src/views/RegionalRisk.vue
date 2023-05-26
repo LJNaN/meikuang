@@ -18,7 +18,7 @@
     </div>
 
 
-    <alertAndRoam></alertAndRoam>
+    <alertAndRoam type="regionalRisk"></alertAndRoam>
 
     <SingleActive :options="options3"></SingleActive>
   </div>
@@ -34,26 +34,6 @@ import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from '@/components/SingleActive.vue'
 import alertAndRoam from '@/components/alertAndRoam.vue'
-
-const options1 = {
-  text: '报警信息',
-  style: {
-    right: '1%',
-    top: '3%',
-    width: '10vw',
-    height: '5vh'
-  }
-}
-
-const options2 = {
-  text: '场景巡游',
-  style: {
-    right: '1%',
-    top: '9%',
-    width: '10vw',
-    height: '5vh'
-  }
-}
 
 const options3 = {
   text: '返回',

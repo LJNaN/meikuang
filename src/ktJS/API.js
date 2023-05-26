@@ -438,17 +438,11 @@ function initEnvironmentPopup() {
     let isExceeding = false
     if (map.threshold) {
       if (map.shortName === 'FY') {
-        e.info.forEach(e2 => {
-          if (e2.value <= map.threshold[0] || e2.value >= map.threshold[1]) {
-            isExceeding = true
-          }
-        })
-      } else {
-        e.info.forEach(e2 => {
-          if (e2.value > map.threshold) {
-            isExceeding = true
-          }
-        })
+        if (e.info.value <= map.threshold[0] || e.info.value >= map.threshold[1]) {
+          isExceeding = true
+        }
+      } else if (e.info.value > map.threshold) {
+        isExceeding = true
       }
     }
 
@@ -542,9 +536,9 @@ function initEnvironmentPopup() {
 
       // 设置点击之后的弹窗
       let contentText = ``
-      if (e.info) e.info.forEach(e2 => {
-        contentText += `<p style="font-size: 1.6vh;">${e2.name}: ${e2.value}${map.unit}</p>`
-      })
+      if (e.info) {
+        contentText += `<p style="font-size: 1.6vh;">${e.info.name}: ${e.info.value}${e.info.unit}</p>`
+      }
 
       // 警告效果
       let alertText = ``
@@ -587,7 +581,7 @@ function initEnvironmentPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="z-index: 5;position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${map.name}</p>
+            <p style="z-index: 5;position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${e.title || map.name}</p>
             <div style="z-index: 5;width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
             </div>
@@ -899,8 +893,8 @@ function initPersonPopup() {
           <div style="
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
-            width: 20vw;
-            height:5.5vh;
+            width: 26vw;
+            height:5.4vh;
             left: 0.5vw;
             top: -5.5vh;
             display: flex;
@@ -915,14 +909,14 @@ function initPersonPopup() {
               display: inline;
               text-align: center;
               min-width: 15vw;
-              font-size: 2vh;"
+              font-size: 4vh;"
             >${e.name} ${map.name}</p>
           </div>
 
           <div style="
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
-            width: 22vw;
+            width: 28vw;
             height:24vh;
             position: absolute;
             top: -0.5vh;
@@ -931,9 +925,9 @@ function initPersonPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="position: absolute; top: 21%;font-family: YouSheBiaoTiHei;font-size:2.3vh;">${e.info.title}</p>
+            <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
             <div
-              style="width: 75%; height: 34%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
+              style="width: 75%; height: 34%; margin-top: 14%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
               <p style="font-size: 1vw">${e.info.value1}</p>
               <p style="font-size: 1vw">${e.info.value2}</p>

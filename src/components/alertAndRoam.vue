@@ -1,5 +1,5 @@
 <template>
-  <el-badge :value="0" class="alert">
+  <el-badge :value="badgeNum" class="alert">
     <SingleActive :options="options1" @btnClick="btnClick"></SingleActive>
   </el-badge>
 
@@ -15,7 +15,6 @@
         </div>
 
         <p class="detail-top-right">{{ item.position2 }}</p>
-
       </div>
 
       <p class="detail-bottom">{{ item.value }}</p>
@@ -28,10 +27,14 @@
 import { ref } from 'vue'
 import SingleActive from '@/components/SingleActive.vue'
 import { STATE } from '@/ktJS/STATE'
+import { getRyyjList, getQyyjList } from '@/axios/api'
 
-// let alertList = ref([...STATE.alertList])
+const { type } = defineProps({ type: String })
+
+let badgeNum = ref(0)
 let alertList = ref([])
-let alertShow = ref(false)
+let alertShow = ref(false);
+
 
 
 const options1 = {
@@ -52,23 +55,41 @@ const options2 = {
     width: '10vw',
     height: '5vh'
   }
+};
+
+getData()
+async function getData() {
+  if (type === 'home' || type === 'regionalRisk') {
+    const data = await (type === 'home' ? getRyyjList() : getQyyjList())
+    STATE.alertList = handleAlertList(data)
+    alertList.value = [...STATE.alertList]
+    badgeNum.value = STATE.alertList.length
+  }
 }
 
-
+function handleAlertList(data) {
+  return data.list.reduce((acc, cur) => {
+    acc.push({
+      position: type === 'home' ? cur.pointName : cur.warnLocation,
+      position2: type === 'home' ? cur.belongTeam : cur.warnType,
+      value: cur.warnDescribe
+    })
+    return acc
+  }, [])
+}
 
 function btnClick(params) {
   if (params.text = '报警信息') {
     alertShow.value = params.active
-    if(params.active) {
-      // alertList.value = [...STATE.alertList]
-      alertList.value = []
+    if (params.active) {
+      getData()
     }
   }
 }
 
 function handleClose(id) {
   const itemIndex = alertList.value.findIndex(e => e.id === id)
-  
+
   if (itemIndex >= 0) {
     alertList.value.splice(itemIndex, 1)
   }

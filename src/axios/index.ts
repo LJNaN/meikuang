@@ -6,8 +6,7 @@ import { ElMessage } from 'element-plus' // 引入el 提示框，这个项目里
 const env = import.meta.env
 axios.defaults.timeout = 60000
 axios.defaults.baseURL = ''
-const BASE_URL = env.DEV ? 'http://192.168.0.103:5173/api' : window.location.protocol == 'https:' ? 'https://www.kantu3d.com/gxq' : 'http://219.153.117.212:92'
-console.log('env.DEV: ', env.DEV);
+const BASE_URL = ''
 
 //http request 拦截器
 axios.interceptors.request.use(
@@ -28,7 +27,7 @@ axios.interceptors.request.use(
 //http response 拦截器
 axios.interceptors.response.use(
   (response) => {
-    return response
+    return response.data
   },
   (error) => {
     const { response } = error
