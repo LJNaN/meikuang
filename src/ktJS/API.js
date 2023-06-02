@@ -452,12 +452,14 @@ function initEnvironmentPopup() {
           margin:0;
           cursor: pointer;
           color: #ffffff;
+          pointer-events: none;
           display: flex;
           flex-direction: column;
           align-items: center;
         ">
 
           <div style="
+            pointer-events: all;
             background: url('./assets/3d/image/${map.imgUrl}.png') center / 100% 100% no-repeat;
             width: 6vw;
             height:6vw;
@@ -581,7 +583,9 @@ function initEnvironmentPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="z-index: 5;position: absolute; top: 19%;font-size: 1.6vh;font-family: YouSheBiaoTiHei;">${e.title || map.name}</p>
+            <div style="z-index: 5;position: absolute; top: 15%;justify-content: center;width:80%;height:20%;display:flex;align-items:center;">
+              <p style="font-size: 1.6vh;font-family: YouSheBiaoTiHei;line-height:80%;text-align:center">${e.title || map.name}</p>
+            </div>
             <div style="z-index: 5;width: 75%; height: 45%; margin-top: 8%; display: flex; flex-direction: column; justify-content: space-around;">
               ${contentText}
             </div>
@@ -666,6 +670,7 @@ function initmonitorList() {
         ">
 
           <div style="
+            pointer-events: all;
             background: url('./assets/3d/image/56.png') center / 100% 100% no-repeat;
             width: 6vw;
             height:6vw;
@@ -1172,11 +1177,12 @@ function prtScreen() {
  * 测试用盒子
  */
 function testBox() {
-  const boxG = new Bol3D.BoxGeometry(10, 10, 10)
+  const boxG = new Bol3D.BoxGeometry(5, 5, 5)
   const boxM = new Bol3D.MeshBasicMaterial({ color: 0xffffff })
   const box = new Bol3D.Mesh(boxG, boxM)
   setModelPosition(box)
   CACHE.container.attach(box)
+  
 }
 
 /**
@@ -1666,12 +1672,65 @@ function opacityPopup(popup, type) {
   }
 }
 
-let powerSphere = null
-let flyLine = null
-function afterOnload() {
-  powerSphere = new TU.PowerSphere()
-  flyLine = new TU.FlyLine()
+
+// 生成随机点相关的
+
+function randomPointInQuadrilateral(p1, p2, p3, p4) {
+  /*
+   * 在四边形区域内随机生成一个点
+   *
+   * @param p1, p2, p3, p4: 四个顶点的坐标，每个坐标是一个二元组
+   * @return: 生成的随机点的坐标，是一个二元组
+   */
+  // 计算四边形的面积
+  var S = Math.abs(
+    (p1[0] - p3[0]) * (p2[1] - p4[1]) - (p2[0] - p4[0]) * (p1[1] - p3[1])
+  );
+  // 在[0, S]之间随机生成一个数
+  var s = Math.random() * S;
+  // 将四边形分成两个三角形，分别计算它们的面积和重心坐标
+  var S1 = Math.abs(
+    (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
+  );
+  var S2 = Math.abs(
+    (p2[0] - p4[0]) * (p1[1] - p4[1]) - (p1[0] - p4[0]) * (p2[1] - p4[1])
+  );
+  var G1 = [
+    (p1[0] + p2[0] + p3[0]) / 3,
+    (p1[1] + p2[1] + p3[1]) / 3
+  ];
+  var G2 = [
+    (p2[0] + p3[0] + p4[0]) / 3,
+    (p2[1] + p3[1] + p4[1]) / 3
+  ];
+  // 根据s的值随机生成点的坐标
+  var point;
+  if (s <= S1) {
+    point = randomPointInTriangle(p1, p2, p3);
+  } else {
+    point = randomPointInTriangle(p2, p3, p4);
+  }
+  return point;
 }
+
+function randomPointInTriangle(p1, p2, p3) {
+  /*
+   * 在三角形区域内随机生成一个点
+   *
+   * @param p1, p2, p3: 三个顶点的坐标，每个坐标是一个二元组
+   * @return: 生成的随机点的坐标，是一个二元组
+   */
+  // 在三角形内随机生成一个点
+  var a = Math.random(), b = Math.random();
+  if (a + b > 1) {
+    a = 1 - a;
+    b = 1 - b;
+  }
+  var x = a * p1[0] + b * p2[0] + (1 - a - b) * p3[0];
+  var y = a * p1[1] + b * p2[1] + (1 - a - b) * p3[1];
+  return [x, y];
+}
+
 
 
 let renderAnimationList = []
@@ -1680,8 +1739,6 @@ const render = () => {
   const elapsedTime = STATE.clock.getElapsedTime()
 
   renderAnimationList.forEach(e => e.animation())
-  if (powerSphere) powerSphere.animation(elapsedTime)
-  if (flyLine) flyLine.animation(elapsedTime)
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
 
@@ -1708,7 +1765,7 @@ export const API = {
   prtScreen,
   pause3D,
   opacityPopup,
-  afterOnload,
   BladePoints,
+  randomPointInQuadrilateral,
   render
 }

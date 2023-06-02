@@ -49,9 +49,9 @@ function handleLeft() {
   detailShow.value = !detailShow.value
 }
 
-let list = STATE.personList
 
 const sceneName = STATE.currentScene
+let list = STATE.personList.filter(e => e.info.title === sceneName)
 
 function handleClose() {
   detailShow.value = false

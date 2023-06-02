@@ -27,34 +27,91 @@ import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import alertAndRoam from '@/components/alertAndRoam.vue'
-import { getRysj, getAqjcAqmcList, getAqjcAqssList } from '@/axios/api'
+import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getRyPointNum } from '@/axios/api'
+import { CACHE } from "@/ktJS/CACHE";
 
 // 获取数据
-{
-  getRysj().then(e => {
+if (STATE.isNeedGetData) {
+  // 人员 & location
+  (async () => {
+    const personData = await getRysj()
+    STATE.sceneList.personPopup.forEach(e => {
+      e.remove(e.children[0])
+    })
     STATE.sceneList.personPopup = []
-    const data = e.list.reduce((acc, cur) => {
-      acc.push({
-        name: cur.t1,
-        level: Number(cur.t8),
-        position: { x: Math.random() * 1000 - 500, y: 0, z: Math.random() * 1000 - 500 },
-        info: {
-          title: cur.t6,
-          value1: cur.t0,
-          value2: STATE.personMap.find(e2 => e2.level == cur.t8).name,
-          value3: cur.t2,
-          value4: cur.t3,
-          value5: cur.t4
-        }
-      })
+    const data = personData.list.reduce((acc, cur) => {
+      const locationPosition = STATE.locationPositionPointsArr.find(e => e.name === cur.t6)
+      if (locationPosition) {
+        const randomPosition = API.randomPointInQuadrilateral(...locationPosition.value)
+
+        acc.push({
+          name: cur.t1,
+          level: Number(cur.t8),
+          position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
+          info: {
+            title: cur.t6,
+            value1: cur.t0,
+            value2: STATE.personMap.find(e2 => e2.level == cur.t8).name,
+            value3: cur.t2,
+            value4: cur.t3,
+            value5: cur.t4
+          }
+        })
+      } else {
+
+      }
       return acc
     }, [])
     STATE.personList = data
-    API.initPersonPopup()
-  })
+
+    // 处理location的当前场景人数
+    // const locationPersonNum = {}
+    // data.forEach(e => {
+    //   if (locationPersonNum[e.info.title] != undefined) {
+    //     locationPersonNum[e.info.title]++
+    //   } else {
+    //     locationPersonNum[e.info.title] = 0
+    //   }
+    // })
+
+    // for (let key in locationPersonNum) {
+    //   const location = STATE.popupLocationList.find(e => e.name === key)
+    //   if (location) {
+    //     location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
+    //   }
+    // }
+
+    // 获取服务器所有的区域data
+    const locationDataOrigin = await getRiskPointList()
+
+    // 区域人员数量
+    const locationPointOrigin = await getRyPointNum()
+
+    locationDataOrigin.list.forEach(e => {
+      const location = STATE.popupLocationList.find(e2 => e2.name === e.pointName)
+      const pointNumber = locationPointOrigin.list.find(e2 => e2.pointId == e.id)
+      if (location && pointNumber) {
+        location.sub = `工作人员数量: ${pointNumber.numAll} 人`
+      }
+    })
 
 
+
+    if (!STATE.sceneList.personPopup.length) {
+      API.initPersonPopup()
+    }
+    if (!STATE.sceneList.locationPopup.length) {
+      API.initLocationPopup()
+    }
+  })()
+
+
+  // 传感器
   getAqjcAqmcList().then(e => {
+    STATE.sceneList.environmentPopup.forEach(e => {
+
+      e.remove(e.children[0])
+    })
     STATE.sceneList.environmentPopup = []
     const existingList = e.list
       .map(e2 => STATE.popupEnvironmentList
@@ -66,7 +123,6 @@ import { getRysj, getAqjcAqmcList, getAqjcAqssList } from '@/axios/api'
       existingList.forEach(e3 => {
         const originData = e.list.find(e4 => e4.ssTransducerCode === e3.id)
         e3.title = originData.ssTransducerPoint
-        e3.position = { x: Math.random() * 1000 - 500, y: 0, z: Math.random() * 1000 - 500 }
         e3.info.name = originData.ssTransducerName
         e3.info.unit = originData.ssAnalogUnit
         const data = e2.list.find(e4 => e4.ssTransducerCode === e3.id)
@@ -76,9 +132,14 @@ import { getRysj, getAqjcAqmcList, getAqjcAqssList } from '@/axios/api'
       })
 
       STATE.popupEnvironmentList = existingList
-      API.initEnvironmentPopup()
+
+      if (!STATE.sceneList.environmentPopup.length) {
+        API.initEnvironmentPopup()
+      }
     })
   })
+
+  STATE.isNeedGetData = false
 }
 
 

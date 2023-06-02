@@ -375,34 +375,15 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       // 加载弹窗
       // API.initPersonPopup()
       // API.initEnvironmentPopup()
-      API.initLocationPopup()
+      // API.initLocationPopup()
+
       API.initmonitorList()
       API.initBaseStationPopup()
 
       console.log(STATE.roomModelName)
       console.log(STATE.sceneList)
-
+      
       TU.init(container, Bol3D)
-
-
-
-      // setTimeout(() => {
-      //   const t1 = new Bol3D.TWEEN.Tween(CACHE.container.orbitCamera.position)
-      //   .to({
-      //       x: '+1000',
-      //       y: ['+800', '-400']
-      //   }, 2000)
-      //   window.t1 =t1
-
-      //   t1.interpolation(Bol3D.TWEEN.Interpolation.Bezier)
-      //   t1.easing(Bol3D.TWEEN.Easing.Cubic.InOut)
-      // }, 1000)
-
-
-      // setTimeout(() => {
-      //   API.prtScreen()
-      // }, 2000);
-      // API.afterOnload()
 
       // API.testBox()
       // API.loadGUI()

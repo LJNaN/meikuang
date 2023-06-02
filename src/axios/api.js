@@ -39,3 +39,16 @@ export function getAqjcAqssList(params = {}) {
   Object.assign(params, token)
   return request('/api/getAqjcAqssList', params, 'get')
 }
+
+// location 列表
+export function getRiskPointList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getRiskPointList', params, 'get')
+}
+
+// 风险点人员数量
+export function getRyPointNum(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getRyPointNum', params, 'get')
+}
+

@@ -8,6 +8,10 @@
   z-index: 1 !important;
 }
 
+.popup3dclass {
+  pointer-events: none !important;
+}
+
 .popup3d_location {
   pointer-events: none !important;
 }
