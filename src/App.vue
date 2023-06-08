@@ -6,9 +6,14 @@
 import Scene from '@/views/Scene.vue'
 import router from '@/router/index'
 import { API } from '@/ktJS/API'
+import { onBeforeMount } from 'vue'
 
-// 没卵用
-// if (router.currentRoute.value.path != '/') router.push('/')
+
+onBeforeMount(() => {
+  if (location.hash != '#/') {
+    router.push('/')
+  }
+})
 
 window.pause3D = (flag) => {
   API.pause3D(flag)
@@ -17,6 +22,7 @@ window.pause3D = (flag) => {
 </script>
 
 <template>
+  <!-- <img class="bg" src="/assets/3d/image/96.png"> -->
   <Scene />
   <router-view></router-view>
   <div v-if="false"
@@ -41,10 +47,22 @@ window.pause3D = (flag) => {
       ">
         <p style="font-size: 5vh; font-family: YouSheBiaoTiHei; text-align: center; margin-top: 13%;">设备信息</p>
         <div style="display: flex; flex-direction: column; justify-content: space-around; margin-top: 4%; height: 67%;">
-          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
-          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
-          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
-          <div style="display: flex;"><p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p><p style="font-size: 3vh;">dadsadas</p></div>
+          <div style="display: flex;">
+            <p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p>
+            <p style="font-size: 3vh;">dadsadas</p>
+          </div>
+          <div style="display: flex;">
+            <p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p>
+            <p style="font-size: 3vh;">dadsadas</p>
+          </div>
+          <div style="display: flex;">
+            <p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p>
+            <p style="font-size: 3vh;">dadsadas</p>
+          </div>
+          <div style="display: flex;">
+            <p style="font-size: 3vh; color: #7facd4; margin-right: 1vw;">adsdas:</p>
+            <p style="font-size: 3vh;">dadsadas</p>
+          </div>
         </div>
       </div>
     </div>
@@ -59,5 +77,12 @@ window.pause3D = (flag) => {
   background-color: #000;
   pointer-events: none;
   color: #FFF;
+}
+
+.bg {
+  position: fixed;
+  z-index: 5;
+  height: 100vh;
+  width: 100vw;
 }
 </style>

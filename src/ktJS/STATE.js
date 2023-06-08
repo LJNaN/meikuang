@@ -2146,17 +2146,6 @@ const personList = [
   { name: '成兆强', level: 4, position: { x: 259, y: 0, z: 54 }, info: { title: '501综采工作面', value1: 'X2587', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
   { name: '仵朋辉', level: 4, position: { x: 288, y: 0, z: 55 }, info: { title: '501综采工作面', value1: '6945', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
   { name: '张涵溪', level: 4, position: { x: 298, y: 0, z: 66 }, info: { title: '501综采工作面', value1: 'X3053', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张一', level: 1, position: { x: -126, y: 0, z: -176 }, info: { title: '501综采工作面', value1: 'X3053', value2: '重点监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张二', level: 2, position: { x: 19, y: 0, z: -134 }, info: { title: '501综采工作面', value1: 'X3053', value2: '加强监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张三', level: 3, position: { x: 77, y: 0, z: -110 }, info: { title: '501综采工作面', value1: 'X3053', value2: '需关注', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张四', level: 3, position: { x: 176, y: 0, z: -347 }, info: { title: '501综采工作面', value1: 'X3053', value2: '需关注', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张五', level: 2, position: { x: 308, y: 0, z: -355 }, info: { title: '501综采工作面', value1: 'X3053', value2: '加强监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张六', level: 1, position: { x: 382, y: 0, z: -355 }, info: { title: '501综采工作面', value1: 'X3053', value2: '重点监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张七', level: 1, position: { x: -87, y: 0, z: -168 }, info: { title: '501综采工作面', value1: 'X3053', value2: '重点监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张八', level: 2, position: { x: -50, y: 0, z: -153 }, info: { title: '501综采工作面', value1: 'X3053', value2: '加强监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张九', level: 2, position: { x: 45, y: 0, z: -121 }, info: { title: '501综采工作面', value1: 'X3053', value2: '加强监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张十', level: 2, position: { x: 96, y: 0, z: -103 }, info: { title: '501综采工作面', value1: 'X3053', value2: '加强监管', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张十一', level: 3, position: { x: 217, y: 0, z: -353 }, info: { title: '501综采工作面', value1: 'X3053', value2: '需关注', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
 ]
 
 // 人员监管相关的配置
@@ -2219,6 +2208,7 @@ let currentScene = ''
 // 是否要获取数据
 let isNeedGetData = true
 
+// 工作面选区
 const locationPositionPointsArr = [
   {
     name: '625综采工作面', value: [

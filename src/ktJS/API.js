@@ -201,7 +201,7 @@ function initLocationPopup() {
               font-size: 2.5vh;
               text-align: center;">${e.name}
             </p>
-            <p style="font-size: 1vh; margin-top: 0.5vh;">${e.sub}</p>
+            <p style="font-size: 1.5vh; margin-top: 0.5vh;">${e.sub}</p>
           </div>
     
           <div style="
@@ -300,7 +300,7 @@ function initLocationPopup() {
                   align-items: center;
               ">
                 <p>人员</p>
-                <p>${e.regionRate.member || ''}</p>
+                <p>${e.regionRate.member || 0}</p>
               </div>
               <div style="
                   display: flex;
@@ -310,7 +310,7 @@ function initLocationPopup() {
                   align-items: center;
               ">
                 <p>设备</p>
-                <p>${e.regionRate.device || ''}</p>
+                <p>${e.regionRate.device || 0}</p>
               </div>
               <div style="
                   display: flex;
@@ -320,7 +320,7 @@ function initLocationPopup() {
                   align-items: center;
               ">
                 <p>环境</p>
-                <p>${e.regionRate.environment || ''}</p>
+                <p>${e.regionRate.environment || 0}</p>
               </div>
               <div style="
                   display: flex;
@@ -330,7 +330,7 @@ function initLocationPopup() {
                   align-items: center;
               ">
                 <p>管理</p>
-                <p>${e.regionRate.manager || ''}</p>
+                <p>${e.regionRate.manager || 0}</p>
               </div>
             </div>
           </div>
@@ -365,8 +365,16 @@ function initLocationPopup() {
     })
 
 
-
-    CACHE.container.attach(group)
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(group)
+      }
+    }
+    waitContainerLoad()
     if (!STATE.sceneList.locationPopup) {
       STATE.sceneList.locationPopup = []
     }
@@ -604,10 +612,28 @@ function initEnvironmentPopup() {
       })
       popup2.userData.isExceeding = isExceeding
       STATE.currentPopup.push(popup2)
-      CACHE.container.attach(popup2)
+      function waitContainerLoad2() {
+        if (!CACHE.container) {
+          setTimeout(() => {
+            waitContainerLoad2()
+          }, 1000)
+        } else {
+          CACHE.container.attach(popup2)
+        }
+      }
+      waitContainerLoad2()
     }
 
-    CACHE.container.attach(group)
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(group)
+      }
+    }
+    waitContainerLoad()
 
     // if(e.id === '001487') {
     //   setModelPosition(group)
@@ -722,7 +748,7 @@ function initmonitorList() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          position: { x: e.position.x + 100 * (window.innerWidth / 1000), y: 100, z: e.position.z + 100 * (window.innerWidth / 1000) },
           target: { x: e.position.x, y: e.position.y + 42, z: e.position.z }
         }
       })
@@ -766,7 +792,17 @@ function initmonitorList() {
         closeVisible: 'show'
       })
       STATE.currentPopup.push(popup2)
-      CACHE.container.attach(popup2)
+      function waitContainerLoad() {
+        if (!CACHE.container) {
+          setTimeout(() => {
+            waitContainerLoad()
+          }, 1000)
+        } else {
+          CACHE.container.attach(popup2)
+        }
+      }
+      waitContainerLoad()
+      
       setTimeout(() => {
         const monitorVideoDom = document.getElementById('monitorVideo')
         if (monitorVideoDom) {
@@ -775,7 +811,16 @@ function initmonitorList() {
       }, 200)
     }))
 
-    CACHE.container.attach(group)
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(group)
+      }
+    }
+    waitContainerLoad()
 
     if (!STATE.sceneList.monitorPopup) {
       STATE.sceneList.monitorPopup = []
@@ -786,6 +831,7 @@ function initmonitorList() {
 
 // 加载监管人员
 function initPersonPopup() {
+
   STATE.personList.forEach((e, index) => {
     const map = STATE.personMap.find(e2 => e2.level === e.level)
     // 一根竖直的弹窗
@@ -864,10 +910,6 @@ function initPersonPopup() {
     group.position.set(e.position.x, 0, e.position.z)
     group.name = 'person_group_' + e.level + '_' + e.name
 
-    // if(index === 0) {
-    //   setModelPosition(group)
-    // }
-
     // 点击头像
     popup.element.addEventListener('dblclick', (() => {
       STATE.currentPopup.forEach(e2 => {
@@ -876,7 +918,7 @@ function initPersonPopup() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          position: { x: e.position.x + 100 * (window.innerWidth / 1000), y: 255, z: e.position.z + (-144 * (window.innerWidth / 1000)) },
           target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
@@ -932,7 +974,7 @@ function initPersonPopup() {
           ">
             <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
             <div
-              style="width: 75%; height: 34%; margin-top: 14%; display: flex; flex-direction: column; justify-content: space-around;">
+              style="width: 75%; height: 34%; margin-top: 10%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
               <p style="font-size: 1vw">${e.info.value1}</p>
               <p style="font-size: 1vw">${e.info.value2}</p>
@@ -954,10 +996,28 @@ function initPersonPopup() {
         closeVisible: 'show'
       })
       STATE.currentPopup.push(popup2)
-      CACHE.container.attach(popup2)
+      function waitContainerLoad2() {
+        if (!CACHE.container) {
+          setTimeout(() => {
+            waitContainerLoad2()
+          }, 1000)
+        } else {
+          CACHE.container.attach(popup2)
+        }
+      }
+      waitContainerLoad2()
     }))
 
-    CACHE.container.attach(group);
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(group);
+      }
+    }
+    waitContainerLoad()
 
     if (!STATE.sceneList.personPopup) {
       STATE.sceneList.personPopup = []
@@ -1115,7 +1175,13 @@ function initMainMachinePopup(name) {
         `,
       position: [0, 0, 0],
       className: 'popup3dclass popup3d_main_machine',
-      scale: name === 'zongcai' ? [0.045, 0.045, 0.045] : [0.1, 0.1, 0.1],
+      scale: (() => {
+        let scale = []
+        const screenTime = (window.innerWidth / 1000)
+        scale = name === 'zongcai' ? [0.045 / screenTime, 0.045 / screenTime, 0.045 / screenTime] : [0.1 / screenTime, 0.1 / screenTime, 0.1 / screenTime]
+        console.log('scale: ', scale);
+        return scale
+      })(),
       closeVisible: 'show'
     })
 
@@ -1124,7 +1190,16 @@ function initMainMachinePopup(name) {
     group.position.set(0, 0, 0)
     group.name = 'machine_group_' + name
 
-    CACHE.container.attach(group)
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(group)
+      }
+    }
+    waitContainerLoad()
     STATE.sceneList.mainMachinePopup = group
 
     if (name === 'zongcai') {
@@ -1181,8 +1256,17 @@ function testBox() {
   const boxM = new Bol3D.MeshBasicMaterial({ color: 0xffffff })
   const box = new Bol3D.Mesh(boxG, boxM)
   setModelPosition(box)
-  CACHE.container.attach(box)
-  
+  function waitContainerLoad() {
+    if (!CACHE.container) {
+      setTimeout(() => {
+        waitContainerLoad()
+      }, 1000)
+    } else {
+      CACHE.container.attach(box)
+    }
+  }
+  waitContainerLoad()
+
 }
 
 /**
@@ -1526,8 +1610,18 @@ class BladePoints {
     this.init()
   }
   init() {
+    const this_ = this
     this.createPoints()
-    CACHE.container.attach(this.point);
+    function waitContainerLoad() {
+      if (!CACHE.container) {
+        setTimeout(() => {
+          waitContainerLoad()
+        }, 1000)
+      } else {
+        CACHE.container.attach(this_.point);
+      }
+    }
+    waitContainerLoad()
     this.animation()
   }
   createPoints() {
@@ -1674,7 +1768,6 @@ function opacityPopup(popup, type) {
 
 
 // 生成随机点相关的
-
 function randomPointInQuadrilateral(p1, p2, p3, p4) {
   /*
    * 在四边形区域内随机生成一个点
@@ -1712,7 +1805,6 @@ function randomPointInQuadrilateral(p1, p2, p3, p4) {
   }
   return point;
 }
-
 function randomPointInTriangle(p1, p2, p3) {
   /*
    * 在三角形区域内随机生成一个点
@@ -1729,6 +1821,35 @@ function randomPointInTriangle(p1, p2, p3) {
   var x = a * p1[0] + b * p2[0] + (1 - a - b) * p3[0];
   var y = a * p1[1] + b * p2[1] + (1 - a - b) * p3[1];
   return [x, y];
+}
+
+// 生成在线上的随机点
+function randomPointInLine(...polygons) {
+  let totalLength = 0;
+  const lengths = [];
+  for (let i = 0; i < polygons.length; i++) {
+    const p1 = polygons[i];
+    const p2 = polygons[(i + 1) % polygons.length];
+    const length = Math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2);
+    totalLength += length;
+    lengths.push(length);
+  }
+  const randomValue = Math.random() * totalLength;
+  let currentLength = 0;
+  let edgeIndex = 0;
+  let t = 0;
+  for (let i = 0; i < lengths.length; i++) {
+    currentLength += lengths[i];
+    if (currentLength >= randomValue) {
+      edgeIndex = i;
+      t = (randomValue - (currentLength - lengths[i])) / lengths[i];
+      break;
+    }
+  }
+  const p1 = polygons[edgeIndex];
+  const p2 = polygons[(edgeIndex + 1) % polygons.length];
+  const randomPoint = { x: p1[0] + (p2[0] - p1[0]) * t, y: p1[1] + (p2[1] - p1[1]) * t };
+  return [randomPoint.x, randomPoint.y];
 }
 
 
@@ -1767,5 +1888,6 @@ export const API = {
   opacityPopup,
   BladePoints,
   randomPointInQuadrilateral,
+  randomPointInLine,
   render
 }

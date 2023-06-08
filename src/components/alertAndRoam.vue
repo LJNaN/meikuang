@@ -24,10 +24,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import SingleActive from '@/components/SingleActive.vue'
 import { STATE } from '@/ktJS/STATE'
 import { getRyyjList, getQyyjList } from '@/axios/api'
+import { mockData } from "@/axios/mockdata"
+const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } = getCurrentInstance()
 
 const { type } = defineProps({ type: String })
 
@@ -60,7 +62,18 @@ const options2 = {
 getData()
 async function getData() {
   if (type === 'home' || type === 'regionalRisk') {
-    const data = await (type === 'home' ? getRyyjList() : getQyyjList())
+    let data = []
+    if ($isOurSite) {
+      data = (type === 'home'
+        ? { list: mockData.getRyyjList }
+        : { list: mockData.getQyyjList }
+      )
+    } else {
+      data = await (type === 'home'
+        ? getRyyjList().catch(() => { return { list: [] } })
+        : getQyyjList().catch(() => { return { list: [] } })
+      )
+    }
     STATE.alertList = handleAlertList(data)
     alertList.value = [...STATE.alertList]
     badgeNum.value = STATE.alertList.length
@@ -70,7 +83,7 @@ async function getData() {
 function handleAlertList(data) {
   return data.list.reduce((acc, cur) => {
     acc.push({
-      position: type === 'home' ? cur.pointName : cur.warnLocation,
+      position: type === 'home' ? cur.workLocation : cur.warnLocation,
       position2: type === 'home' ? cur.belongTeam : cur.warnType,
       value: cur.warnDescribe
     })
