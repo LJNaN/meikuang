@@ -353,6 +353,27 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       CACHE.container.sceneList = STATE.sceneList
       CACHE.container.attach(STATE.sceneList.text)
 
+      console.log(
+        "%c欢迎打开控制台",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+      console.log(
+        "%c新增区域操作步骤：1.使用 markStart() 函数开始标注新区域",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+      console.log(
+        "%c2.使用 markStep() 在新区域的四周进行标注，请多次执行此函数以围成一个多边形区域",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+      console.log(
+        "%c3.标注完成后请复制区域内容，打开项目包的 /data/workfaceArea.js ，并参照文件内容格式新增 name 与 value 即可",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+      console.log(
+        "%c4.使用 markReset() 清空暂存数组，退出编辑模式请直接刷新",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+
 
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
@@ -385,6 +406,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       
       TU.init(container, Bol3D)
 
+      window.markStart = (() => {
+        API.testBox()
+      })
       // API.testBox()
       // API.loadGUI()
       API.render()

@@ -35,11 +35,11 @@
 
 
 <script setup>
-import { onMounted, ref, computed, reactive, watch } from "vue";
+import { onMounted, ref, computed, reactive, watch,getCurrentInstance } from "vue";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
-
+const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } = getCurrentInstance()
 // const props = defineProps(["options"])
 // const options = props.options
 
@@ -51,7 +51,12 @@ function handleLeft() {
 
 
 const sceneName = STATE.currentScene
-let list = STATE.personList.filter(e => e.info.title === sceneName)
+let list = []
+if($isOurSite) {
+  list = STATE.personList
+} else {
+  list = STATE.personList.filter(e => e.info.title === sceneName)
+}
 
 function handleClose() {
   detailShow.value = false

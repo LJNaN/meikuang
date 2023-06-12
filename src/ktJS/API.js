@@ -802,7 +802,7 @@ function initmonitorList() {
         }
       }
       waitContainerLoad()
-      
+
       setTimeout(() => {
         const monitorVideoDom = document.getElementById('monitorVideo')
         if (monitorVideoDom) {
@@ -1267,6 +1267,26 @@ function testBox() {
   }
   waitContainerLoad()
 
+  let markData = []
+  function markReset() {
+    markData = []
+    console.log(
+      "%c暂存坐标已清空",
+      "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+    );
+  }
+  function markStep() {
+    markData.push([box.position.x, box.position.z])
+    console.log(
+      "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
+      "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+    );
+    console.log(window.markData)
+  }
+
+  window.markData = markData
+  window.markReset = markReset
+  window.markStep = markStep
 }
 
 /**
@@ -1275,6 +1295,7 @@ function testBox() {
  */
 function setModelPosition(mesh) {
   const controls = CACHE.container.transformControl
+  controls.showY = false
   const gui = new dat.GUI()
   const options = {
     transformModel: "translate"
@@ -1283,23 +1304,11 @@ function setModelPosition(mesh) {
   const positionX = gui.add(mesh.position, 'x').onChange(val => mesh.position.x = val).name('positionX')
   const positionY = gui.add(mesh.position, 'y').onChange(val => mesh.position.y = val).name('positionY')
   const positionZ = gui.add(mesh.position, 'z').onChange(val => mesh.position.z = val).name('positionZ')
-  const rotationX = gui.add(mesh.rotation, 'x').step(0.01).onChange(val => mesh.rotation.x = val).name('rotationX')
-  const rotationY = gui.add(mesh.rotation, 'y').step(0.01).onChange(val => mesh.rotation.y = val).name('rotationY')
-  const rotationZ = gui.add(mesh.rotation, 'z').step(0.01).onChange(val => mesh.rotation.z = val).name('rotationZ')
-  const scaleX = gui.add(mesh.scale, "x").step(0.01).onChange(val => mesh.scale.x = val).name('scaleX')
-  const scaleY = gui.add(mesh.scale, "y").step(0.01).onChange(val => mesh.scale.y = val).name('scaleY')
-  const scaleZ = gui.add(mesh.scale, "z").step(0.01).onChange(val => mesh.scale.z = val).name('scaleZ')
   controls.attach(mesh)
   controls.addEventListener("change", (e) => {
     positionX.setValue(mesh.position.x)
     positionY.setValue(mesh.position.y)
     positionZ.setValue(mesh.position.z)
-    rotationX.setValue(mesh.rotation.x)
-    rotationY.setValue(mesh.rotation.y)
-    rotationZ.setValue(mesh.rotation.z)
-    scaleX.setValue(mesh.scale.x)
-    scaleY.setValue(mesh.scale.y)
-    scaleZ.setValue(mesh.scale.z)
   })
 }
 
