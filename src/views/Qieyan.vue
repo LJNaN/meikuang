@@ -22,7 +22,6 @@ let animationFlag = ref(true)
 
 function back() {
   API.back()
-  router.push('/')
 }
 
 function handleAnimationFlag() {

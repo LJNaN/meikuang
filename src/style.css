@@ -2,6 +2,12 @@
   margin: 0;
   user-select: none;
   font-size: 1vh;
+  box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 .dg.ac {
@@ -61,6 +67,15 @@
   align-items: center;
 }
 
+.font-gradient {
+  font-size: 3vh;
+  font-family: YouSheBiaoTiHei;
+  font-weight: 400;
+  color: #FFFFFF;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(166,189,204,1) 16.748046875%, rgba(255,255,255,1) 66.6259765625%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 @font-face {
   font-family: 'YouSheBiaoTiHei';

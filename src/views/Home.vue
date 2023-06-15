@@ -40,7 +40,8 @@ const perserList = [
   { name: '安全', bg: ['24', '25', '81'] },
 ]
 
-let personShowType = ref([0, 1, 2, 3, 4])
+// 显示除了安全的
+let personShowType = ref([0, 1, 2, 3])
 
 function showRegionalRisk() {
   API.showPopup([
@@ -48,7 +49,17 @@ function showRegionalRisk() {
     STATE.sceneList.monitorPopup,
     STATE.sceneList.baseStationPopup
   ], false)
-  API.showPopup([STATE.sceneList.locationPopup])
+  // 只显示重点区域，然后隐藏popup1，显示popup2
+  STATE.sceneList.locationPopup.forEach(e => {
+    e.children[0].visible = false
+    STATE.importantLocation.forEach(e2 => {
+      if(e.name === `location_group_${e2}`) {
+        e.children[1].visible = true
+      }
+    })
+  })
+  STATE.currentScene[1] = STATE.currentScene[0]
+  STATE.currentScene[0] = '/regionalrisk'
   router.push('/regionalrisk')
 }
 
@@ -101,12 +112,12 @@ onMounted(() => {
       STATE.personList = data
 
       STATE.popupLocationList.forEach(e => {
-        e.sub = `工作人员数量: ${Math.floor(Math.random() * 50)} 人`
-        e.regionRate.total = Math.floor(Math.floor(Math.random() * 10 + 90))
-        e.regionRate.member = Math.floor(Math.floor(Math.random() * 10 + 90))
-        e.regionRate.device = Math.floor(Math.floor(Math.random() * 10 + 90))
-        e.regionRate.environment = Math.floor(Math.floor(Math.random() * 10 + 90))
-        e.regionRate.manager = Math.floor(Math.floor(Math.random() * 10 + 90))
+        e.sub = `工作人员数量: 0 人`
+        e.regionRate.total = 0
+        e.regionRate.member = 0
+        e.regionRate.device = 0
+        e.regionRate.environment = 0
+        e.regionRate.manager = 0
       })
 
       if (!STATE.sceneList.personPopup.length) {

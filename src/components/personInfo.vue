@@ -50,7 +50,7 @@ function handleLeft() {
 }
 
 
-const sceneName = STATE.currentScene
+const sceneName = STATE.currentScene[0]
 let list = []
 if($isOurSite) {
   list = STATE.personList

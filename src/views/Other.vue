@@ -18,7 +18,6 @@ import PersonInfo from "@/components/personInfo.vue";
 
 function back() {
   API.back()
-  router.push('/')
 }
 
 const options1 = {

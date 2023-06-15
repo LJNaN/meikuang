@@ -1,5 +1,6 @@
 import { STATE } from './STATE.js'
 import { CACHE } from './CACHE.js'
+import router from '@/router/index'
 import TU from './threeUtils.js'
 
 
@@ -173,7 +174,11 @@ function loadGUI() {
  */
 function initLocationPopup() {
   STATE.popupLocationList.forEach((e, index) => {
-    // location 的popup
+    // 新建组
+    const group = new Bol3D.Group()
+    group.position.set(e.position.x, 0, e.position.z)
+    group.name = 'location_group_' + e.name
+    // 首页location 的popup
     const popup = new Bol3D.POI.Popup3D({
       value: `
         <div style="
@@ -228,14 +233,92 @@ function initLocationPopup() {
       scale: [0.3, 0.3, 0.3],
       closeVisible: 'hidden'
     })
-    const group = new Bol3D.Group()
     group.add(popup)
-    group.position.set(e.position.x, 0, e.position.z)
-    group.name = 'location_group_' + e.name
     popup.name = e.name
+    popup.element.addEventListener("dblclick", () => {
+      enterRoom(e.name)
+    })
 
-    // location 的区域风险的环境评分弹窗
+    // 重点区域的popup 首页
     const popup2 = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+              margin:0;
+              color: #ffffff;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              transform: translate(0, -27%);
+            ">
+
+          <div class="location_title"
+               name=${e.name}
+                style="
+                background: url('./assets/3d/image/99.png') center / 100% 100% no-repeat;
+                width: 34vw;
+                height:30vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              ">
+            <div style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
+              <div style="display: flex; flex-direction: column;justify-content: space-between;height: 80%;margin-top: 5%; ">
+                <p class="font-gradient">${e.name}</p>
+                <p style="font-size: 2vh;">${e.sub}</p>
+              </div>
+              <div style="display: flex; width: 40%; height:60%; position: absolute; right: 0; top: 40%;">
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(0)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/100.png" />
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(1)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/101.png" />
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(2)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/102.png" />
+              </div>
+            </div>
+            <div style="display: flex; width: 80%;height: 18%;position: absolute;top: 27%;">
+              <div style="display: flex;width: 30%;flex-direction: column;align-items: center;">
+                <p class="font-gradient">区域评分</p>
+                <p class="font-gradient">80</p>
+              </div>
+              <div style="display: flex; margin-left:5%;width: 65%;align-items: center;justify-content: space-between">
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">97</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">97</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">97</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">97</p></div>
+                <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: 5%;"></div>
+                <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: -10%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="
+                background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
+                width: 6vw;
+                height:13vh;
+              ">
+          </div>
+
+          <div style="
+                background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
+                width: 7vw;
+                height:7vw;
+                position: relative;
+                top: -6vh;
+                animation: myrotate 8s linear infinite;
+                scale: 1 0.4;
+              ">
+          </div>
+        </div>
+      `,
+      position: [0, 0, 0],
+      className: 'popup3dclass popup3d_location',
+      scale: [0.3, 0.3, 0.3],
+      closeVisible: 'hidden'
+    })
+    popup2.visible = false
+    group.add(popup2)
+
+
+    // 重点区域的popup 传感器页
+    const popup3 = new Bol3D.POI.Popup3D({
       value: `
         <div style="
           margin:0;
@@ -243,126 +326,138 @@ function initLocationPopup() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          transform: translate(0, -182%);
+          transform: translate(0, -27%);
         ">
 
-          <div style="
-            background: url('./assets/3d/image/44.png') center / 100% 100% no-repeat;
-            width: 30vw;
-            height:25vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          ">
-            <p style="
-              position: absolute;
-              top: 13%;
-              font-size: 3vh;
-              font-family: YouSheBiaoTiHei;">区域评分: ${e.regionRate.total}
-            </p>
-
-            <div style="
-              width: 80%;
-              height: 35%;
-              position: absolute;
+        <div class="location_title"
+            name=${e.name}
+            style="
+              background: url('./assets/3d/image/97.png') center / 100% 100% no-repeat;
+              width: 24vw;
+              height:30vh;
               display: flex;
-              justify-content: space-between;
-              top: 41%;
-            ">
-              <div style="
-                position: absolute;
-                top: 40%;
-                width: 120%;
-                left: -10%;
-                height: 1px;
-                background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
-                opacity: 0.5;
-                ">
-              </div>
-
-              <div style="
-                position: absolute;
-                top: 105%;
-                width: 120%;
-                left: -10%;
-                height: 1px;
-                background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
-                opacity: 0.5;
-                ">
-              </div>
-
-              <div style="
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  align-items: center;
-              ">
-                <p>人员</p>
-                <p>${e.regionRate.member || 0}</p>
-              </div>
-              <div style="
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  align-items: center;
-              ">
-                <p>设备</p>
-                <p>${e.regionRate.device || 0}</p>
-              </div>
-              <div style="
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  align-items: center;
-              ">
-                <p>环境</p>
-                <p>${e.regionRate.environment || 0}</p>
-              </div>
-              <div style="
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  align-items: center;
-              ">
-                <p>管理</p>
-                <p>${e.regionRate.manager || 0}</p>
-              </div>
-            </div>
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+          ">
+          <div
+            style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
+            <p class="font-gradient" style="flex: 1; text-align: center">设备名</p>
+            <p class="font-gradient" style="flex: 1; text-align: center">监测值</p>
           </div>
+          <div style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">甲烷传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.5%</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">粉尘传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">100mg/m³</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">温度传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">23℃</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">一氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">11ppm</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">二氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.7%</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">甲烷传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.5%</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">粉尘传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">100mg/m³</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">温度传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">23℃</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">一氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">11ppm</p></div>
+            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">二氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.7%</p></div>
+          </div>
+          <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)" style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 6%;"></div>
         </div>
+
+        <div style="
+            background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:13vh;
+          ">
+        </div>
+
+        <div style="
+            background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
+            width: 7vw;
+            height:7vw;
+            position: relative;
+            top: -6vh;
+            animation: myrotate 8s linear infinite;
+            scale: 1 0.4;
+          ">
+        </div>
+      </div>
       `,
       position: [0, 0, 0],
-      className: 'popup3dclass popup3d_location_region',
-      scale: [0.2, 0.2, 0.2],
-      closeVisible: 'show'
+      className: 'popup3dclass popup3d_location',
+      scale: [0.3, 0.3, 0.3],
+      closeVisible: 'hidden'
     })
-    popup2.visible = false
-    STATE.currentPopup.push(popup2)
-    group.add(popup2)
+    popup3.visible = false
+    group.add(popup3)
 
-    // 双击popup 判断是弹窗还是他妈的直接进去
-    popup.element.addEventListener("dblclick", () => {
-      if (CACHE.regionalRateMode) {
-        STATE.currentPopup.forEach(e => {
-          e.visible = false
-          CACHE.container.remove(e)
-        })
-        popup2.visible = true
-        const cameraState = {
-          position: { x: e.position.x + 200, y: 200, z: e.position.z + 200 },
-          target: { x: e.position.x, y: 60, z: e.position.z }
-        }
-        cameraAnimation({ cameraState })
-      } else {
-        popup2.visible = false
-        enterRoom(e.name)
-      }
+
+    // 重点区域的popup 监控页
+    const popup4 = new Bol3D.POI.Popup3D({
+      value: `
+        <div style="
+          margin:0;
+          color: #ffffff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transform: translate(0, -27%);
+        ">
+
+      <div class="location_title" name=${e.name} style="
+              background: url('./assets/3d/image/98.png') center / 100% 100% no-repeat;
+              width: 34vw;
+              height:30vh;
+              display: flex;
+              padding: 0 8%;
+              justify-content: center;
+              align-items: center;
+          ">
+        <div style="display: flex;flex-direction: column;height:65%;margin-top:2%; width: 40%;align-items: center;">
+          <p class="font-gradient" style="text-align: center">设备名</p>
+          <div style="pointer-events: all;overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 100%; height: 75%;align-items: center;">
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">1号监控</div>
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">2号监控</div>
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">3号监控</div>
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">4号监控</div>
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">5号监控</div>
+            <div style="cursor: pointer;font-size: 1.6vh; display: flex;background-color: #164674; border-radius:2vh; margin-top: 4%; height: 20%; width: 90%;justify-content: center;align-items: center;flex-shrink:0">6号监控</div>
+          </div>
+        </div>
+        
+        <div style="width: 55%;margin-left: 5%; background-color: #164674;height: 54%;margin-top: 5%;">
+          <video src="/assets/3d/image/46.mp4" autoplay controls muted loop style="pointer-events: all;width: 100%; height: 100%;"></video>
+        </div>
+        <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(4)"
+          style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 4%; top: 8%;">
+        </div>
+      </div>
+
+      <div style="
+            background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
+            width: 6vw;
+            height:13vh;
+          ">
+      </div>
+
+      <div style="
+            background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
+            width: 7vw;
+            height:7vw;
+            position: relative;
+            top: -6vh;
+            animation: myrotate 8s linear infinite;
+            scale: 1 0.4;
+          ">
+      </div>
+    </div>
+      `,
+      position: [0, 0, 0],
+      className: 'popup3dclass popup3d_location',
+      scale: [0.3, 0.3, 0.3],
+      closeVisible: 'hidden'
     })
+    popup4.visible = false
+    group.add(popup4)
+
+
+
 
 
     function waitContainerLoad() {
@@ -381,6 +476,44 @@ function initLocationPopup() {
     STATE.sceneList.locationPopup.push(group)
   })
   // locationPopupTitleBounce()
+}
+
+// 区域风险的弹窗三个按钮的行为
+// 0 传感器 1 监控 2 进入场景 3 传感器关闭 4 监控关闭
+function handleLocationBtn(type) {
+  let locationName = null
+  if (type === 0) {
+    locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
+    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    if (group) {
+      group.children[1].visible = false
+      group.children[2].visible = true
+    }
+  } else if (type === 1) {
+    locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
+    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    if (group) {
+      group.children[1].visible = false
+      group.children[3].visible = true
+    }
+  } else if (type === 2) {
+    locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
+    enterRoom(locationName)
+  } else if (type === 3) {
+    locationName = CACHE.environmentLocationPopup.parentElement.getAttribute('name')
+    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    if (group) {
+      group.children[1].visible = true
+      group.children[2].visible = false
+    }
+  } else if (type === 4) {
+    locationName = CACHE.environmentLocationPopup.parentElement.getAttribute('name')
+    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    if (group) {
+      group.children[1].visible = true
+      group.children[3].visible = false
+    }
+  }
 }
 
 // 上下浮动动画
@@ -666,15 +799,9 @@ function showPopup(groups = [], isShow = true) {
       })
     } else { // 如果直接是mesh
       group.forEach(item => {
-        // 针对location location[0]动态 [1]为false 只有双击才显示
-        if (item.name.includes('location_group_')) {
-          item.children[0].visible = isShow
-          item.children[1].visible = false
-        } else {
-          item.traverse(child => {
-            child.visible = isShow
-          })
-        }
+        item.traverse(child => {
+          child.visible = isShow
+        })
       })
     }
 
@@ -1014,6 +1141,10 @@ function initPersonPopup() {
           waitContainerLoad()
         }, 1000)
       } else {
+        // 默认隐藏安全
+        if (e.level == 4) {
+          group.children[0].visible = false
+        }
         CACHE.container.attach(group);
       }
     }
@@ -1179,7 +1310,7 @@ function initMainMachinePopup(name) {
         let scale = []
         const screenTime = (window.innerWidth / 1000)
         scale = name === 'zongcai' ? [0.045 / screenTime, 0.045 / screenTime, 0.045 / screenTime] : [0.1 / screenTime, 0.1 / screenTime, 0.1 / screenTime]
-        console.log('scale: ', scale);
+
         return scale
       })(),
       closeVisible: 'show'
@@ -1281,7 +1412,7 @@ function testBox() {
       "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
-    console.log(window.markData)
+
   }
 
   window.markData = markData
@@ -1324,7 +1455,8 @@ function enterRoom(name = '') {
     // 过渡
     prtScreen()
     // 更改当前场景 相机移动到标签上
-    STATE.currentScene = name
+    STATE.currentScene[1] = STATE.currentScene[0]
+    STATE.currentScene[0] = name
     const popup = STATE.popupLocationList.find(e => e.name === name)
     const popupCameraState = {
       position: { x: popup.position.x, y: popup.position.y, z: popup.position.z },
@@ -1342,7 +1474,7 @@ function enterRoom(name = '') {
 
       // 重点区域点进去的
       STATE.sceneList.locationPopup.forEach(e => {
-        API.opacityPopup(e.children[0], false)
+        API.opacityPopup(e.children[1], false)
       })
 
       // 跳路由
@@ -1499,10 +1631,10 @@ function enterRoom(name = '') {
  * 退回主页面
  */
 function back(type) {
-  // 从现实环境信息里退出来
+  // 从显示环境信息里退出来
   if (type === 'hideRegionalRisk') {
     STATE.sceneList.locationPopup.forEach(e => {
-      opacityPopup(e.children[0], false)
+      opacityPopup(e.children[1], false)
     })
     STATE.sceneList.environmentPopup.forEach(e => {
       opacityPopup(e.children[0], false)
@@ -1510,16 +1642,27 @@ function back(type) {
 
     showPopup([
       STATE.sceneList.environmentPopup,
-      STATE.sceneList.monitorPopup
+      STATE.sceneList.monitorPopup,
+      STATE.sceneList.locationPopup
     ], false)
     showPopup([
-      STATE.sceneList.personPopup,
-      STATE.sceneList.baseStationPopup,
-      STATE.sceneList.locationPopup
+      STATE.sceneList.baseStationPopup
     ])
 
-    STATE.personShowType = []
-    showPerson(0)
+    STATE.currentScene[1] = STATE.currentScene[0]
+    STATE.currentScene[0] = '/'
+
+    STATE.sceneList.personPopup.forEach(e => {
+      const level = e.name.split('person_group_')[1].split('_')[0]
+      if ((level != undefined) && STATE.personShowType.includes(Number(level))) {
+        e.children[0].visible = true
+      }
+    })
+
+    STATE.sceneList.locationPopup.forEach(e => {
+      e.children[0].visible = true
+    })
+
     cameraAnimation({ cameraState: STATE.initialState, duration: 500 })
 
   } else {
@@ -1538,8 +1681,6 @@ function back(type) {
       if (CACHE.timer) {
         clearTimeout(CACHE.timer)
       }
-      STATE.currentScene = ''
-      CACHE.regionalRateMode = false
 
       // 清空动画序列
       renderAnimationList = []
@@ -1564,10 +1705,40 @@ function back(type) {
 
       // 显示标签
       showPopup([
-        STATE.sceneList.locationPopup,
         STATE.sceneList.personPopup,
         STATE.sceneList.baseStationPopup
       ], true)
+
+      // 处理 location
+      if (STATE.currentScene[1] === '/') { // 如果是从首页进的
+        STATE.currentScene[1] = STATE.currentScene[0]
+        STATE.currentScene[0] = '/'
+        router.push('/')
+        STATE.sceneList.locationPopup.forEach(e => {
+          e.children[0].visible = true
+          e.children[1].visible = false
+          e.children[2].visible = false
+          e.children[3].visible = false
+        })
+      } else if (STATE.currentScene[1] === '/regionalrisk') { // 如果是种地区域页进的
+        STATE.currentScene[1] = STATE.currentScene[0]
+        STATE.currentScene[0] = '/regionalrisk'
+        router.push('/regionalrisk')
+        STATE.sceneList.locationPopup.forEach(e => {
+          // 是重点区域里的
+          if (STATE.importantLocation.includes(e.name.split('location_group_')[1])) {
+            e.children[0].visible = false
+            e.children[1].visible = true
+            e.children[2].visible = false
+            e.children[3].visible = false
+          } else {
+            e.children[0].visible = false
+            e.children[1].visible = false
+            e.children[2].visible = false
+            e.children[3].visible = false
+          }
+        })
+      }
 
       // 销毁粒子
       if (type === 'zongcai') {
@@ -1898,5 +2069,6 @@ export const API = {
   BladePoints,
   randomPointInQuadrilateral,
   randomPointInLine,
+  handleLocationBtn,
   render
 }

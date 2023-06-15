@@ -20,7 +20,6 @@ let animationFlag = ref(true)
 
 function back() {
   API.back('zongcai')
-  router.push('/')
 }
 
 function handleAnimationFlag() {

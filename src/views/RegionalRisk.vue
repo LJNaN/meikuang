@@ -2,24 +2,13 @@
   <div class="home">
     <div class="left">
       <div v-for="(item, index) in leftList" :key="item.name" class="left-btn"
-        :style="{ background: 'url(' + './assets/3d/image/' + (leftIndex === index ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
-        @click="handleLeft(index)">
+        :style="{ background: 'url(' + './assets/3d/image/' + (leftIndex === index ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
+        @click="handleLeft(item, index)">
         {{ item }}
-      </div>
-
-      <!-- 重点区域 -->
-      <div v-show="leftDetailShow && leftIndex === 0" class="left-btn-detail">
-        <div v-for="(item2, index2) in list1" :key="index2" class="left-btn-detail-item"
-          :style="{ background: 'url(' + './assets/3d/image/' + (leftDetailItemIndex === index2 ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
-          @click="handleLeftItem(item2, index2)">
-          {{ item2.name }}
-        </div>
       </div>
     </div>
 
-
     <alertAndRoam type="regionalRisk"></alertAndRoam>
-
     <SingleActive :options="options3"></SingleActive>
   </div>
 </template>
@@ -48,35 +37,12 @@ const options3 = {
   cb: back
 }
 
-let leftList = ['重点区域', '区域评分', '视频监控', '环境信息']
-
-const list1 = [
-  { name: '501综采工作面', value: '111' },
-  { name: '627综采工作面', value: '111' },
-  { name: '1010切眼', value: '111' },
-  { name: '634进风顺槽', value: '111' },
-  { name: '632回风顺槽', value: '111' },
-  { name: '820进风顺槽', value: '111' },
-  { name: '1000回风顺槽', value: '111' },
-  { name: '1012进风顺槽', value: '111' },
-  { name: '1012进风顺槽(反掘)', value: '111' }
-]
-
-const list2 = [
-  { name: '人员', value: '97' },
-  { name: '设备', value: '95' },
-  { name: '环境', value: '94' },
-  { name: '管理', value: '100' }
-]
-
+const leftList = STATE.importantLocation
 let leftIndex = ref(-1)
-let leftDetailItemIndex = ref(-1)
-let leftDetailShow = ref(false)
-
-function handleLeft(index) {
+function handleLeft(item, index) {
   // 取消透明
   STATE.sceneList.locationPopup.forEach(e => {
-    API.opacityPopup(e.children[0], false)
+    API.opacityPopup(e.children[1], false)
   })
   STATE.sceneList.environmentPopup.forEach(e => {
     API.opacityPopup(e.children[0], false)
@@ -84,101 +50,19 @@ function handleLeft(index) {
 
   // 取消高亮
   if (leftIndex.value === index) {
-    if (index === 0) {
-      showFlag('location', false)
-    } else if (index === 1) {
-      showFlag('location', false)
-      CACHE.regionalRateMode = false
-    } else if (index === 2) {
-      showFlag('monitor', false)
-    } else if (index === 3) {
-      showFlag('environment', false)
-    }
     leftIndex.value = -1
-    leftDetailItemIndex.value = -1
-    leftDetailShow.value = false
+
+    const cameraState = {
+      position: STATE.initialState.position,
+      target: STATE.initialState.target,
+    }
+    API.cameraAnimation({ cameraState })
 
   } else { // 高亮
     leftIndex.value = index
-    CACHE.regionalRateMode = false
 
-    if (index === 0) {
-      leftDetailItemIndex.value = -1
-      leftDetailShow.value = true
-      showFlag('location', true)
-
-    } else if (index === 1) {
-      leftDetailShow.value = true
-      showFlag('location', true)
-      CACHE.regionalRateMode = true
-
-    } else if (index === 2) {
-      showFlag('monitor', true)
-
-    } else if (index === 3) {
-      showFlag('environment', true)
-    }
-  }
-}
-
-function showFlag(type, flag) {
-  if (type === 'environment') {
-    if (flag) {
-      API.showPopup([STATE.sceneList.environmentPopup])
-      API.showPopup([
-        STATE.sceneList.personPopup,
-        STATE.sceneList.monitorPopup,
-        STATE.sceneList.locationPopup
-      ], false)
-
-      // 显示超标的
-      STATE.sceneList.environmentPopup.forEach(e => {
-        if(e.userData.isExceeding) {
-          e.userData.initDetailPopup()
-        }
-      })
-      
-
-    } else {
-      API.showPopup([STATE.sceneList.environmentPopup], false)
-    }
-
-  } else if (type === 'monitor') {
-    if (flag) {
-      API.showPopup([STATE.sceneList.monitorPopup])
-      API.showPopup([
-        STATE.sceneList.personPopup,
-        STATE.sceneList.environmentPopup,
-        STATE.sceneList.locationPopup
-      ], false)
-    } else {
-      API.showPopup([STATE.sceneList.monitorPopup], false)
-    }
-
-  } else if (type === 'location') {
-    if (flag) {
-      API.showPopup([STATE.sceneList.locationPopup])
-      API.showPopup([
-        STATE.sceneList.personPopup,
-        STATE.sceneList.environmentPopup,
-        STATE.sceneList.monitorPopup
-      ], false)
-    } else {
-      API.showPopup([STATE.sceneList.locationPopup], false)
-    }
-  }
-}
-
-function handleLeftItem(item, index) {
-  // 如果已经有点击
-  if (leftDetailItemIndex.value === index) {
-    leftDetailItemIndex.value = -1
-    STATE.sceneList.locationPopup.forEach(e => {
-      API.opacityPopup(e.children[0], false)
-    })
-  } else {
-    leftDetailItemIndex.value = index
-    const child = STATE.popupLocationList.find(e => e.name === item.name)
+    const child = STATE.popupLocationList.find(e => e.name === item)
+    
     if (child) {
       // 移动镜头
       const cameraState = {
@@ -192,16 +76,16 @@ function handleLeftItem(item, index) {
       if (itemIndex >= 0) {
         STATE.sceneList.locationPopup.forEach((e, index) => {
           if (itemIndex === index) {
-            API.opacityPopup(e.children[0], false)
+            API.opacityPopup(e.children[1], false)
           } else {
-            API.opacityPopup(e.children[0], true)
+            API.opacityPopup(e.children[1], true)
           }
         })
       }
     }
   }
-
 }
+
 
 function back() {
   API.back('hideRegionalRisk')
@@ -237,12 +121,12 @@ onMounted(() => {
   position: relative;
   pointer-events: all;
   cursor: pointer;
-  width: 100%;
+  width: 170%;
   height: 5vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 0.5vh;
+  margin-top: 0.2vh;
 }
 
 .left-btn-detail {

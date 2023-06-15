@@ -255,6 +255,9 @@ window.workfacePopup.forEach(e => {
   })
 })
 
+// 重点区域
+const importantLocation = ['501综采工作面', '627综采工作面', '1010切眼', '634进风顺槽', '632回风顺槽', '820进风顺槽', '1000回风顺槽', '1012进风顺槽', '1012进风顺槽(反掘)']
+
 // Environment popup 的对应
 const popupEnvironmentMap = [{
   shortName: 'CH4',
@@ -1530,8 +1533,8 @@ const alertList = [{
   value: '此区域有重点监管作业人员，请及时处理！'
 }]
 
-// 0 显示全部
-let personShowType = [0, 1, 2, 3, 4]
+// 0 显示除了安全的
+let personShowType = [0, 1, 2, 3]
 
 
 // 辉光bloom
@@ -1544,7 +1547,7 @@ let animationFlag = true
 let pause3D = false
 
 // 当前场景
-let currentScene = ''
+let currentScene = ['/', '/'] // new, old
 
 // 是否要获取数据
 let isNeedGetData = true
@@ -1558,6 +1561,7 @@ export const STATE = {
   popupLocationList,
   popupEnvironmentList,
   popupEnvironmentMap,
+  importantLocation,
   personShowType,
   currentPopup,
   mainMachinePopup,

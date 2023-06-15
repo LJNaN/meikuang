@@ -403,6 +403,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
       console.log(STATE.roomModelName)
       console.log(STATE.sceneList)
+      window.STATE = STATE
+      window.CACHE = CACHE
+      window.API = API
       
       TU.init(container, Bol3D)
 
