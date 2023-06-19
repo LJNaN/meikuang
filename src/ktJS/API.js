@@ -1705,15 +1705,20 @@ function back(type) {
 
       // 显示标签
       showPopup([
-        STATE.sceneList.personPopup,
         STATE.sceneList.baseStationPopup
       ], true)
-
+ 
       // 处理 location
       if (STATE.currentScene[1] === '/') { // 如果是从首页进的
         STATE.currentScene[1] = STATE.currentScene[0]
         STATE.currentScene[0] = '/'
         router.push('/')
+        STATE.sceneList.personPopup.forEach(e => {
+          const level = e.name.split('person_group_')[1].split('_')[0]
+          if ((level != undefined) && STATE.personShowType.includes(Number(level))) {
+            e.children[0].visible = true
+          }
+        })  
         STATE.sceneList.locationPopup.forEach(e => {
           e.children[0].visible = true
           e.children[1].visible = false
@@ -1764,8 +1769,8 @@ function back(type) {
       }
 
       // 恢复选中状态
-      STATE.personShowType = []
-      showPerson(0)
+      // STATE.personShowType = []
+      // showPerson(0)
     }
   }
 }

@@ -41,7 +41,7 @@ const perserList = [
 ]
 
 // 显示除了安全的
-let personShowType = ref([0, 1, 2, 3])
+let personShowType = ref(STATE.personShowType)
 
 function showRegionalRisk() {
   API.showPopup([

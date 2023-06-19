@@ -1534,7 +1534,7 @@ const alertList = [{
 }]
 
 // 0 显示除了安全的
-let personShowType = [0, 1, 2, 3]
+let personShowType = [1, 2, 3]
 
 
 // 辉光bloom
