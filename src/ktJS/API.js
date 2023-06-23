@@ -274,17 +274,17 @@ function initLocationPopup() {
               </div>
             </div>
             <div style="display: flex; width: 80%;height: 18%;position: absolute;top: 27%;">
-              <div style="display: flex;width: 30%;flex-direction: column;align-items: center;">
+              <div style="display: flex;width: 35%;flex-direction: column;align-items: center;">
                 <p class="font-gradient">区域评分</p>
                 <p class="font-gradient">80</p>
               </div>
-              <div style="display: flex; margin-left:5%;width: 65%;align-items: center;justify-content: space-between">
+              <div style="display: flex; margin-left:5%;width: 60%;align-items: center;justify-content: space-between">
                 <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">97</p></div>
                 <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">97</p></div>
                 <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">97</p></div>
                 <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">97</p></div>
                 <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: 5%;"></div>
-                <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: -10%;"></div>
+                <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: -11%;"></div>
               </div>
             </div>
           </div>
@@ -1084,7 +1084,7 @@ function initPersonPopup() {
               text-align: center;
               min-width: 15vw;
               font-size: 4vh;"
-            >${e.name} ${map.name}</p>
+            >${map.name}</p>
           </div>
 
           <div style="
@@ -1103,8 +1103,8 @@ function initPersonPopup() {
             <div
               style="width: 75%; height: 34%; margin-top: 10%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
-              <p style="font-size: 1vw">${e.info.value1}</p>
-              <p style="font-size: 1vw">${e.info.value2}</p>
+              <p style="font-size: 1vw">${e.name}</p>
+              <p style="font-size: 1vw">工号:${e.info.value1}</p>
             </div>
             <div style="display: flex; justify-content: space-between;">
               <p style="font-size: 1vw">${e.info.value3}</p>

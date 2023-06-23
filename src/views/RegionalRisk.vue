@@ -9,7 +9,6 @@
     </div>
 
     <alertAndRoam type="regionalRisk"></alertAndRoam>
-    <SingleActive :options="options3"></SingleActive>
   </div>
 </template>
 
@@ -24,18 +23,7 @@ import router from '@/router/index'
 import SingleActive from '@/components/SingleActive.vue'
 import alertAndRoam from '@/components/alertAndRoam.vue'
 
-const options3 = {
-  text: '返回',
-  style: {
-    right: '1%',
-    width: '10vw',
-    height: '5vh',
-    bottom: '3%',
-    top: 'auto'
-  },
-  bgimg: [17, 16],
-  cb: back
-}
+
 
 const leftList = STATE.importantLocation
 let leftIndex = ref(-1)
@@ -87,10 +75,6 @@ function handleLeft(item, index) {
 }
 
 
-function back() {
-  API.back('hideRegionalRisk')
-  router.push('/')
-}
 
 onMounted(() => {
 
@@ -111,8 +95,8 @@ onMounted(() => {
   position: fixed;
   display: flex;
   flex-direction: column;
-  left: 1%;
-  top: 3%;
+  left: 10%;
+  top: 10%;
   transform: translateY(-3%);
   width: 10vw;
 }

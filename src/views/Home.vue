@@ -14,8 +14,6 @@
     </div>
 
     <alertAndRoam type="home"></alertAndRoam>
-
-    <div class="regionalRisk publicBtn" @click="showRegionalRisk">显示区域风险</div>
   </div>
 </template>
 
@@ -42,27 +40,6 @@ const perserList = [
 
 // 显示除了安全的
 let personShowType = ref(STATE.personShowType)
-
-function showRegionalRisk() {
-  API.showPopup([
-    STATE.sceneList.personPopup,
-    STATE.sceneList.monitorPopup,
-    STATE.sceneList.baseStationPopup
-  ], false)
-  // 只显示重点区域，然后隐藏popup1，显示popup2
-  STATE.sceneList.locationPopup.forEach(e => {
-    e.children[0].visible = false
-    STATE.importantLocation.forEach(e2 => {
-      if(e.name === `location_group_${e2}`) {
-        e.children[1].visible = true
-      }
-    })
-  })
-  STATE.currentScene[1] = STATE.currentScene[0]
-  STATE.currentScene[0] = '/regionalrisk'
-  router.push('/regionalrisk')
-}
-
 
 function handlePerson(index) {
   API.showPerson(index)
@@ -265,7 +242,7 @@ onMounted(() => {
 
 .control {
   position: absolute;
-  left: 3%;
+  left: 13%;
   top: 3%;
   width: 15vw;
   height: 20vh;
