@@ -342,6 +342,15 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.material.transparent = true
               child.material.opacity = 0.2
             }
+
+            if (child && (child.name === '627zcgzm' || child.name === '501zcgzm')) {
+              STATE.mainSceneTextureAnimateMeshArr.push(child)
+            }
+
+            // 不知道这块怎么隐藏不了，不显示了
+            if (child && child.name === '1010zcgzm') {
+              child.visible = false
+            }
           }
         })
         container.loadingBar.style.visibility = 'hidden'
@@ -406,7 +415,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       window.STATE = STATE
       window.CACHE = CACHE
       window.API = API
-      
+
       TU.init(container, Bol3D)
 
       window.markStart = (() => {

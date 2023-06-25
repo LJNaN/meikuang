@@ -2037,7 +2037,11 @@ function randomPointInLine(...polygons) {
   return [randomPoint.x, randomPoint.y];
 }
 
-
+function mainSceneTextureAnimate() {
+  STATE.mainSceneTextureAnimateMeshArr.forEach(e => {
+    e.material.map.offset.x -= 0.001
+  })
+}
 
 let renderAnimationList = []
 const render = () => {
@@ -2047,6 +2051,8 @@ const render = () => {
   renderAnimationList.forEach(e => e.animation())
   // 天空
   if (CACHE.container.sky) CACHE.container.sky.rotation.z += 0.0001
+
+  mainSceneTextureAnimate()
 
   if (!STATE.pause3D) {
     requestAnimationFrame(render);

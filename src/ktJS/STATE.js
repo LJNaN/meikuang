@@ -1501,37 +1501,7 @@ const personMap = [
 ]
 
 // 报警列表
-const alertList = [{
-  id: 1,
-  position: '1000综采工作面',
-  position2: '2#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}, {
-  id: 2,
-  position: '627综采工作面',
-  position2: '2#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}, {
-  id: 3,
-  position: '1000综采工作面',
-  position2: '2#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}, {
-  id: 4,
-  position: '1000综采工作面',
-  position2: '1#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}, {
-  id: 5,
-  position: '627综采工作面',
-  position2: '1#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}, {
-  id: 6,
-  position: '627综采工作面',
-  position2: '3#煤层',
-  value: '此区域有重点监管作业人员，请及时处理！'
-}]
+const alertList = []
 
 // 0 显示除了安全的
 let personShowType = [1, 2, 3]
@@ -1551,6 +1521,9 @@ let currentScene = ['/', '/'] // new, old
 
 // 是否要获取数据
 let isNeedGetData = true
+
+// 首页贴图动画模型列表
+const mainSceneTextureAnimateMeshArr = []
 
 // 工作面选区
 const locationPositionPointsArr = window.workfaceArea
@@ -1581,5 +1554,6 @@ export const STATE = {
   currentScene,
   locationPositionPointsArr,
   isNeedGetData,
+  mainSceneTextureAnimateMeshArr,
   clock
 }
