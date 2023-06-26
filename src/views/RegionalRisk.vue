@@ -14,7 +14,7 @@
 
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import { CACHE } from '@/ktJS/CACHE'
@@ -24,9 +24,10 @@ import SingleActive from '@/components/SingleActive.vue'
 import alertAndRoam from '@/components/alertAndRoam.vue'
 
 
-
 const leftList = STATE.importantLocation
 let leftIndex = ref(-1)
+STATE.regionalriskLeftLocationIndex = leftIndex
+
 function handleLeft(item, index) {
   // 取消透明
   STATE.sceneList.locationPopup.forEach(e => {
@@ -50,7 +51,7 @@ function handleLeft(item, index) {
     leftIndex.value = index
 
     const child = STATE.popupLocationList.find(e => e.name === item)
-    
+
     if (child) {
       // 移动镜头
       const cameraState = {

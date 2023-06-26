@@ -429,7 +429,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
   })
 
   const events = new Bol3D.Events(container)
-  events.ondblclick = (e) => {
+  events.onclick = (e) => {
     if (e.objects.length) {
       const obj = e.objects[0].object
       console.log('obj: ', obj);

@@ -235,7 +235,7 @@ function initLocationPopup() {
     })
     group.add(popup)
     popup.name = e.name
-    popup.element.addEventListener("dblclick", () => {
+    popup.element.addEventListener("click", () => {
       enterRoom(e.name)
     })
 
@@ -482,16 +482,17 @@ function initLocationPopup() {
 // 0 传感器 1 监控 2 进入场景 3 传感器关闭 4 监控关闭
 function handleLocationBtn(type) {
   let locationName = null
+  let group = null
   if (type === 0) {
     locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
-    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
     if (group) {
       group.children[1].visible = false
       group.children[2].visible = true
     }
   } else if (type === 1) {
     locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
-    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
     if (group) {
       group.children[1].visible = false
       group.children[3].visible = true
@@ -501,18 +502,49 @@ function handleLocationBtn(type) {
     enterRoom(locationName)
   } else if (type === 3) {
     locationName = CACHE.environmentLocationPopup.parentElement.getAttribute('name')
-    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
     if (group) {
       group.children[1].visible = true
       group.children[2].visible = false
     }
   } else if (type === 4) {
     locationName = CACHE.environmentLocationPopup.parentElement.getAttribute('name')
-    const group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
+    group = STATE.sceneList.locationPopup.find(e => e.name === `location_group_${locationName}`)
     if (group) {
       group.children[1].visible = true
       group.children[3].visible = false
     }
+  }
+
+  // 移动镜头
+  if (type === 0 || type === 1) {
+    const currentCameraPosition = CACHE.container.orbitCamera.position
+    const distance = Math.sqrt((currentCameraPosition.x - group.position.x) ** 2 + (currentCameraPosition.y - group.position.y) ** 2 + (currentCameraPosition.z - group.position.z) ** 2)
+    if (distance > 350) {
+      const cameraState = {
+        position: { x: group.position.x + 200, y: 200, z: group.position.z + 200 },
+        target: { x: group.position.x, y: 20, z: group.position.z }
+      }
+      cameraAnimation({ cameraState })
+    }
+    // 其他标签透明化
+    const itemIndex = STATE.sceneList.locationPopup.findIndex(e => e.name === group.name)
+    if (itemIndex >= 0) {
+      STATE.sceneList.locationPopup.forEach((e, index) => {
+        if(itemIndex === index) {
+          STATE.regionalriskLeftLocationIndex.value = itemIndex
+          opacityPopup(e.children[1], false)
+        } else {
+          opacityPopup(e.children[1], true)
+        }
+      })
+    }
+  } else if (type === 3 || type === 4) {
+    // 取消透明
+    STATE.regionalriskLeftLocationIndex.value = -1
+    STATE.sceneList.locationPopup.forEach(e => {
+      opacityPopup(e.children[1], false)
+    })
   }
 }
 
@@ -649,7 +681,7 @@ function initEnvironmentPopup() {
 
 
 
-    popup.element.addEventListener('dblclick', (() => {
+    popup.element.addEventListener('click', (() => {
       // 移动镜头
       cameraAnimation({
         cameraState: {
@@ -868,7 +900,7 @@ function initmonitorList() {
     popup.name = e.id
     popup.visible = false
 
-    popup.element.addEventListener('dblclick', (() => {
+    popup.element.addEventListener('click', (() => {
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
@@ -1020,7 +1052,7 @@ function initPersonPopup() {
     //   scale: [0.4, 0.4, 0.4],
     //   closeVisible: 'hidden'
     // })
-    // popup3.element.addEventListener('dblclick', ((e) => {
+    // popup3.element.addEventListener('click', ((e) => {
     //   const strSplit = e.target.style.backgroundImage.match(/\/\d{1,}.png/)
     //   if (strSplit) {
     //     const num = Number(strSplit[0].replace(/[^0-9]/ig, ''))
@@ -1038,7 +1070,7 @@ function initPersonPopup() {
     group.name = 'person_group_' + e.level + '_' + e.name
 
     // 点击头像
-    popup.element.addEventListener('dblclick', (() => {
+    popup.element.addEventListener('click', (() => {
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
@@ -1051,6 +1083,11 @@ function initPersonPopup() {
       })
 
       // 设置点击之后的弹窗
+      // 为重点管控的话会多一句话
+      const importanValue = e.level == 1
+      ? '<p style="position: absolute; top: 35%;font-family: YouSheBiaoTiHei;font-size:2vh; color: #d86943;">此区域有重点管控人员，请及时处理！</p>'
+      : ''
+      
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
         <div style="
@@ -1100,6 +1137,7 @@ function initPersonPopup() {
             align-items: center;
           ">
             <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
+            ${importanValue}
             <div
               style="width: 75%; height: 34%; margin-top: 10%; display: flex; flex-direction: column; justify-content: space-around;">
               <div style="display: flex; justify-content: space-between;">
@@ -1707,7 +1745,7 @@ function back(type) {
       showPopup([
         STATE.sceneList.baseStationPopup
       ], true)
- 
+
       // 处理 location
       if (STATE.currentScene[1] === '/') { // 如果是从首页进的
         STATE.currentScene[1] = STATE.currentScene[0]
@@ -1718,7 +1756,7 @@ function back(type) {
           if ((level != undefined) && STATE.personShowType.includes(Number(level))) {
             e.children[0].visible = true
           }
-        })  
+        })
         STATE.sceneList.locationPopup.forEach(e => {
           e.children[0].visible = true
           e.children[1].visible = false
@@ -2039,7 +2077,7 @@ function randomPointInLine(...polygons) {
 
 function mainSceneTextureAnimate() {
   STATE.mainSceneTextureAnimateMeshArr.forEach(e => {
-    e.material.map.offset.x -= 0.001
+    e.material.map.offset.x -= 0.002
   })
 }
 
