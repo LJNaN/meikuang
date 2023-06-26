@@ -59,6 +59,8 @@ onMounted(() => {
   // 获取数据
   if (STATE.isNeedGetData) {
     // 人员 & location
+
+    // 官网假数据
     if ($isOurSite) {
       const personData = { list: mockData.getRysj }
       STATE.sceneList.personPopup.forEach(e => {
@@ -90,11 +92,11 @@ onMounted(() => {
 
       STATE.popupLocationList.forEach(e => {
         e.sub = `工作人员数量: 0 人`
-        e.regionRate.total = 0
-        e.regionRate.member = 0
-        e.regionRate.device = 0
-        e.regionRate.environment = 0
-        e.regionRate.manager = 0
+        e.regionRate.total = Math.floor(Math.random() * 10 + 90)
+        e.regionRate.member = Math.floor(Math.random() * 10 + 90)
+        e.regionRate.device = Math.floor(Math.random() * 10 + 90)
+        e.regionRate.environment = Math.floor(Math.random() * 10 + 90)
+        e.regionRate.manager = Math.floor(Math.random() * 10 + 90)
       })
 
       if (!STATE.sceneList.personPopup.length) {
@@ -167,7 +169,12 @@ onMounted(() => {
           const location = STATE.popupLocationList.find(e2 => e2.name === e.pointName)
           const pointNumber = locationPointOrigin.list.find(e2 => e2.pointId == e.id)
           if (location && pointNumber) {
-            location.sub = `工作人员数量: ${pointNumber.numAll} 人`
+            location.regionRate.sub = `工作人员数量: ${pointNumber.numAll} 人`
+            location.regionRate.member = pointNumber.regionRisk1
+            location.regionRate.device = pointNumber.regionRisk2
+            location.regionRate.environment = pointNumber.regionRisk3
+            location.regionRate.manager = pointNumber.regionRisk4
+            location.regionRate.total = pointNumber.score
           }
         })
 

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="left">
       <div v-for="(item, index) in leftList" :key="item.name" class="left-btn"
-        :style="{ background: 'url(' + './assets/3d/image/' + (leftIndex === index ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
+        :style="{ background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
         @click="handleLeft(item, index)">
         {{ item }}
       </div>
@@ -25,8 +25,8 @@ import alertAndRoam from '@/components/alertAndRoam.vue'
 
 
 const leftList = STATE.importantLocation
-let leftIndex = ref(-1)
-STATE.regionalriskLeftLocationIndex = leftIndex
+let leftName = ref('')
+STATE.currentRegionalriskLeftLocation = leftName
 
 function handleLeft(item, index) {
   // 取消透明
@@ -38,8 +38,8 @@ function handleLeft(item, index) {
   })
 
   // 取消高亮
-  if (leftIndex.value === index) {
-    leftIndex.value = -1
+  if (leftName.value === item) {
+    leftName.value = ''
 
     const cameraState = {
       position: STATE.initialState.position,
@@ -48,7 +48,7 @@ function handleLeft(item, index) {
     API.cameraAnimation({ cameraState })
 
   } else { // 高亮
-    leftIndex.value = index
+    leftName.value = item
 
     const child = STATE.popupLocationList.find(e => e.name === item)
 

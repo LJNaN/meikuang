@@ -1528,8 +1528,8 @@ const mainSceneTextureAnimateMeshArr = []
 // 工作面选区
 const locationPositionPointsArr = window.workfaceArea
 
-// regionalrisk 页面的左边重点工作区索引，是一个 ref proxy
-let regionalriskLeftLocationIndex = null
+// 页面的左边重点工作区当前选中名字
+let currentRegionalriskLeftLocation = null
 
 export const STATE = {
   initialState,
@@ -1558,6 +1558,6 @@ export const STATE = {
   locationPositionPointsArr,
   isNeedGetData,
   mainSceneTextureAnimateMeshArr,
-  regionalriskLeftLocationIndex,
+  currentRegionalriskLeftLocation,
   clock
 }

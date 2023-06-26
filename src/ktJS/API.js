@@ -276,13 +276,13 @@ function initLocationPopup() {
             <div style="display: flex; width: 80%;height: 18%;position: absolute;top: 27%;">
               <div style="display: flex;width: 35%;flex-direction: column;align-items: center;">
                 <p class="font-gradient">区域评分</p>
-                <p class="font-gradient">80</p>
+                <p class="font-gradient">${e.regionRate.total || 0}</p>
               </div>
               <div style="display: flex; margin-left:5%;width: 60%;align-items: center;justify-content: space-between">
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">97</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">97</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">97</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">97</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">${e.regionRate.member || 0}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">${e.regionRate.device || 0}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">${e.regionRate.environment || 0}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">${e.regionRate.manager || 0}</p></div>
                 <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: 5%;"></div>
                 <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: -11%;"></div>
               </div>
@@ -528,11 +528,10 @@ function handleLocationBtn(type) {
       cameraAnimation({ cameraState })
     }
     // 其他标签透明化
-    const itemIndex = STATE.sceneList.locationPopup.findIndex(e => e.name === group.name)
-    if (itemIndex >= 0) {
+    if (locationName) {
       STATE.sceneList.locationPopup.forEach((e, index) => {
-        if(itemIndex === index) {
-          STATE.regionalriskLeftLocationIndex.value = itemIndex
+        if(e.name === `location_group_${locationName}`) {
+          STATE.currentRegionalriskLeftLocation.value = locationName
           opacityPopup(e.children[1], false)
         } else {
           opacityPopup(e.children[1], true)
@@ -541,7 +540,7 @@ function handleLocationBtn(type) {
     }
   } else if (type === 3 || type === 4) {
     // 取消透明
-    STATE.regionalriskLeftLocationIndex.value = -1
+    STATE.currentRegionalriskLeftLocation.value = -1
     STATE.sceneList.locationPopup.forEach(e => {
       opacityPopup(e.children[1], false)
     })
@@ -1328,14 +1327,14 @@ function initMainMachinePopup(name) {
         <div style="
           position: absolute;
           background: url('./assets/3d/image/44.png') center / 100% 100% no-repeat;
-          width: 20vw;
+          width: 26vw;
           height: 46vh;
           transform: translate(-50%, -50%);
           display: flex;
           flex-direction: column;
           padding: 3vh 2vw;
         ">
-          <p style="font-size: 5vh; font-family: YouSheBiaoTiHei; text-align: center; margin-top: 11%;">设备信息</p>
+          <p style="font-size: 5vh; font-family: YouSheBiaoTiHei; text-align: center; margin-top: 7%;">设备信息</p>
           <div style="display: flex; flex-direction: column; justify-content: space-around; margin-top: 3%; height: 67%;">
             ${text}
           </div>
