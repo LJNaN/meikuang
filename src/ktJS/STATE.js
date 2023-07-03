@@ -1531,6 +1531,9 @@ const locationPositionPointsArr = window.workfaceArea
 // 页面的左边重点工作区当前选中名字
 let currentRegionalriskLeftLocation = null
 
+// 是否首页为 环境页
+let isJumpToRegionalrisk = false
+
 export const STATE = {
   initialState,
   sceneList,
@@ -1559,5 +1562,6 @@ export const STATE = {
   isNeedGetData,
   mainSceneTextureAnimateMeshArr,
   currentRegionalriskLeftLocation,
+  isJumpToRegionalrisk,
   clock
 }

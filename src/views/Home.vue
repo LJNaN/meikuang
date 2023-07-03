@@ -48,13 +48,6 @@ function handlePerson(index) {
 }
 
 window.handlePerson = handlePerson
-
-
-// 进入环境  其实是进入区域风险  名字写错了 但是甲方已经在用这个名字了  不几把管
-window.enterEnvironment = () => {
-  showRegionalRisk()
-}
-
 onMounted(() => {
   // 获取数据
   if (STATE.isNeedGetData) {
@@ -89,7 +82,7 @@ onMounted(() => {
         }
         return acc
       }, [])
-      console.log('data: ', data);
+      
       STATE.personList = data
 
       STATE.popupLocationList.forEach(e => {
@@ -172,7 +165,7 @@ onMounted(() => {
           const location = STATE.popupLocationList.find(e2 => e2.name === e.pointName)
           const pointNumber = locationPointOrigin.list.find(e2 => e2.pointId == e.id)
           if (location && pointNumber) {
-            location.regionRate.sub = `工作人员数量: ${pointNumber.numAll} 人`
+            location.sub = `工作人员数量: ${pointNumber.numAll} 人`
             location.regionRate.member = pointNumber.regionRisk1
             location.regionRate.device = pointNumber.regionRisk2
             location.regionRate.environment = pointNumber.regionRisk3
@@ -187,6 +180,8 @@ onMounted(() => {
         if (!STATE.sceneList.locationPopup.length) {
           API.initLocationPopup()
         }
+        
+
       })()
     }
 
@@ -228,9 +223,6 @@ onMounted(() => {
 
           STATE.popupEnvironmentList = existingList
 
-          if (!STATE.sceneList.environmentPopup.length) {
-            API.initEnvironmentPopup()
-          }
         })
       })
     }

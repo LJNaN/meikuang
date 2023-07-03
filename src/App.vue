@@ -6,10 +6,14 @@
 import Scene from '@/views/Scene.vue'
 import router from '@/router/index'
 import { API } from '@/ktJS/API'
+import { STATE } from '@/ktJS/STATE'
 import { onBeforeMount } from 'vue'
 import SceneChange from '@/components/sceneChange.vue'
 
 onBeforeMount(() => {
+  if (location.hash === '#/regionalrisk') {
+    STATE.isJumpToRegionalrisk = true
+  }
   if (location.hash != '#/') {
     router.push('/')
   }
@@ -81,7 +85,9 @@ window.pause3D = (flag) => {
             <p style="font-size: 1vw">工号:${e.info.value1}</p>
           </div>
         </div>
-        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 15%;bottom: 20%; height: 12%;width: 20%;">详情</button>
+        <button
+          onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'"
+          style="position: absolute; right: 15%;bottom: 20%; height: 12%;width: 20%;">详情</button>
       </div>
     </div>
   </div>

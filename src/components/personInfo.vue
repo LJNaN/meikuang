@@ -18,7 +18,7 @@
 
     <el-scrollbar class="wrap">
       <div class="item" v-for="item in list">
-        <div class="item1">{{ item.name + ' ' + item.info.value1 }}</div>
+        <div class="item1">{{ item.name }}</div>
         <div class="item2" :style="{
           color:
             item.info.value2 === '重点监管' ? '#b01e1e' :
@@ -138,7 +138,7 @@ onMounted(() => {
 }
 
 .item1 {
-  flex: 5;
+  flex: 4;
 }
 
 .item2 {

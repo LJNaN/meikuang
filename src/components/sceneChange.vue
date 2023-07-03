@@ -27,6 +27,24 @@ const list = [{
 let active = ref(list[0].name)
 let showFlag = ref(true)
 
+// 首页跳到环境页
+if (STATE.isJumpToRegionalrisk) {
+  jumpToRegionalrisk()
+
+  function jumpToRegionalrisk() {
+    if (router.currentRoute.value.path != '/regionalrisk') {
+      if (STATE.sceneList.locationPopup.length) {
+        handleLeft(list[1])
+      } else {
+        setTimeout(() => {
+          jumpToRegionalrisk()
+        }, 500)
+      }
+    }
+  }
+}
+
+
 watch(
   () => router.currentRoute.value,
   (newValue) => {

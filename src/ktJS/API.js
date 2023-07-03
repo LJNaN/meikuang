@@ -276,13 +276,13 @@ function initLocationPopup() {
             <div style="display: flex; width: 80%;height: 18%;position: absolute;top: 27%;">
               <div style="display: flex;width: 35%;flex-direction: column;align-items: center;">
                 <p class="font-gradient">区域评分</p>
-                <p class="font-gradient">${e.regionRate.total || 0}</p>
+                <p class="font-gradient">${e.regionRate.total || '100.0'}</p>
               </div>
               <div style="display: flex; margin-left:5%;width: 60%;align-items: center;justify-content: space-between">
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">${e.regionRate.member || 0}</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">${e.regionRate.device || 0}</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">${e.regionRate.environment || 0}</p></div>
-                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">${e.regionRate.manager || 0}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">人员</p><p style="font-size: 2vh;">${e.regionRate.member || '100.0'}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">设备</p><p style="font-size: 2vh;">${e.regionRate.device || '100.0'}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">环境</p><p style="font-size: 2vh;">${e.regionRate.environment || '100.0'}</p></div>
+                <div style="display: flex;flex-direction: column; align-items: center;justify-content: space-between;height: 68%;margin-bottom: 6%;"><p style="font-size: 2vh;">管理</p><p style="font-size: 2vh;">${e.regionRate.manager || '100.0'}</p></div>
                 <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: 5%;"></div>
                 <div style="position: absolute; opacity: 0.5; background: linear-gradient(-90deg, rgba(11,16,19,0), rgba(97,158,225,0.88), rgba(91,175,227,0.88), rgba(97,158,225,0.88), rgba(11,16,19,0)); height: 2%; width: 66%;margin-bottom: -11%;"></div>
               </div>
@@ -456,10 +456,6 @@ function initLocationPopup() {
     popup4.visible = false
     group.add(popup4)
 
-
-
-
-
     function waitContainerLoad() {
       if (!CACHE.container) {
         setTimeout(() => {
@@ -474,6 +470,7 @@ function initLocationPopup() {
       STATE.sceneList.locationPopup = []
     }
     STATE.sceneList.locationPopup.push(group)
+    
   })
   // locationPopupTitleBounce()
 }
@@ -1119,7 +1116,7 @@ function initPersonPopup() {
               display: inline;
               text-align: center;
               min-width: 15vw;
-              font-size: 4vh;">${map.name}</p>
+              font-size: 4vh;">${e.name} ${map.name}</p>
       </div>
 
       <div style="
@@ -1139,11 +1136,14 @@ function initPersonPopup() {
         <div
           style="width: 75%; height: 34%; margin-top: 4%; display: flex; flex-direction: column; justify-content: space-around;">
           <div style="display: flex; justify-content: space-between;">
-            <p style="font-size: 1.8vw">${e.name}</p>
-            <p style="font-size: 1.8vw">工号:${e.info.value1}</p>
+          <p style="font-size: 1.5vh">${e.info.value3 || '-'}</p>
+          <p style="font-size: 1.5vh"> | </p>
+          <p style="font-size: 1.5vh">${e.info.value4 || '-'}</p>
+          <p style="font-size: 1.5vh"> | </p>
+          <p style="font-size: 1.5vh">${e.info.value5 || '-'}</p>
           </div>
         </div>
-        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 12%;bottom: 18%; height: 14%;width: 16%;background-color:#FFF;border:none;border-radius: 2px;font-size:1.5vw;cursor: pointer;">详情</button>
+        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 12%;bottom: 21%; height: 14%;width: 16%;background-color:#FFF;border:none;border-radius: 2px;font-size:1.5vh;cursor: pointer;">详情</button>
       </div>
     </div>
         `,
