@@ -76,6 +76,7 @@ onMounted(() => {
             name: cur.t1,
             level: Number(cur.t8),
             position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
+            user_id: cur.user_id,
             info: {
               title: cur.t6,
               value1: cur.t0,
@@ -88,6 +89,7 @@ onMounted(() => {
         }
         return acc
       }, [])
+      console.log('data: ', data);
       STATE.personList = data
 
       STATE.popupLocationList.forEach(e => {
@@ -124,6 +126,7 @@ onMounted(() => {
               name: cur.t1,
               level: Number(cur.t8),
               position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
+              user_id: cur.user_id,
               info: {
                 title: cur.t6,
                 value1: cur.t0,
@@ -251,7 +254,6 @@ onMounted(() => {
   position: absolute;
   left: 13%;
   top: 3%;
-  width: 15vw;
   height: 20vh;
   display: flex;
   flex-direction: column;

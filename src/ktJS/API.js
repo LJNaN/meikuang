@@ -1100,7 +1100,7 @@ function initPersonPopup() {
             transform: translate(-50%, 0%);
           ">
 
-          <div style="
+      <div style="
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
             width: 26vw;
@@ -1114,16 +1114,15 @@ function initPersonPopup() {
             padding-top: 0.3vh;
             font-family: YouSheBiaoTiHei;
           ">
-            <p style="
+        <p style="
               pointer-events: none;
               display: inline;
               text-align: center;
               min-width: 15vw;
-              font-size: 4vh;"
-            >${map.name}</p>
-          </div>
+              font-size: 4vh;">${map.name}</p>
+      </div>
 
-          <div style="
+      <div style="
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
             width: 28vw;
@@ -1135,24 +1134,18 @@ function initPersonPopup() {
             justify-content: center;
             align-items: center;
           ">
-            <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
-            ${importanValue}
-            <div
-              style="width: 75%; height: 34%; margin-top: 10%; display: flex; flex-direction: column; justify-content: space-around;">
-              <div style="display: flex; justify-content: space-between;">
-              <p style="font-size: 1vw">${e.name}</p>
-              <p style="font-size: 1vw">工号:${e.info.value1}</p>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <p style="font-size: 1vw">${e.info.value3}</p>
-              <p style="font-size: 1vw"> | </p>
-              <p style="font-size: 1vw">${e.info.value4}</p>
-              <p style="font-size: 1vw"> | </p>
-              <p style="font-size: 1vw">${e.info.value5}</p>
-            </div>
+        <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
+        ${importanValue}
+        <div
+          style="width: 75%; height: 34%; margin-top: 4%; display: flex; flex-direction: column; justify-content: space-around;">
+          <div style="display: flex; justify-content: space-between;">
+            <p style="font-size: 1.8vw">${e.name}</p>
+            <p style="font-size: 1.8vw">工号:${e.info.value1}</p>
           </div>
         </div>
+        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 12%;bottom: 18%; height: 14%;width: 16%;background-color:#FFF;border:none;border-radius: 2px;font-size:1.5vw;cursor: pointer;">详情</button>
       </div>
+    </div>
         `,
         position: [e.position.x, 0, e.position.z],
         className: 'popup3dclass popup3d_person_detail',

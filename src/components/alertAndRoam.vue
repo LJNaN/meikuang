@@ -40,7 +40,7 @@ let alertShow = ref(false);
 
 
 const options1 = {
-  text: '报警信息',
+  text: '预警信息',
   style: {
     right: '1%',
     top: '3%',
@@ -92,7 +92,7 @@ function handleAlertList(data) {
 }
 
 function btnClick(params) {
-  if (params.text = '报警信息') {
+  if (params.text = '预警信息') {
     alertShow.value = params.active
     if (params.active) {
       getData()

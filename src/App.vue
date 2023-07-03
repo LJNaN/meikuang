@@ -40,7 +40,7 @@ window.pause3D = (flag) => {
 
       <div style="
             position: absolute;
-            background: url('./assets/3d/image/412412.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
             width: 26vw;
             height:5.4vh;
             left: 0.5vw;
@@ -61,7 +61,7 @@ window.pause3D = (flag) => {
       </div>
 
       <div style="
-            background: url('./assets/3d/image/66.png') center / 100% 100% no-repeat;
+            background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
             width: 28vw;
             height:24vh;
@@ -73,21 +73,15 @@ window.pause3D = (flag) => {
             align-items: center;
           ">
         <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
-        <p style="position: absolute; top: 35%;font-family: YouSheBiaoTiHei;font-size:2vh; color: #d76833;">此区域有重点管控人员，请及时处理！</p>
+        ${importanValue}
         <div
-          style="width: 75%; height: 34%; margin-top: 10%; display: flex; flex-direction: column; justify-content: space-around;">
+          style="width: 75%; height: 34%; margin-top: 2%; display: flex; flex-direction: column; justify-content: space-around;">
           <div style="display: flex; justify-content: space-between;">
             <p style="font-size: 1vw">${e.name}</p>
             <p style="font-size: 1vw">工号:${e.info.value1}</p>
           </div>
-          <div style="display: flex; justify-content: space-between;">
-            <p style="font-size: 1vw">${e.info.value3}</p>
-            <p style="font-size: 1vw"> | </p>
-            <p style="font-size: 1vw">${e.info.value4}</p>
-            <p style="font-size: 1vw"> | </p>
-            <p style="font-size: 1vw">${e.info.value5}</p>
-          </div>
         </div>
+        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 15%;bottom: 20%; height: 12%;width: 20%;">详情</button>
       </div>
     </div>
   </div>

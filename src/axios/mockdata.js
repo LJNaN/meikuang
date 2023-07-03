@@ -36,7 +36,8 @@ for (let i = 0; i < 500; i++) {
     t5: (Math.random() * 10 + 90).toFixed(2),
     t6: STATE.locationPositionPointsArr[Math.floor(Math.random() * STATE.locationPositionPointsArr.length / 7 + 10 )].name,
     t7: (Math.random() * 10 + 90).toFixed(2),
-    t8: Math.random() > 0.8 ? Math.random() > 0.85 ? Math.random() > 0.9 ? '1' : '2' : '3' : '4'
+    t8: Math.random() > 0.8 ? Math.random() > 0.85 ? Math.random() > 0.9 ? '1' : '2' : '3' : '4',
+    user_id: Math.floor(Math.random() * 10000)
   })
 }
 
