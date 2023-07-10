@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <div class="left">
+    <div class="left"
+      :style="{ left: STATE.startPath === '综合' ? '10%' : '3%', top: STATE.startPath === '综合' ? '10%' : '5%' }">
       <div v-for="(item, index) in leftList" :key="item.name" class="left-btn"
         :style="{ background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
         @click="handleLeft(item, index)">
@@ -96,8 +97,6 @@ onMounted(() => {
   position: fixed;
   display: flex;
   flex-direction: column;
-  left: 10%;
-  top: 10%;
   transform: translateY(-3%);
   width: 10vw;
 }

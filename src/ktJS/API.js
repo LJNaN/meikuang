@@ -268,9 +268,9 @@ function initLocationPopup() {
                 <p style="font-size: 2vh;">${e.sub}</p>
               </div>
               <div style="display: flex; width: 40%; height:60%; position: absolute; right: 0; top: 40%;">
-                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(0)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/100.png" />
-                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(1)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/101.png" />
-                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(2)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="/assets/3d/image/102.png" />
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(0)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="./assets/3d/image/100.png" />
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(1)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="./assets/3d/image/101.png" />
+                <img onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(2)" style="width: 33.3%;cursor:pointer; pointer-events: all;" src="./assets/3d/image/102.png" />
               </div>
             </div>
             <div style="display: flex; width: 80%;height: 18%;position: absolute;top: 27%;">
@@ -422,7 +422,7 @@ function initLocationPopup() {
         </div>
         
         <div style="width: 55%;margin-left: 5%; background-color: #164674;height: 54%;margin-top: 5%;">
-          <video src="/assets/3d/image/46.mp4" autoplay controls muted loop style="pointer-events: all;width: 100%; height: 100%;"></video>
+          <video src="./assets/3d/image/46.mp4" autoplay controls muted loop style="pointer-events: all;width: 100%; height: 100%;"></video>
         </div>
         <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(4)"
           style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 4%; top: 8%;">
@@ -470,7 +470,19 @@ function initLocationPopup() {
       STATE.sceneList.locationPopup = []
     }
     STATE.sceneList.locationPopup.push(group)
-    
+
+    if (STATE.startPath === '重点区域') {
+      // 只显示重点区域，然后隐藏popup1，显示popup2
+      STATE.sceneList.locationPopup.forEach(e => {
+        e.children[0].visible = false
+        STATE.importantLocation.forEach(e2 => {
+          if (e.name === `location_group_${e2}`) {
+            e.children[1].visible = true
+          }
+        })
+      })
+    }
+
   })
   // locationPopupTitleBounce()
 }
@@ -527,7 +539,7 @@ function handleLocationBtn(type) {
     // 其他标签透明化
     if (locationName) {
       STATE.sceneList.locationPopup.forEach((e, index) => {
-        if(e.name === `location_group_${locationName}`) {
+        if (e.name === `location_group_${locationName}`) {
           STATE.currentRegionalriskLeftLocation.value = locationName
           opacityPopup(e.children[1], false)
         } else {
@@ -986,7 +998,6 @@ function initmonitorList() {
 
 // 加载监管人员
 function initPersonPopup() {
-
   STATE.personList.forEach((e, index) => {
     const map = STATE.personMap.find(e2 => e2.level === e.level)
     // 一根竖直的弹窗
@@ -1081,9 +1092,9 @@ function initPersonPopup() {
       // 设置点击之后的弹窗
       // 为重点管控的话会多一句话
       const importanValue = e.level == 1
-      ? '<p style="position: absolute; top: 35%;font-family: YouSheBiaoTiHei;font-size:2vh; color: #d86943;">此区域有重点管控人员，请及时处理！</p>'
-      : ''
-      
+        ? '<p style="position: absolute; top: 35%;font-family: YouSheBiaoTiHei;font-size:2vh; color: #d86943;">此区域有重点管控人员，请及时处理！</p>'
+        : ''
+
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
         <div style="
@@ -1184,6 +1195,7 @@ function initPersonPopup() {
       STATE.sceneList.personPopup = []
     }
     STATE.sceneList.personPopup.push(group)
+
   })
 }
 
@@ -1773,6 +1785,42 @@ function back(type) {
             e.children[3].visible = false
           }
         })
+      } else if (STATE.currentScene[1] === '/comprehensive') {
+        if (STATE.currentComprehensivePage.value === '人员管理') {
+          STATE.currentScene[1] = STATE.currentScene[0]
+          STATE.currentScene[0] = '/comprehensive'
+          router.push('/comprehensive')
+          STATE.sceneList.personPopup.forEach(e => {
+            const level = e.name.split('person_group_')[1].split('_')[0]
+            if ((level != undefined) && STATE.personShowType.includes(Number(level))) {
+              e.children[0].visible = true
+            }
+          })
+          STATE.sceneList.locationPopup.forEach(e => {
+            e.children[0].visible = true
+            e.children[1].visible = false
+            e.children[2].visible = false
+            e.children[3].visible = false
+          })
+        } else {
+          STATE.currentScene[1] = STATE.currentScene[0]
+          STATE.currentScene[0] = '/comprehensive'
+          router.push('/comprehensive')
+          STATE.sceneList.locationPopup.forEach(e => {
+            // 是重点区域里的
+            if (STATE.importantLocation.includes(e.name.split('location_group_')[1])) {
+              e.children[0].visible = false
+              e.children[1].visible = true
+              e.children[2].visible = false
+              e.children[3].visible = false
+            } else {
+              e.children[0].visible = false
+              e.children[1].visible = false
+              e.children[2].visible = false
+              e.children[3].visible = false
+            }
+          })
+        }
       }
 
       // 销毁粒子
