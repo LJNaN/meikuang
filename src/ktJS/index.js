@@ -49,7 +49,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         // maxPolarAngle: 3.14,
         // minPolarAngle: 0,
         enableDamping: false,
-        dampingFactor: 0,
+        dampingFactor: 0
       }
     },
     lights: {
@@ -407,8 +407,17 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       // API.initEnvironmentPopup()
       // API.initLocationPopup()
 
+
+      // 左右键行为
+      // CACHE.container.orbitControls.mouseButtons = {
+      //   LEFT: Bol3D.MOUSE.PAN,
+      //   MIDDLE: Bol3D.MOUSE.DOLLY,
+      //   RIGHT: Bol3D.MOUSE.ROTATE
+      // }
+      
+
       API.initmonitorList()
-      API.initBaseStationPopup()
+      // API.initBaseStationPopup()
 
       console.log(STATE.roomModelName)
       console.log(STATE.sceneList)

@@ -1081,6 +1081,7 @@ function initPersonPopup() {
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
+      STATE.currentPopup = []
 
       cameraAnimation({
         cameraState: {
@@ -1090,11 +1091,6 @@ function initPersonPopup() {
       })
 
       // 设置点击之后的弹窗
-      // 为重点管控的话会多一句话
-      const importanValue = e.level == 1
-        ? '<p style="position: absolute; top: 35%;font-family: YouSheBiaoTiHei;font-size:2vh; color: #d86943;">此区域有重点管控人员，请及时处理！</p>'
-        : ''
-
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
         <div style="
@@ -1143,7 +1139,6 @@ function initPersonPopup() {
             align-items: center;
           ">
         <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
-        ${importanValue}
         <div
           style="width: 75%; height: 34%; margin-top: 4%; display: flex; flex-direction: column; justify-content: space-around;">
           <div style="display: flex; justify-content: space-between;">
@@ -1164,6 +1159,7 @@ function initPersonPopup() {
         closeVisible: 'show'
       })
       STATE.currentPopup.push(popup2)
+      
       function waitContainerLoad2() {
         if (!CACHE.container) {
           setTimeout(() => {
@@ -1195,8 +1191,41 @@ function initPersonPopup() {
       STATE.sceneList.personPopup = []
     }
     STATE.sceneList.personPopup.push(group)
-
   })
+
+  // 图标适应大小
+  function waitContainerLoad2() {
+    if (!CACHE.container) {
+      setTimeout(() => {
+        waitContainerLoad2()
+      }, 1000)
+    } else {
+      resetPersonPopupScale()
+      function resetPersonPopupScale() {
+        const p = container.orbitCamera.position
+        if (CACHE.cameraP && CACHE.cameraP.x == p.x && CACHE.cameraP.y == p.y && CACHE.cameraP.z == p.z) {
+          //
+        } else {
+          CACHE.cameraP = { x: p.x, y: p.y, z: p.z }
+          const distance = Math.sqrt(p.x ** 2 + p.y ** 2 + p.z ** 2)
+          const scale = Math.atan(distance / 1000 / 2) + 0.3
+          STATE.sceneList.personPopup.forEach(e => {
+            e.children[0].scale.set(scale, scale, scale)
+          })
+
+          if(STATE.currentPopup.length) {
+            STATE.currentPopup.forEach(e => {
+              const elementTop = scale * -23
+              console.log('elementTop: ', elementTop);
+              e.element.children[0].style.top = `${elementTop}vh`
+            })
+          }
+        }
+      }
+      CACHE.container.orbitControls.addEventListener('change', resetPersonPopupScale)
+    }
+  }
+  waitContainerLoad2()
 }
 
 // 加载人员定位基站

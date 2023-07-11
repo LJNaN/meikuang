@@ -134,7 +134,8 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 5vh;
+  min-height: 5vh;
+  padding: 1vh 0;
 }
 
 .item1 {
@@ -161,7 +162,7 @@ onMounted(() => {
 
 .line {
   position: absolute;
-  bottom: 10%;
+  bottom: 0;
   width: 100%;
   height: 1px;
   background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
