@@ -15,13 +15,9 @@
 
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import * as echarts from "echarts";
+import { onMounted, ref } from "vue";
 import { API } from '@/ktJS/API'
-import { CACHE } from '@/ktJS/CACHE'
 import { STATE } from '@/ktJS/STATE'
-import router from '@/router/index'
-import SingleActive from '@/components/SingleActive.vue'
 import alertAndRoam from '@/components/alertAndRoam.vue'
 
 

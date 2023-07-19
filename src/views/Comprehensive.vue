@@ -9,13 +9,7 @@
 
 <script setup>
 import { onMounted, ref, getCurrentInstance, watch } from "vue";
-import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
-import router from '@/router/index'
-import alertAndRoam from '@/components/alertAndRoam.vue'
-import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getRyPointNum } from '@/axios/api'
-import { CACHE } from "@/ktJS/CACHE";
-import { mockData } from "@/axios/mockdata"
 
 import Home from '@/views/Home.vue'
 import RegionalRisk from '@/views/RegionalRisk.vue'

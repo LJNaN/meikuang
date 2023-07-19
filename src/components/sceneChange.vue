@@ -60,7 +60,7 @@ function handleLeft(e) {
       // 只显示重点区域，然后隐藏popup1，显示popup2
       STATE.sceneList.locationPopup.forEach(e => {
         e.children[0].visible = false
-        STATE.importantLocation.forEach(e2 => {
+        STATE.importantLocation.value.forEach(e2 => {
           if (e.name === `location_group_${e2}`) {
             e.children[1].visible = true
           }

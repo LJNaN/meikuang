@@ -1,4 +1,5 @@
 import { API } from './API.js'
+import { ref } from 'vue'
 import { CACHE } from './CACHE.js'
 import router from '@/router/index'
 
@@ -256,44 +257,58 @@ window.workfacePopup.forEach(e => {
 })
 
 // 重点区域
-const importantLocation = ['501综采工作面', '627综采工作面', '1010切眼', '634进风顺槽', '632回风顺槽', '820进风顺槽', '1000回风顺槽', '1012进风顺槽', '1012进风顺槽(反掘)']
+const importantLocation = ref([])
 
 // Environment popup 的对应
 const popupEnvironmentMap = [{
   shortName: 'CH4',
   name: 'GJG100J型甲烷传感器',
+  short: '甲烷',
   threshold: 1,
-  imgUrl: '51'
+  imgUrl: '51',
+  color: '#5f518c'
 }, {
   shortName: 'CO2',
   name: 'KGQ9二氧化碳传感器',
+  short: '二氧化碳',
   threshold: 1.5,
-  imgUrl: '47'
+  imgUrl: '47',
+  color: '#8eb051'
 }, {
   shortName: 'CO',
   name: 'KGA5一氧化碳传感器',
+  short: '一氧化碳',
   threshold: 24,
-  imgUrl: '49'
+  imgUrl: '49',
+  color: '#a69d99'
 }, {
   shortName: 'T',
   name: 'KG3007A温度传感器',
+  short: '温度',
   threshold: 30,
-  imgUrl: '48'
+  imgUrl: '48',
+  color: '#90a8d4'
 }, {
   shortName: 'YW',
   name: 'KGQ5烟雾传感器',
+  short: '烟雾',
   threshold: 30,
-  imgUrl: '50'
+  imgUrl: '50',
+  color: '#925054'
 }, {
   shortName: 'FC',
   name: 'GCG1000粉尘传感器',
+  short: '粉尘',
   threshold: 1000,
-  imgUrl: '52'
+  imgUrl: '52',
+  color: '#029277'
 }, {
   shortName: 'FY',
   name: 'KJY3A负压传感器',
+  short: '压',
   threshold: [0, 24],
-  imgUrl: '53'
+  imgUrl: '53',
+  color: '#f1c15f'
 }]
 
 // Environment popup 弹窗
@@ -1477,19 +1492,19 @@ const baseStationList = [{
 // 人员监管
 // 1 重点 2 加强 3 需关注 4 安全
 const personList = [
-  { name: '张士明',  level: 4, position: { x: 172, y: 0, z: 27 }, info: { title: '501综采工作面', value1: '5004', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
-  { name: '韩辉',  level: 4, position: { x: 177, y: 0, z: 28 }, info: { title: '501综采工作面', value1: 'X3026', value2: '安全', value3: '采煤机检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
-  { name: '高长虎',  level: 4, position: { x: 183, y: 0, z: 29 }, info: { title: '501综采工作面', value1: '3658', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
-  { name: '葛治国',  level: 4, position: { x: 269, y: 0, z: 55 }, info: { title: '501综采工作面', value1: 'x3595', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
-  { name: '阎翔',  level: 4, position: { x: 186, y: 0, z: 35 }, info: { title: '501综采工作面', value1: 'X2576', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
-  { name: '王浩东',  level: 4, position: { x: 200, y: 0, z: 39 }, info: { title: '501综采工作面', value1: 'X3095', value2: '安全', value3: '三机检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '高遵奇',  level: 4, position: { x: 211, y: 0, z: 38 }, info: { title: '501综采工作面', value1: '1846', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
-  { name: '刘鑫',  level: 4, position: { x: 224, y: 0, z: 44 }, info: { title: '501综采工作面', value1: '6252', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
-  { name: '齐进荣',  level: 4, position: { x: 238, y: 0, z: 48 }, info: { title: '501综采工作面', value1: '6401', value2: '安全', value3: '泵站检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '赵岩',  level: 4, position: { x: 253, y: 0, z: 47 }, info: { title: '501综采工作面', value1: 'X2708', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
-  { name: '成兆强',  level: 4, position: { x: 259, y: 0, z: 54 }, info: { title: '501综采工作面', value1: 'X2587', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
-  { name: '仵朋辉',  level: 4, position: { x: 288, y: 0, z: 55 }, info: { title: '501综采工作面', value1: '6945', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
-  { name: '张涵溪',  level: 4, position: { x: 298, y: 0, z: 66 }, info: { title: '501综采工作面', value1: 'X3053', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '张士明', level: 4, position: { x: 172, y: 0, z: 27 }, info: { title: '501综采工作面', value1: '5004', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
+  { name: '韩辉', level: 4, position: { x: 177, y: 0, z: 28 }, info: { title: '501综采工作面', value1: 'X3026', value2: '安全', value3: '采煤机检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
+  { name: '高长虎', level: 4, position: { x: 183, y: 0, z: 29 }, info: { title: '501综采工作面', value1: '3658', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
+  { name: '葛治国', level: 4, position: { x: 269, y: 0, z: 55 }, info: { title: '501综采工作面', value1: 'x3595', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
+  { name: '阎翔', level: 4, position: { x: 186, y: 0, z: 35 }, info: { title: '501综采工作面', value1: 'X2576', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
+  { name: '王浩东', level: 4, position: { x: 200, y: 0, z: 39 }, info: { title: '501综采工作面', value1: 'X3095', value2: '安全', value3: '三机检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '高遵奇', level: 4, position: { x: 211, y: 0, z: 38 }, info: { title: '501综采工作面', value1: '1846', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
+  { name: '刘鑫', level: 4, position: { x: 224, y: 0, z: 44 }, info: { title: '501综采工作面', value1: '6252', value2: '安全', value3: '综采勤杂工', value4: '检修班', value5: '综采一队' } },
+  { name: '齐进荣', level: 4, position: { x: 238, y: 0, z: 48 }, info: { title: '501综采工作面', value1: '6401', value2: '安全', value3: '泵站检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '赵岩', level: 4, position: { x: 253, y: 0, z: 47 }, info: { title: '501综采工作面', value1: 'X2708', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
+  { name: '成兆强', level: 4, position: { x: 259, y: 0, z: 54 }, info: { title: '501综采工作面', value1: 'X2587', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队' } },
+  { name: '仵朋辉', level: 4, position: { x: 288, y: 0, z: 55 }, info: { title: '501综采工作面', value1: '6945', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
+  { name: '张涵溪', level: 4, position: { x: 298, y: 0, z: 66 }, info: { title: '501综采工作面', value1: 'X3053', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
 ]
 
 // 人员监管相关的配置
@@ -1523,7 +1538,10 @@ let currentScene = ['/', '/'] // new, old
 let isNeedGetData = true
 
 // 首页贴图动画模型列表
-const mainSceneTextureAnimateMeshArr = []
+const mainSceneTextureAnimateMeshList = {
+  toLeft: [],
+  toRight: []
+}
 
 // 工作面选区
 const locationPositionPointsArr = window.workfaceArea
@@ -1536,6 +1554,23 @@ let startPath = '综合'
 
 // 综合页面 当前页
 let currentComprehensivePage = null
+
+// 传感器数据列表
+let sensorData = []
+
+
+// 在采贴图方向列表
+let textureOffsetDirection = {
+  'toLeft': ['627', '625', '623', '621', '619', '617', '613', '611', '609', '607', '605', '603', '601', '311', '310', '309', '308', '307', '306', '305', '304', '303', '302', '301', '300', '402', '404', '406', '814', '812', '810'],
+  'toRight': ['1010', '1009', '1008', '1007', '1006', '1005', '1004', '1003', '1002', '1001', '501', '626', '624', '620', '209', '208', '207', '206', '205', '204', '203', '809', '807', '805', '803', '801']
+}
+
+// 存一下贴图
+const statusMaterial = {
+  'toLeft': null,
+  'toRight': null,
+  'over': null
+}
 
 export const STATE = {
   initialState,
@@ -1563,9 +1598,12 @@ export const STATE = {
   currentScene,
   locationPositionPointsArr,
   isNeedGetData,
-  mainSceneTextureAnimateMeshArr,
+  mainSceneTextureAnimateMeshList,
   currentRegionalriskLeftLocation,
   startPath,
   currentComprehensivePage,
+  sensorData,
+  textureOffsetDirection,
+  statusMaterial,
   clock
 }

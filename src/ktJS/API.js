@@ -318,66 +318,87 @@ function initLocationPopup() {
 
 
     // 重点区域的popup 传感器页
+    let textValue = ``
+    const thisLocationSensorData = STATE.sensorData.filter(e2 => e2.ssTransducerPoint.includes(e.name))
+    thisLocationSensorData.forEach(e2 => {
+      let color = ''
+      const item = STATE.popupEnvironmentMap.find(e3 => e2.ssTransducerName.includes(e3.short))
+      if (item) {
+        color = item.color
+      }
+
+      textValue += `
+        <div style="
+          background-color: ${color};
+          border-radius: 5px;
+          margin-bottom: 1vh;
+          display: flex;
+          justify-content: space-between;
+          align-items:center;
+          padding: 0 2%;
+          min-height: 22%;
+          flex-shrink: 0;
+          ">
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.ssTransducerName}</p>
+            <p style="word-break: break-all;width: 35%; font-size: 2vh; margin: 0 2.5%;">${e2.ssTransducerPoint}</p>
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.ssAnalogValue + ' ' + e2.ssAnalogUnit}</p>
+          </div>
+        `
+    })
+
     const popup3 = new Bol3D.POI.Popup3D({
       value: `
         <div style="
-          margin:0;
-          color: #ffffff;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          transform: translate(0, -27%);
-        ">
-
-        <div class="location_title"
-            name=${e.name}
-            style="
-              background: url('./assets/3d/image/97.png') center / 100% 100% no-repeat;
-              width: 24vw;
-              height:30vh;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
+            margin:0;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translate(0, -27%);
           ">
-          <div
-            style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
-            <p class="font-gradient" style="flex: 1; text-align: center">设备名</p>
-            <p class="font-gradient" style="flex: 1; text-align: center">监测值</p>
-          </div>
-          <div style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">甲烷传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.5%</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">粉尘传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">100mg/m³</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">温度传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">23℃</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">一氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">11ppm</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">二氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.7%</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">甲烷传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.5%</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">粉尘传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">100mg/m³</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">温度传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">23℃</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">一氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">11ppm</p></div>
-            <div style="margin-bottom: 1vh;display: flex;justify-content: space-between;"><p style="font-size: 2vh; flex: 1;">二氧化碳传感器</p><p style="font-size: 2vh; text-align: center;flex: 1;">0.7%</p></div>
-          </div>
-          <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)" style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 6%;"></div>
+
+      <div class="location_title" name=${e.name} style="
+                background: url('./assets/3d/image/97.png') center / 100% 100% no-repeat;
+                width: 34vw;
+                height:30vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            ">
+        <div
+          style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
+          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">设备名</p>
+          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">检测地点</p>
+          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">监测值</p>
         </div>
-
-        <div style="
-            background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
-            width: 6vw;
-            height:13vh;
-          ">
+        <div
+          style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
+          ${textValue}
         </div>
-
-        <div style="
-            background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
-            width: 7vw;
-            height:7vw;
-            position: relative;
-            top: -6vh;
-            animation: myrotate 8s linear infinite;
-            scale: 1 0.4;
-          ">
+        <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)"
+          style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 6%;">
         </div>
       </div>
+
+      <div style="
+              background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
+              width: 6vw;
+              height:13vh;
+            ">
+      </div>
+
+      <div style="
+              background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
+              width: 7vw;
+              height:7vw;
+              position: relative;
+              top: -6vh;
+              animation: myrotate 8s linear infinite;
+              scale: 1 0.4;
+            ">
+      </div>
+    </div>
       `,
       position: [0, 0, 0],
       className: 'popup3dclass popup3d_location',
@@ -475,7 +496,7 @@ function initLocationPopup() {
       // 只显示重点区域，然后隐藏popup1，显示popup2
       STATE.sceneList.locationPopup.forEach(e => {
         e.children[0].visible = false
-        STATE.importantLocation.forEach(e2 => {
+        STATE.importantLocation.value.forEach(e2 => {
           if (e.name === `location_group_${e2}`) {
             e.children[1].visible = true
           }
@@ -1159,7 +1180,7 @@ function initPersonPopup() {
         closeVisible: 'show'
       })
       STATE.currentPopup.push(popup2)
-      
+
       function waitContainerLoad2() {
         if (!CACHE.container) {
           setTimeout(() => {
@@ -1213,10 +1234,10 @@ function initPersonPopup() {
             e.children[0].scale.set(scale, scale, scale)
           })
 
-          if(STATE.currentPopup.length) {
+          if (STATE.currentPopup.length) {
             STATE.currentPopup.forEach(e => {
               const elementTop = scale * -23
-              console.log('elementTop: ', elementTop);
+
               e.element.children[0].style.top = `${elementTop}vh`
             })
           }
@@ -1802,7 +1823,7 @@ function back(type) {
         router.push('/regionalrisk')
         STATE.sceneList.locationPopup.forEach(e => {
           // 是重点区域里的
-          if (STATE.importantLocation.includes(e.name.split('location_group_')[1])) {
+          if (STATE.importantLocation.value.includes(e.name.split('location_group_')[1])) {
             e.children[0].visible = false
             e.children[1].visible = true
             e.children[2].visible = false
@@ -1837,7 +1858,7 @@ function back(type) {
           router.push('/comprehensive')
           STATE.sceneList.locationPopup.forEach(e => {
             // 是重点区域里的
-            if (STATE.importantLocation.includes(e.name.split('location_group_')[1])) {
+            if (STATE.importantLocation.value.includes(e.name.split('location_group_')[1])) {
               e.children[0].visible = false
               e.children[1].visible = true
               e.children[2].visible = false
@@ -2144,9 +2165,14 @@ function randomPointInLine(...polygons) {
   return [randomPoint.x, randomPoint.y];
 }
 
+// 主场景贴图流动动画
 function mainSceneTextureAnimate() {
-  STATE.mainSceneTextureAnimateMeshArr.forEach(e => {
-    e.material.map.offset.x -= 0.002
+  STATE.mainSceneTextureAnimateMeshList.toLeft.forEach(e => {
+    e.material.map.offset.x += 0.001
+  })
+
+  STATE.mainSceneTextureAnimateMeshList.toRight.forEach(e => {
+    e.material.map.offset.x -= 0.001
   })
 }
 

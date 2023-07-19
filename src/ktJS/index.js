@@ -343,13 +343,20 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.material.opacity = 0.2
             }
 
-            if (child && (child.name === '627zcgzm' || child.name === '501zcgzm')) {
-              STATE.mainSceneTextureAnimateMeshArr.push(child)
-            }
-
             // 不知道这块怎么隐藏不了，不显示了
             if (child && child.name === '1010zcgzm') {
               child.visible = false
+            }
+
+            // 预存几个不同状态的材质
+            if (child && child.name === '627zcgzm') {
+              STATE.statusMaterial.toLeft = child.material.clone()
+
+            } else if (child && child.name === '501zcgzm') {
+              STATE.statusMaterial.toRight = child.material.clone()
+
+            } else if (child && child.name === '625gzm') {
+              STATE.statusMaterial.over = child.material.clone()
             }
           }
         })
@@ -414,7 +421,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       //   MIDDLE: Bol3D.MOUSE.DOLLY,
       //   RIGHT: Bol3D.MOUSE.ROTATE
       // }
-      
+
 
       API.initmonitorList()
       // API.initBaseStationPopup()
