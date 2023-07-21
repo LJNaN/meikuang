@@ -1572,6 +1572,14 @@ const statusMaterial = {
   'over': null
 }
 
+
+const keyAreaColorMap = {
+  status_1: [105, 108, 109, 110],
+  status_2: [106, 111, 112, 113],
+  status_3: [107, 114, 115, 116],
+  status_4: [99, 100, 101, 102]
+}
+
 export const STATE = {
   initialState,
   sceneList,
@@ -1605,5 +1613,6 @@ export const STATE = {
   sensorData,
   textureOffsetDirection,
   statusMaterial,
+  keyAreaColorMap,
   clock
 }

@@ -17,12 +17,11 @@ import SceneChange from '@/components/sceneChange.vue'
 const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } = getCurrentInstance()
 
 let pageName = ref('')
-console.log('pageName: ', pageName);
+
 onMounted(() => {
   watch(
     () => STATE.currentComprehensivePage.value,
     (newVal) => {
-      console.log('newVal: ', newVal);
       pageName.value = newVal
     }, {
       immediate: true,deep:true

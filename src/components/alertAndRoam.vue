@@ -14,10 +14,15 @@
           <p>{{ item.position }}</p>
         </div>
 
-        <p class="detail-top-right">{{ item.position2 }}</p>
+        <p class="detail-top-right" :style="{minWidth: type === 'home' ? '' : '30%'}">{{ item.time }}</p>
       </div>
 
-      <p class="detail-bottom">{{ item.value }}</p>
+      <div class="detail-center">
+        <p>{{ (type === 'home' ? '预警人员:' : '预警类别: ') + item.item1 }}</p>
+        <p>{{ (type === 'home' ? '' : '预警项: ') + item.item2 }}</p>
+      </div>
+
+      <p class="detail-bottom">{{ item.describe }}</p>
       <div class="alert-detail-close" @click="handleClose(item.id)"></div>
     </div>
   </el-scrollbar>
@@ -25,7 +30,7 @@
 
 <script setup>
 import { ref, getCurrentInstance } from 'vue'
-import SingleActive from '@/components/SingleActive.vue'
+import SingleActive from '@/components/singleActive.vue'
 import { STATE } from '@/ktJS/STATE'
 import { getRyyjList, getQyyjList } from '@/axios/api'
 import { mockData } from "@/axios/mockdata"
@@ -83,9 +88,11 @@ async function getData() {
 function handleAlertList(data) {
   return data.list.reduce((acc, cur) => {
     acc.push({
-      position: type === 'home' ? cur.workLocation : cur.warnLocation,
-      position2: type === 'home' ? cur.belongTeam : cur.warnType,
-      value: cur.warnDescribe
+      position: type === 'home' ? (cur.workLocation || '-') : (cur.warnLocation || '-'),
+      time: type === 'home' ? (cur.createDate || '-') : (cur.warnTime || '-'),
+      item1: type === 'home' ? (cur.warnPerson || '-') : (cur.warnType || '-'),
+      item2: type === 'home' ? `${cur.belongPost || '-'}|${cur.belongTeam || '-'}|${cur.belongGroup || '-'}` : (cur.levelIndicators || '-'),
+      describe: type === 'home' ? (cur.warnDescribe || '-') : (cur.warnDescribe || '-')
     })
     return acc
   }, [])
@@ -132,17 +139,16 @@ function handleClose(id) {
 
 .alert-detail-item {
   position: relative;
-  height: 18vh;
   background: url('/assets/3d/image/66.png') center / 100% 100% no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 12% 8% 8% 8%;
+  padding: 12% 10% 8% 8%;
 }
 
 .alert-detail-item p {
-  font-size: 2vh;
+  font-size: 12px;
 }
 
 .alert-detail-close {
@@ -157,6 +163,8 @@ function handleClose(id) {
 
 .detail-top {
   display: flex;
+  height: 30%;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -166,13 +174,23 @@ function handleClose(id) {
 }
 
 .detail-top-left img {
-  width: 10%;
-  margin-right: 3%;
+  width: 1.2vw;
+  margin-right: 4px;
+}
+
+.detail-center {
+  padding-left: 6%;
+  display: flex;
+  justify-content: space-between;
+  margin: 3% 0;
 }
 
 .detail-bottom {
-  text-align: center;
+  padding-left: 6%;
+  color: #ff3636;
+  font-weight: bold;
 }
+
 
 
 :deep(.el-badge__content.is-fixed) {

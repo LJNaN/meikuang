@@ -130,6 +130,7 @@ onMounted(() => {
         e.regionRate.device = Math.floor(Math.random() * 10 + 90)
         e.regionRate.environment = Math.floor(Math.random() * 10 + 90)
         e.regionRate.manager = Math.floor(Math.random() * 10 + 90)
+        e.regionRate.status = Math.floor(Math.random() * 4) + 1
       })
 
       if (!STATE.sceneList.personPopup.length) {
@@ -259,17 +260,18 @@ onMounted(() => {
               location.regionRate.environment = pointNumber.regionRisk3
               location.regionRate.manager = pointNumber.regionRisk4
               location.regionRate.total = pointNumber.score
+              location.regionRate.status = pointNumber.status //1234 红橙黄蓝
             }
           })
 
+          if (!STATE.sceneList.personPopup.length) {
+            API.initPersonPopup()
+          }
+          if (!STATE.sceneList.locationPopup.length) {
+            API.initLocationPopup()
+          }
         }
 
-        if (!STATE.sceneList.personPopup.length) {
-          API.initPersonPopup()
-        }
-        if (!STATE.sceneList.locationPopup.length) {
-          API.initLocationPopup()
-        }
 
 
       })()
@@ -326,8 +328,9 @@ onMounted(() => {
       </div>
       <div
         style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
-        
-        <div style="background-color: #634f8a; border-radius: 5px; margin-bottom: 1vh;display: flex;justify-content: space-between;align-items:center; padding: 0 2%;">
+
+        <div
+          style="background-color: #634f8a; border-radius: 5px; margin-bottom: 1vh;display: flex;justify-content: space-between;align-items:center; padding: 0 2%;">
           <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">111111111</p>
           <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">22222222</p>
           <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">3333333</p>
