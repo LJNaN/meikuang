@@ -29,10 +29,10 @@ const getRysj = []
 for (let i = 0; i < 500; i++) {
   getRysj.push({
     t0: Math.floor(Math.random() * 8000 + 1000),
-    t1: STATE.personList[Math.floor(Math.random() * STATE.personList.length)].name,
-    t2: STATE.personList[Math.floor(Math.random() * STATE.personList.length)].info.value3,
-    t3: STATE.personList[Math.floor(Math.random() * STATE.personList.length)].info.value4,
-    t4: STATE.personList[Math.floor(Math.random() * STATE.personList.length)].info.value5,
+    t1: STATE.personPopupList[Math.floor(Math.random() * STATE.personPopupList.length)].name,
+    t2: STATE.personPopupList[Math.floor(Math.random() * STATE.personPopupList.length)].info.value3,
+    t3: STATE.personPopupList[Math.floor(Math.random() * STATE.personPopupList.length)].info.value4,
+    t4: STATE.personPopupList[Math.floor(Math.random() * STATE.personPopupList.length)].info.value5,
     t5: (Math.random() * 10 + 90).toFixed(2),
     t6: STATE.locationPositionPointsArr[Math.floor(Math.random() * STATE.locationPositionPointsArr.length / 7 + 10 )].name,
     t7: (Math.random() * 10 + 90).toFixed(2),

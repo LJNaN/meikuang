@@ -53,9 +53,9 @@ function handleLeft() {
 const sceneName = STATE.currentScene[0]
 let list = []
 if($isOurSite) {
-  list = STATE.personList
+  list = STATE.personAllUsefulList
 } else {
-  list = STATE.personList.filter(e => e.info.title === sceneName)
+  list = STATE.personAllUsefulList.filter(e => e.info.title === sceneName)
 }
 
 function handleClose() {

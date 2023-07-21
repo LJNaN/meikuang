@@ -174,6 +174,13 @@ function loadGUI() {
  */
 function initLocationPopup() {
   STATE.popupLocationList.forEach((e, index) => {
+    // 只显示匹配的
+    const item = STATE.locationData.find(e2 => e2.pointName === e.name)
+    if(!item) {
+      return;
+    }
+
+
     // 新建组
     const group = new Bol3D.Group()
     group.position.set(e.position.x, 0, e.position.z)
@@ -1074,7 +1081,7 @@ function initmonitorList() {
 
 // 加载监管人员
 function initPersonPopup() {
-  STATE.personList.forEach((e, index) => {
+  STATE.personPopupList.forEach((e, index) => {
     const map = STATE.personMap.find(e2 => e2.level === e.level)
     // 一根竖直的弹窗
     const popup = new Bol3D.POI.Popup3D({

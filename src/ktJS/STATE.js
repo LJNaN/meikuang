@@ -1489,9 +1489,9 @@ const baseStationList = [{
   position: { x: 39, y: 10, z: 391 }
 }]
 
-// 人员监管
+// 人员监管 主要是摆放 人员 popup 用的
 // 1 重点 2 加强 3 需关注 4 安全
-const personList = [
+const personPopupList = [
   { name: '张士明', level: 4, position: { x: 172, y: 0, z: 27 }, info: { title: '501综采工作面', value1: '5004', value2: '安全', value3: '皮带检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
   { name: '韩辉', level: 4, position: { x: 177, y: 0, z: 28 }, info: { title: '501综采工作面', value1: 'X3026', value2: '安全', value3: '采煤机检修工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
   { name: '高长虎', level: 4, position: { x: 183, y: 0, z: 29 }, info: { title: '501综采工作面', value1: '3658', value2: '安全', value3: '综采维修电工', value4: '检修班', value5: '综采一队综采一队综采一队综采一队综采一队综采一队综采一队综采一队' } },
@@ -1506,6 +1506,9 @@ const personList = [
   { name: '仵朋辉', level: 4, position: { x: 288, y: 0, z: 55 }, info: { title: '501综采工作面', value1: '6945', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
   { name: '张涵溪', level: 4, position: { x: 298, y: 0, z: 66 }, info: { title: '501综采工作面', value1: 'X3053', value2: '安全', value3: '支架检修工', value4: '检修班', value5: '综采一队' } },
 ]
+
+// 所有带有有用地点的人员监管 主要是给详情信息用的
+const personAllUsefulList = []
 
 // 人员监管相关的配置
 const personMap = [
@@ -1592,7 +1595,7 @@ export const STATE = {
   mainMachinePopup,
   monitorList,
   baseStationList,
-  personList,
+  personPopupList,
   personMap,
   bloomList,
   clickObjects,
@@ -1614,5 +1617,6 @@ export const STATE = {
   textureOffsetDirection,
   statusMaterial,
   keyAreaColorMap,
+  personAllUsefulList,
   clock
 }

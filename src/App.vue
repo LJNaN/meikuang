@@ -120,7 +120,7 @@ onMounted(() => {
         return acc
       }, [])
 
-      STATE.personList = data
+      STATE.personPopupList = data
 
       STATE.popupLocationList.forEach(e => {
         e.sub = `工作人员数量: 0 人`
@@ -142,6 +142,15 @@ onMounted(() => {
 
     } else {
       (async () => {
+        // 获取服务器所有的区域data
+        const locationDataOrigin = await getRiskPointList().catch(() => {
+          return { list: [] }
+        })
+        STATE.locationData = locationDataOrigin.list
+        STATE.importantLocation.value = locationDataOrigin.list.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
+
+
+        // 人员监管
         const personData = await getRysj().catch(() => {
           return { list: [] }
         })
@@ -149,29 +158,53 @@ onMounted(() => {
           e.remove(e.children[0])
         })
         STATE.sceneList.personPopup = []
-        const data = personData.list.reduce((acc, cur) => {
-          const locationPosition = STATE.locationPositionPointsArr.find(e => e.name === cur.t6)
-          if (locationPosition) {
-            // const randomPosition = API.randomPointInQuadrilateral(...locationPosition.value)
-            const randomPosition = API.randomPointInLine(...locationPosition.value)
-            acc.push({
-              name: cur.t1,
-              level: Number(cur.t8),
+
+        const personPopupList = []
+        const personAllUsefulList = []
+        personData.list.forEach(item => {
+          // 工作面
+          const hasGongzuomian = STATE.locationPositionPointsArr.find(e => e.name === item.t6)
+          if (hasGongzuomian) {
+            // const randomPosition = API.randomPointInQuadrilateral(...area.value)
+            const randomPosition = API.randomPointInLine(...hasGongzuomian.value)
+            personPopupList.push({
+              name: item.t1,
+              level: Number(item.t8),
               position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
-              user_id: cur.user_id,
+              user_id: item.user_id,
               info: {
-                title: cur.t6,
-                value1: cur.t0,
-                value2: STATE.personMap.find(e2 => e2.level == cur.t8).name,
-                value3: cur.t2,
-                value4: cur.t3,
-                value5: cur.t4
+                title: item.t6,
+                value1: item.t0,
+                value2: STATE.personMap.find(e2 => e2.level == item.t8).name,
+                value3: item.t2,
+                value4: item.t3,
+                value5: item.t4
               }
             })
           }
-          return acc
-        }, [])
-        STATE.personList = data
+
+          const hasPosition = STATE.locationData.find(e => e.pointName === item.t6)
+          if(hasPosition) {
+            personAllUsefulList.push({
+              name: item.t1,
+              level: Number(item.t8),
+              user_id: item.user_id,
+              info: {
+                title: item.t6,
+                value1: item.t0,
+                value2: STATE.personMap.find(e2 => e2.level == item.t8).name,
+                value3: item.t2,
+                value4: item.t3,
+                value5: item.t4
+              }
+            })
+          }
+        })
+
+        
+        STATE.personPopupList = personPopupList
+        STATE.personAllUsefulList = personAllUsefulList
+
 
         // 处理location的当前场景人数
         // const locationPersonNum = {}
@@ -190,13 +223,7 @@ onMounted(() => {
         //   }
         // }
 
-        // 获取服务器所有的区域data
-        const locationDataOrigin = await getRiskPointList().catch(() => {
-          return { list: [] }
-        })
-        STATE.locationData = locationDataOrigin.list
-        STATE.importantLocation.value = locationDataOrigin.list.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
-
+        
         // 区域人员数量
         const locationPointOrigin = await getRyPointNum().catch(() => {
           return { list: [] }
