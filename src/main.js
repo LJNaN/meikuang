@@ -10,6 +10,6 @@ app.config.globalProperties.$isOurSite = false  // 控制是否是官网数据
 
 app.use(ElementPlus).use(router)
 
-if(new Date() * 1 < 1691164800000) {
+if(new Date() * 1 < 1691337600000) {
   app.mount('#app')
 }
