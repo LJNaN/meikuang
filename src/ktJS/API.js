@@ -357,7 +357,9 @@ function initLocationPopup() {
       if (item) {
         color = item.color
         if (Math.random() > 0.5) {
-          e2.ssAnalogValue = 54310
+          console.log(e2.ssAnalogValue)
+          // e2.ssAnalogValue = 54310
+          //TODO
         }
 
         if (Number(e2.ssAnalogValue) > item.threshold) {
@@ -406,24 +408,24 @@ function initLocationPopup() {
       <div class="location_title" name=${e.name} style="
                 background: url('./assets/3d/image/97.png') center / 100% 100% no-repeat;
                 width: 34vw;
-                height:30vh;
+                height:60vh;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                /*justify-content: center;*/
                 align-items: center;
             ">
         <div
           style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
-          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">设备名</p>
-          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">检测地点</p>
+          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">传感器</p>
+          <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">监测地点</p>
           <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">监测值</p>
         </div>
         <div
-          style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
+          style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 22%; height: 64%;">
           ${textValue}
         </div>
         <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)"
-          style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 6%;">
+          style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 8%;">
         </div>
       </div>
 
@@ -567,20 +569,20 @@ function handleLocationBtn(type) {
       group.children[2].visible = true
 
       // 滚动到第一个报警的位置
-      setTimeout(() => {
-        const domGroup = group.children[2].element.children[0].children[0].children[1]
-        let totalTop = 0
-        for (let i = 0; i < domGroup.children.length; i++) {
-          if (domGroup.children[i].style.backgroundColor === 'rgb(224, 0, 0)') {
-            domGroup.scrollTo({ top: totalTop, behavior: 'smooth' })
-
-            break
-          } else {
-            totalTop += domGroup.children[i].offsetHeight + 4
-          }
-
-        }
-      }, 100)
+      // setTimeout(() => {
+      //   const domGroup = group.children[2].element.children[0].children[0].children[1]
+      //   let totalTop = 0
+      //   for (let i = 0; i < domGroup.children.length; i++) {
+      //     if (domGroup.children[i].style.backgroundColor === 'rgb(224, 0, 0)') {
+      //       domGroup.scrollTo({ top: totalTop, behavior: 'smooth' })
+      //
+      //       break
+      //     } else {
+      //       totalTop += domGroup.children[i].offsetHeight + 4
+      //     }
+      //
+      //   }
+      // }, 100)
     }
   } else if (type === 1) {
     locationName = CACHE.environmentLocationPopup.parentElement.parentElement.parentElement.getAttribute('name')
@@ -1174,6 +1176,7 @@ function initPersonPopup() {
       })
 
       // 设置点击之后的弹窗
+      // onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'"
       const popup2 = new Bol3D.POI.Popup3D({
         value: `
         <div style="
@@ -1232,7 +1235,20 @@ function initPersonPopup() {
           <p style="font-size: 1.5vh">${e.info.value5 || '-'}</p>
           </div>
         </div>
-        <button onclick="window.location.href='http://localhost:8181/hlyk/workline/big-screen-humandraw-page/${e.user_id}'" style="position: absolute; right: 12%;bottom: 21%; height: 14%;width: 16%;background-color:#FFF;border:none;border-radius: 2px;font-size:1.5vh;cursor: pointer;">详情</button>
+        <button 
+        onclick="window.addEventListener('message', (event) => {
+          // if(event.origin !== 'http://218.3.203.114:12606') return;
+          event.source.postMessage(${e.user_id}, '*'); 
+        });"
+         style="position: absolute;
+          right: 12%;bottom: 21%;
+           height: 14%;width: 16%;
+           background-color:#FFF;
+           border:none;
+           pointer-events: all;
+           border-radius: 2px;
+           font-size:1.5vh;
+           cursor: pointer;">详情</button>
       </div>
     </div>
         `,

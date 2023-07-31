@@ -88,11 +88,11 @@ async function getData() {
 function handleAlertList(data) {
   return data.list.reduce((acc, cur) => {
     acc.push({
-      position: type === 'home' ? (cur.workLocation || '-') : (cur.warnLocation || '-'),
-      time: type === 'home' ? (cur.createDate || '-') : (cur.warnTime || '-'),
-      item1: type === 'home' ? (cur.warnPerson || '-') : (cur.warnType || '-'),
-      item2: type === 'home' ? `${cur.belongPost || '-'}|${cur.belongTeam || '-'}|${cur.belongGroup || '-'}` : (cur.levelIndicators || '-'),
-      describe: type === 'home' ? (cur.warnDescribe || '-') : (cur.warnDescribe || '-')
+      position: type === 'home' ? (cur.workLocation || '--') : (cur.warnLocation || '--'),
+      time: type === 'home' ? (cur.createDate || '--') : (cur.warnTime || '--'),
+      item1: type === 'home' ? (cur.warnPerson || '--') : (cur.warnType || '--'),
+      item2: type === 'home' ? `${cur.belongPost || ''}|${cur.belongTeam || ''}|${cur.belongGroup || ''}` : (cur.levelIndicators || ''),
+      describe: type === 'home' ? (cur.warnDescribe || '') : (cur.warnDescribe || '')
     })
     return acc
   }, [])
