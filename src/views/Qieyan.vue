@@ -13,7 +13,7 @@ import * as echarts from "echarts";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
-import SingleActive from "@/components/SingleActive.vue";
+import SingleActive from "@/components/singleActive.vue";
 import PersonInfo from "@/components/personInfo.vue";
 
 

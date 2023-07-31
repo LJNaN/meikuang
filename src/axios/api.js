@@ -28,17 +28,48 @@ export function getRysj(params = {}) {
   return request('/api/getRysj', params, 'get')
 }
 
-// 传感器列表  与下面那个组合着用
+// 传感器列表 开关量
+export function getAqjcAqkcList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getAqjcAqkcList', params, 'get')
+}
+
+// 传感器列表 模拟量 与下面那个组合着用
 export function getAqjcAqmcList(params = {}) {
   Object.assign(params, token)
   return request('/api/getAqjcAqmcList', params, 'get')
 }
 
-// 传感器数值  与上面那个组合着用
+// 传感器数值  开关量、模拟量传感器-数值 与上面那个组合着用 
 export function getAqjcAqssList(params = {}) {
   Object.assign(params, token)
   return request('/api/getAqjcAqssList', params, 'get')
 }
+
+// 传感器数值  矿压-矿压传感器
+export function getKydevList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getKydevList', params, 'get')
+}
+
+// 传感器数值  矿压-数值
+export function getKyjcKyrtdataList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getKyjcKyrtdataList', params, 'get')
+}
+
+// 传感器数值  水文-水文传感器
+export function getSwdevList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getSwdevList', params, 'get')
+}
+
+// 传感器数值  水文-水文传感器-数值
+export function getSwjcSwrtdataList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getSwjcSwrtdataList', params, 'get')
+}
+
 
 // location 列表
 export function getRiskPointList(params = {}) {

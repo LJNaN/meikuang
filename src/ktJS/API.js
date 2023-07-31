@@ -176,7 +176,7 @@ function initLocationPopup() {
   STATE.popupLocationList.forEach((e, index) => {
     // 只显示匹配的
     const item = STATE.locationData.find(e2 => e2.pointName === e.name)
-    if(!item) {
+    if (!item) {
       return;
     }
 
@@ -348,29 +348,26 @@ function initLocationPopup() {
 
     // 重点区域的popup 传感器页
     let textValue = ``
-    const thisLocationSensorData = STATE.sensorData.filter(e2 => e2.ssTransducerPoint.includes(e.name))
+    let textArr = []
+    const thisLocationSensorData = STATE.sensorData.filter(e2 => e2.belongMine.includes(e.name) || e2.transducerName.includes(e.name))
 
     let hasAlert = false
     thisLocationSensorData.forEach(e2 => {
       let color = ''
-      const item = STATE.popupEnvironmentMap.find(e3 => e2.ssTransducerName.includes(e3.short))
+      let isAlert = false
+      const item = STATE.popupEnvironmentMap.find(e3 => e2.transducerName.includes(e3.short) || e2.belongMine.includes(e3.short))
       if (item) {
         color = item.color
-        if (Math.random() > 0.5) {
-          console.log(e2.ssAnalogValue)
-          // e2.ssAnalogValue = 54310
-          //TODO
-        }
-
-        if (Number(e2.ssAnalogValue) > item.threshold) {
-          color = '#e00000'
+        if (Number(e2.value) > item.threshold) {
+          isAlert = true
           hasAlert = true
         }
       }
 
 
-      textValue += `
-        <div style="
+      let tempTextValue = `
+        <div isAlert=${isAlert} style="
+          position: relative;
           background-color: ${color};
           border-radius: 5px;
           margin-bottom: 4px;
@@ -381,12 +378,31 @@ function initLocationPopup() {
           min-height: 22%;
           flex-shrink: 0;
           ">
-            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.ssTransducerName}</p>
-            <p style="word-break: break-all;width: 35%; font-size: 2vh; margin: 0 2.5%;">${e2.ssTransducerPoint}</p>
-            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.ssAnalogValue + ' ' + e2.ssAnalogUnit}</p>
+            <div style="
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              background:red;
+              margin-left:-2%;
+              ${isAlert ? 'animation: environment_alert 2s linear infinite;' : 'display: none;'}">
+            </div>
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.transducerName}</p>
+            <p style="word-break: break-all;width: 35%; font-size: 2vh; margin: 0 2.5%;">${e2.belongMine}</p>
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.value + ' ' + e2.unit}</p>
           </div>
         `
+
+      if (isAlert) {
+        textArr.unshift(tempTextValue)
+      } else {
+        textArr.push(tempTextValue)
+      }
     })
+
+    textArr.forEach(e2 => {
+      textValue += e2
+    })
+    
 
     if (hasAlert) {
       const dom = popup2.element.children[0].children[0].children[0]
@@ -402,7 +418,7 @@ function initLocationPopup() {
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform: translate(0, -27%);
+            transform: translate(0, -35%);
           ">
 
       <div class="location_title" name=${e.name} style="
@@ -572,15 +588,15 @@ function handleLocationBtn(type) {
       // setTimeout(() => {
       //   const domGroup = group.children[2].element.children[0].children[0].children[1]
       //   let totalTop = 0
+      //   console.log(' domGroup: ', domGroup);
       //   for (let i = 0; i < domGroup.children.length; i++) {
-      //     if (domGroup.children[i].style.backgroundColor === 'rgb(224, 0, 0)') {
+      //     if (domGroup.children[i].attributes['isalert'].value === 'true') {
       //       domGroup.scrollTo({ top: totalTop, behavior: 'smooth' })
-      //
       //       break
       //     } else {
       //       totalTop += domGroup.children[i].offsetHeight + 4
       //     }
-      //
+
       //   }
       // }, 100)
     }

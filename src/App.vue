@@ -8,7 +8,7 @@ import router from '@/router/index'
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import { onBeforeMount, onMounted, getCurrentInstance } from 'vue'
-import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getRyPointNum } from '@/axios/api'
+import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getAqjcAqkcList, getKydevList, getKyjcKyrtdataList, getSwdevList, getSwjcSwrtdataList, getRyPointNum } from '@/axios/api'
 import { mockData } from "@/axios/mockdata"
 import SceneChange from '@/components/sceneChange.vue'
 import { CACHE } from './ktJS/CACHE'
@@ -48,42 +48,80 @@ onMounted(() => {
         API.initEnvironmentPopup()
       }
     } else {
-      // getAqjcAqmcList().then(e => {
-      //   STATE.sceneList.environmentPopup.forEach(e2 => {
-      //     e2.remove(e2.children[0])
-      //   })
-      //   STATE.sceneList.environmentPopup = []
-      //   const existingList = e.list
-      //     .map(e2 => STATE.popupEnvironmentList
-      //       .find(e3 => e3.id === e2.ssTransducerCode)
-      //     ).filter(e2 => e2)
-
-
-      //   getAqjcAqssList().then(e2 => {
-      //     existingList.forEach(e3 => {
-      //       const originData = e.list.find(e4 => e4.ssTransducerCode === e3.id)
-      //       e3.title = originData.ssTransducerPoint
-      //       e3.info.name = originData.ssTransducerName
-      //       e3.info.unit = originData.ssAnalogUnit
-      //       const data = e2.list.find(e4 => e4.ssTransducerCode === e3.id)
-      //       if (data) {
-      //         e3.info.value = data.ssAnalogValue
-      //       }
-      //     })
-
-      //     STATE.popupEnvironmentList = existingList
-
-      //   })
-      // })
-
-
       (async () => {
-        const data1 = await getAqjcAqmcList()
-        const data2 = await getAqjcAqssList()
-        data1.list.forEach(e => {
-          const item = data2.list.find(e2 => e2.csMineCode === e.csMineCode)
+        const allData = await Promise.all([
+          getAqjcAqmcList(),
+          getAqjcAqssList(),
+          getAqjcAqkcList(),
+          getKydevList(),
+          getKyjcKyrtdataList(),
+          getSwdevList(),
+          getSwjcSwrtdataList()
+        ])
+        const data1 = allData[0]
+        const data2 = allData[1]
+        const data3 = allData[2]
+        const data4 = allData[3]
+        const data5 = allData[4]
+        const data6 = allData[5]
+        const data7 = allData[6]
+
+        handleAqmcAqkc(data1)
+        handleAqmcAqkc(data3)
+        function handleAqmcAqkc(data) {
+          data.list.forEach(e => {
+            const item = data2.list.find(e2 => e2.csMineCode === e.csMineCode)
+            if (item) {
+              const all = Object.assign(e, item)
+              const data = {
+                belongMine: all.ssTransducerPoint,
+                time: all.csDataTime,
+                value: all.ssAnalogValue,
+                mineCode: all.csMineCode,
+                transducerCode: all.ssTransducerCode,
+                transducerName: all.ssTransducerName,
+                unit: all.ssAnalogUnit || '',
+                allData: all
+              }
+              STATE.sensorData.push(data)
+            }
+          })
+        }
+
+
+        data4.list.forEach(e => {
+          const item = data5.list.find(e2 => e2.csMineCode === e.csMineCode)
           if (item) {
-            STATE.sensorData.push(Object.assign(e, item))
+            const all = Object.assign(e, item)
+            const data = {
+              belongMine: all.kyTunnelName,
+              time: all.kyCheckDate,
+              value: all.kyRealtimeData,
+              mineCode: all.csMineCode,
+              transducerCode: all.kyTransducerCode,
+              transducerName: all.kyTransducerPoint,
+              unit: all.kyAnalogUnit,
+              allData: all
+            }
+            STATE.sensorData.push(data)
+          }
+        })
+
+        data6.list.forEach(e => {
+          const item = data7.list.find(e2 => e2.csMineCode === e.csMineCode)
+          if (item) {
+            const all = Object.assign(e, item)
+            const data = {
+              belongMine: all.swPointName,
+              time: all.csDataTime,
+              value: all.swWaterTemperatureData,
+              mineCode: all.csMineCode,
+              transducerCode: all.swStationCode,
+              transducerName: all.swTransducerType,
+              unit: all.swAnalogUnit,
+              allData: all
+            }
+            STATE.sensorData.push(data)
           }
         })
       })()
@@ -184,7 +222,7 @@ onMounted(() => {
           }
 
           const hasPosition = STATE.locationData.find(e => e.pointName === item.t6)
-          if(hasPosition) {
+          if (hasPosition) {
             personAllUsefulList.push({
               name: item.t1,
               level: Number(item.t8),
@@ -201,7 +239,7 @@ onMounted(() => {
           }
         })
 
-        
+
         STATE.personPopupList = personPopupList
         STATE.personAllUsefulList = personAllUsefulList
 
@@ -223,7 +261,7 @@ onMounted(() => {
         //   }
         // }
 
-        
+
         // 区域人员数量
         const locationPointOrigin = await getRyPointNum().catch(() => {
           return { list: [] }

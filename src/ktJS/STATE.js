@@ -310,14 +310,13 @@ const popupEnvironmentMap = [{
   imgUrl: '53',
   color: '#f1c15f'
 }, {
-  // shortName: 'FY',
-  // name: 'KJY3A负压传感器',
-  // short: '风速',
-  // threshold: [0, 24],
-  // imgUrl: '53',
-  // color: '#ab2b8e'
-}
-]
+  shortName: '',
+  name: '瓦斯',
+  short: '瓦斯',
+  threshold: [0, 1],
+  imgUrl: '53',
+  color: '#ab2b8e'
+}]
 
 // Environment popup 弹窗
 const popupEnvironmentList = [{
