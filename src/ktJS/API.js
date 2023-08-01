@@ -1212,7 +1212,7 @@ function initPersonPopup() {
             width: 26vw;
             height:5.4vh;
             left: 0.5vw;
-            top: -5.5vh;
+            top: -6.5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -1323,7 +1323,7 @@ function initPersonPopup() {
         } else {
           CACHE.cameraP = { x: p.x, y: p.y, z: p.z }
           const distance = Math.sqrt(p.x ** 2 + p.y ** 2 + p.z ** 2)
-          const scale = Math.atan(distance / 1000 / 2) + 0.3
+          const scale = Math.atan(distance / 1000 / 2) + 0.5
           STATE.sceneList.personPopup.forEach(e => {
             e.children[0].scale.set(scale, scale, scale)
           })

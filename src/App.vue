@@ -245,22 +245,24 @@ onMounted(() => {
 
 
         // 处理location的当前场景人数
-        // const locationPersonNum = {}
-        // data.forEach(e => {
-        //   if (locationPersonNum[e.info.title] != undefined) {
-        //     locationPersonNum[e.info.title]++
-        //   } else {
-        //     locationPersonNum[e.info.title] = 0
-        //   }
-        // })
-
-        // for (let key in locationPersonNum) {
-        //   const location = STATE.popupLocationList.find(e => e.name === key)
-        //   if (location) {
-        //     location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
-        //   }
-        // }
-
+        const locationPersonNum = {}
+        STATE.personAllUsefulList.forEach(e => {
+          if (locationPersonNum[e.info.title] != undefined) {
+            locationPersonNum[e.info.title]++
+          } else {
+            locationPersonNum[e.info.title] = 0
+          }
+        })
+        
+        for (let key in locationPersonNum) {
+          if (key.includes('工作面') || key.includes('切眼')) {
+            const num = key.replace(/[^\d]/g, "")
+            const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面') || e.name.includes(num + '切眼'))
+            if (location) {
+              location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
+            }
+          }
+        }
 
         // 区域人员数量
         const locationPointOrigin = await getRyPointNum().catch(() => {
@@ -318,7 +320,7 @@ onMounted(() => {
             if (location && pointNumber) {
               location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
               location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
-              location.sub = `工作人员数量: ${pointNumber.numAll} 人`
+              // location.sub = `工作人员数量: ${pointNumber.numAll} 人`
               location.id = e.belongMine
               location.regionRate.member = pointNumber.regionRisk1
               location.regionRate.device = pointNumber.regionRisk2

@@ -26,7 +26,7 @@
                 item.info.value2 === '需关注' ? '#c1be26' :
                   item.info.value2 === '安全' ? '#356cb0' : '#FFFFFF'
         }">{{ item.info.value2 }}</div>
-        <div class="item3">{{ item.info.value3 + ' | ' + item.info.value5 + ' | ' + item.info.value4 }}</div>
+        <div class="item3">{{ (item.info.value3 || '--') + ' | ' + (item.info.value5 || '--') + ' | ' + (item.info.value4 || '--') }}</div>
         <div class="line"></div>
       </div>
     </el-scrollbar>
