@@ -1627,3 +1627,4 @@ export const STATE = {
   personAllUsefulList,
   clock
 }
+window.STATE = STATE
