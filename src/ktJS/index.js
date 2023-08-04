@@ -68,7 +68,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     },
     modelUrls: [
       '/model/mkxdw.glb', // 主
-      '/model/jjgzm.glb', // 101切眼
+      '/model/jjgzm.glb', // 1010切眼
       '/model/zcgzm.glb', // 综采
       '/model/ts.glb', // 硐室
       '/model/jxcc.glb', // 井下车场
@@ -109,7 +109,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
     },
     onProgress: (model) => {
       STATE.sceneList[model.name] = model
-      if (model.name === 'jjgzm') {  // 101切眼
+      if (model.name === 'jjgzm') {  // 1010切眼
         model.visible = false
         model.scale.set(10, 10, 10)
         STATE.roomModelName.forEach(e => {

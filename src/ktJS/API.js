@@ -1229,6 +1229,7 @@ function initPersonPopup() {
       </div>
 
       <div style="
+            pointer-events: none;
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
             width: 28vw;
@@ -1252,10 +1253,9 @@ function initPersonPopup() {
           </div>
         </div>
         <button 
-        onclick="window.addEventListener('message', (event) => {
-          // if(event.origin !== 'http://218.3.203.114:12606') return;
-          event.source.postMessage(${e.user_id}, '*'); 
-        });"
+          onclick="
+            window.parent.postMessage('${e.user_id}','*')
+          "
          style="position: absolute;
           right: 12%;bottom: 21%;
            height: 14%;width: 16%;
@@ -1598,7 +1598,7 @@ function testBox() {
       "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
-
+    console.log(markData)
   }
 
   window.markData = markData
@@ -1664,7 +1664,7 @@ function enterRoom(name = '') {
       })
 
       // 跳路由
-      if (name.includes('切眼') || name.includes('槽')) {
+      if (name.includes('1010') || name.includes('槽')) {
         STATE.animationFlag = true
         STATE.router.push('/qieyan')
 

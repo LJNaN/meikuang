@@ -131,7 +131,7 @@ function handleClose(id) {
   position: fixed;
   right: 0;
   top: 0;
-  width: 30%;
+  width: 40%;
   height: 60%;
   margin-top: 1.8%;
   margin-right: 11%;

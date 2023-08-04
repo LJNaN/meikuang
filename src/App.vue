@@ -250,14 +250,20 @@ onMounted(() => {
           if (locationPersonNum[e.info.title] != undefined) {
             locationPersonNum[e.info.title]++
           } else {
-            locationPersonNum[e.info.title] = 0
+            locationPersonNum[e.info.title] = 1
           }
         })
         
+        console.log('locationPersonNum: ', locationPersonNum);
         for (let key in locationPersonNum) {
-          if (key.includes('工作面') || key.includes('切眼')) {
+          if (key.includes('工作面')) {
             const num = key.replace(/[^\d]/g, "")
-            const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面') || e.name.includes(num + '切眼'))
+            const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面'))
+            if (location) {
+              location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
+            }
+          } else {
+            const location = STATE.popupLocationList.find(e => e.name === key)
             if (location) {
               location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
             }
