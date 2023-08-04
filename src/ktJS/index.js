@@ -67,6 +67,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       }
     },
     modelUrls: [
+      // '/model/mk-v1.glb', // 主
       '/model/mkxdw.glb', // 主
       '/model/jjgzm.glb', // 101切眼
       '/model/zcgzm.glb', // 综采
@@ -313,8 +314,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           if (child.name === 'ding_2') {
             child.material.side = 0
           }
-        })
+        }) // mkxdw mk-v1
       } else if (model.name === 'mkxdw') { // 主场景
+        // const textArr = ["gzm_6"]
         const textArr = ["1009", "627_(1)", "501", "1009", "624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
         const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm']
         model.traverse(child => {
