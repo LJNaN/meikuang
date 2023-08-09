@@ -46,6 +46,12 @@ export function getAqjcAqssList(params = {}) {
   return request('/api/getAqjcAqssList', params, 'get')
 }
 
+// 传感器开关、模拟 传感器-风险点
+export function getAqjcAqfzRelList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getAqjcAqfzRelList', params, 'get')
+}
+
 // 传感器数值  矿压-矿压传感器
 export function getKydevList(params = {}) {
   Object.assign(params, token)
@@ -58,6 +64,12 @@ export function getKyjcKyrtdataList(params = {}) {
   return request('/api/getKyjcKyrtdataList', params, 'get')
 }
 
+// 传感器  矿压 传感器-风险点
+export function getKydevRelList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getKydevRelList', params, 'get')
+}
+
 // 传感器数值  水文-水文传感器
 export function getSwdevList(params = {}) {
   Object.assign(params, token)
@@ -68,6 +80,12 @@ export function getSwdevList(params = {}) {
 export function getSwjcSwrtdataList(params = {}) {
   Object.assign(params, token)
   return request('/api/getSwjcSwrtdataList', params, 'get')
+}
+
+// 传感器  水文 传感器-风险点
+export function getSwdevRelList(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getSwdevRelList', params, 'get')
 }
 
 

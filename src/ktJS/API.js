@@ -349,16 +349,16 @@ function initLocationPopup() {
     // 重点区域的popup 传感器页
     let textValue = ``
     let textArr = []
-    const thisLocationSensorData = STATE.sensorData.filter(e2 => e2.belongMine.includes(e.name) || e2.transducerName.includes(e.name))
+    
 
     let hasAlert = false
-    thisLocationSensorData.forEach(e2 => {
+    item.sensor && item.sensor.forEach(e2 => {
       let color = ''
       let isAlert = false
-      const item = STATE.popupEnvironmentMap.find(e3 => e2.transducerName.includes(e3.short) || e2.belongMine.includes(e3.short))
-      if (item) {
-        color = item.color
-        if (Number(e2.value) > item.threshold) {
+      const item2 = STATE.popupEnvironmentMap.find(e3 => e2.transducerName.includes(e3.short))
+      if (item2) {
+        color = item2.color
+        if (Number(e2.value) > item2.threshold) {
           isAlert = true
           hasAlert = true
         }
@@ -386,9 +386,9 @@ function initLocationPopup() {
               margin-left:-2%;
               ${isAlert ? 'animation: environment_alert 2s linear infinite;' : 'display: none;'}">
             </div>
-            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.transducerName}</p>
-            <p style="word-break: break-all;width: 35%; font-size: 2vh; margin: 0 2.5%;">${e2.belongMine}</p>
-            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.value + ' ' + e2.unit}</p>
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${e2.transducerName || '--'}</p>
+            <p style="word-break: break-all;width: 35%; font-size: 2vh; margin: 0 2.5%;">${e2.location || '--'}</p>
+            <p style="word-break: break-all;width: 30%; font-size: 2vh;">${(e2.value || '--') + ' ' + (e2.unit || '')}</p>
           </div>
         `
 
@@ -588,7 +588,7 @@ function handleLocationBtn(type) {
       // setTimeout(() => {
       //   const domGroup = group.children[2].element.children[0].children[0].children[1]
       //   let totalTop = 0
-      //   console.log(' domGroup: ', domGroup);
+      //   
       //   for (let i = 0; i < domGroup.children.length; i++) {
       //     if (domGroup.children[i].attributes['isalert'].value === 'true') {
       //       domGroup.scrollTo({ top: totalTop, behavior: 'smooth' })
@@ -1323,7 +1323,7 @@ function initPersonPopup() {
         } else {
           CACHE.cameraP = { x: p.x, y: p.y, z: p.z }
           const distance = Math.sqrt(p.x ** 2 + p.y ** 2 + p.z ** 2)
-          const scale = Math.atan(distance / 1000 / 2) + 0.5
+          const scale = Math.atan(distance / 1000 / 2) + 1
           STATE.sceneList.personPopup.forEach(e => {
             e.children[0].scale.set(scale, scale, scale)
           })
@@ -1598,7 +1598,7 @@ function testBox() {
       "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
-    console.log(markData)
+    
   }
 
   window.markData = markData

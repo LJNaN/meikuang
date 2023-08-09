@@ -308,7 +308,7 @@ const popupEnvironmentMap = [{
   short: '压',
   threshold: [0, 24],
   imgUrl: '53',
-  color: '#f1c15f'
+  color: '#d1a13f'
 }, {
   shortName: '',
   name: '瓦斯',

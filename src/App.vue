@@ -8,7 +8,7 @@ import router from '@/router/index'
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import { onBeforeMount, onMounted, getCurrentInstance } from 'vue'
-import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getAqjcAqkcList, getKydevList, getKyjcKyrtdataList, getSwdevList, getSwjcSwrtdataList, getRyPointNum } from '@/axios/api'
+import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getAqjcAqkcList, getKydevList, getKyjcKyrtdataList, getSwdevList, getSwjcSwrtdataList, getRyPointNum, getSwdevRelList, getKydevRelList, getAqjcAqfzRelList } from '@/axios/api'
 import { mockData } from "@/axios/mockdata"
 import SceneChange from '@/components/sceneChange.vue'
 import { CACHE } from './ktJS/CACHE'
@@ -38,160 +38,16 @@ onMounted(() => {
   if (STATE.isNeedGetData) {
     // 传感器
     if ($isOurSite) {
-      STATE.sceneList.environmentPopup.forEach(e2 => {
-        e2.remove(e2.children[0])
-      })
-      STATE.sceneList.environmentPopup = []
 
-      STATE.popupEnvironmentList = mockData.sensorExistingList
-      if (!STATE.sceneList.environmentPopup.length) {
-        API.initEnvironmentPopup()
-      }
-    } else {
-      (async () => {
-        const allData = await Promise.all([
-          getAqjcAqmcList(),
-          getAqjcAqssList(),
-          getAqjcAqkcList(),
-          getKydevList(),
-          getKyjcKyrtdataList(),
-          getSwdevList(),
-          getSwjcSwrtdataList()
-        ])
-        const data1 = allData[0]
-        const data2 = allData[1]
-        const data3 = allData[2]
-        const data4 = allData[3]
-        const data5 = allData[4]
-        const data6 = allData[5]
-        const data7 = allData[6]
+      // 获取服务器所有的区域data
+      STATE.locationData = mockData.locationData
 
-        handleAqmcAqkc(data1)
-        handleAqmcAqkc(data3)
-        function handleAqmcAqkc(data) {
-          data.list.forEach(e => {
-            const item = data2.list.find(e2 => e2.csMineCode === e.csMineCode)
-            if (item) {
-              const all = Object.assign(e, item)
-              const data = {
-                belongMine: all.ssTransducerPoint,
-                time: all.csDataTime,
-                value: all.ssAnalogValue,
-                mineCode: all.csMineCode,
-                transducerCode: all.ssTransducerCode,
-                transducerName: all.ssTransducerName,
-                unit: all.ssAnalogUnit || '',
-                allData: all
-              }
-              STATE.sensorData.push(data)
-            }
-          })
-        }
-
-
-        data4.list.forEach(e => {
-          const item = data5.list.find(e2 => e2.csMineCode === e.csMineCode)
-          if (item) {
-            const all = Object.assign(e, item)
-            const data = {
-              belongMine: all.kyTunnelName,
-              time: all.kyCheckDate,
-              value: all.kyRealtimeData,
-              mineCode: all.csMineCode,
-              transducerCode: all.kyTransducerCode,
-              transducerName: all.kyTransducerPoint,
-              unit: all.kyAnalogUnit,
-              allData: all
-            }
-            STATE.sensorData.push(data)
-          }
-        })
-
-        data6.list.forEach(e => {
-          const item = data7.list.find(e2 => e2.csMineCode === e.csMineCode)
-          if (item) {
-            const all = Object.assign(e, item)
-            const data = {
-              belongMine: all.swPointName,
-              time: all.csDataTime,
-              value: all.swWaterTemperatureData,
-              mineCode: all.csMineCode,
-              transducerCode: all.swStationCode,
-              transducerName: all.swTransducerType,
-              unit: all.swAnalogUnit,
-              allData: all
-            }
-            STATE.sensorData.push(data)
-          }
-        })
-      })()
-    }
-
-
-    // 人员 & location
-    if ($isOurSite) {
-      const personData = { list: mockData.getRysj }
-      STATE.sceneList.personPopup.forEach(e => {
-        e.remove(e.children[0])
-      })
-      STATE.sceneList.personPopup = []
-      const data = personData.list.reduce((acc, cur) => {
-        const locationPosition = STATE.locationPositionPointsArr.find(e => e.name === cur.t6)
-        if (locationPosition) {
-          // const randomPosition = API.randomPointInQuadrilateral(...locationPosition.value)
-          const randomPosition = API.randomPointInLine(...locationPosition.value)
-          acc.push({
-            name: cur.t1,
-            level: Number(cur.t8),
-            position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
-            user_id: cur.user_id,
-            info: {
-              title: cur.t6,
-              value1: cur.t0,
-              value2: STATE.personMap.find(e2 => e2.level == cur.t8).name,
-              value3: cur.t2,
-              value4: cur.t3,
-              value5: cur.t4
-            }
-          })
-        }
-        return acc
-      }, [])
-
-      STATE.personPopupList = data
-
-      STATE.popupLocationList.forEach(e => {
-        e.sub = `工作人员数量: 0 人`
-        e.id = 0
-        e.regionRate.total = Math.floor(Math.random() * 10 + 90)
-        e.regionRate.member = Math.floor(Math.random() * 10 + 90)
-        e.regionRate.device = Math.floor(Math.random() * 10 + 90)
-        e.regionRate.environment = Math.floor(Math.random() * 10 + 90)
-        e.regionRate.manager = Math.floor(Math.random() * 10 + 90)
-        e.regionRate.status = Math.floor(Math.random() * 4) + 1
-      })
-
-      if (!STATE.sceneList.personPopup.length) {
-        API.initPersonPopup()
-      }
-      if (!STATE.sceneList.locationPopup.length) {
-        API.initLocationPopup()
-      }
-
-    } else {
-      (async () => {
-        // 获取服务器所有的区域data
-        const locationDataOrigin = await getRiskPointList().catch(() => {
-          return { list: [] }
-        })
-        STATE.locationData = locationDataOrigin.list
-        STATE.importantLocation.value = locationDataOrigin.list.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
-
+      // 人员和区域
+      {
+        STATE.importantLocation.value = STATE.locationData.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
 
         // 人员监管
-        const personData = await getRysj().catch(() => {
-          return { list: [] }
-        })
+        const personData = mockData.getRysj
         STATE.sceneList.personPopup.forEach(e => {
           e.remove(e.children[0])
         })
@@ -199,7 +55,7 @@ onMounted(() => {
 
         const personPopupList = []
         const personAllUsefulList = []
-        personData.list.forEach(item => {
+        personData.forEach(item => {
           // 工作面
           const hasGongzuomian = STATE.locationPositionPointsArr.find(e => e.name === item.t6)
           if (hasGongzuomian) {
@@ -253,8 +109,8 @@ onMounted(() => {
             locationPersonNum[e.info.title] = 1
           }
         })
-        
-        console.log('locationPersonNum: ', locationPersonNum);
+
+
         for (let key in locationPersonNum) {
           if (key.includes('工作面')) {
             const num = key.replace(/[^\d]/g, "")
@@ -269,12 +125,6 @@ onMounted(() => {
             }
           }
         }
-
-        // 区域人员数量
-        const locationPointOrigin = await getRyPointNum().catch(() => {
-          return { list: [] }
-        })
-
 
         waitForSceneList()
         function waitForSceneList() {
@@ -294,7 +144,7 @@ onMounted(() => {
           })
 
           // 根据接口来配置状态
-          locationDataOrigin.list.forEach(e => {
+          STATE.locationData.forEach(e => {
             if (e.pointName.includes('工作面')) {
               const area = e.pointName.replace(/[^\d]/g, " ").replace(/ /g, '')
               const item = STATE.sceneList.mkxdw.children.find(e2 => e2.name.includes(area))
@@ -322,18 +172,16 @@ onMounted(() => {
             }
 
             const location = STATE.popupLocationList.find(e2 => e2.name === e.pointName)
-            const pointNumber = locationPointOrigin.list.find(e2 => e2.pointId == e.id)
-            if (location && pointNumber) {
+            if (location) {
               location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
               location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
-              // location.sub = `工作人员数量: ${pointNumber.numAll} 人`
               location.id = e.belongMine
-              location.regionRate.member = pointNumber.regionRisk1
-              location.regionRate.device = pointNumber.regionRisk2
-              location.regionRate.environment = pointNumber.regionRisk3
-              location.regionRate.manager = pointNumber.regionRisk4
-              location.regionRate.total = pointNumber.score
-              location.regionRate.status = pointNumber.status //1234 红橙黄蓝
+              location.regionRate.member = Math.floor(Math.random() * 10 + 90)
+              location.regionRate.device = Math.floor(Math.random() * 10 + 90)
+              location.regionRate.environment = Math.floor(Math.random() * 10 + 90)
+              location.regionRate.manager = Math.floor(Math.random() * 10 + 90)
+              location.regionRate.total = Math.floor(Math.random() * 10 + 90)
+              location.regionRate.status = Math.floor(Math.random() * 4) + 1 //1234 红橙黄蓝
             }
           })
 
@@ -344,14 +192,298 @@ onMounted(() => {
             API.initLocationPopup()
           }
         }
+      }
 
 
+
+    } else {
+
+      (async () => {
+        const allData = await Promise.allSettled([
+          getAqjcAqmcList(),
+          getAqjcAqssList(),
+          getAqjcAqkcList(),
+          // getKydevList(),
+          // getKyjcKyrtdataList(),
+          // getSwdevList(),
+          // getSwjcSwrtdataList(),
+          getAqjcAqfzRelList(),
+          // getKydevRelList(),
+          // getSwdevRelList(),
+          getRiskPointList()
+        ]).catch(() => { })
+
+        // const data1 = allData[0].status === 'fulfilled' ? allData[0].value : {}    // 开关量
+        // const data2 = allData[1].status === 'fulfilled' ? allData[1].value : {}    // 开关量、模拟量 值
+        // const data3 = allData[2].status === 'fulfilled' ? allData[2].value : {}    // 模拟量
+        // const data4 = allData[3].status === 'fulfilled' ? allData[3].value : {}    // 矿压
+        // const data5 = allData[4].status === 'fulfilled' ? allData[4].value : {}    // 矿压 值
+        // const data6 = allData[5].status === 'fulfilled' ? allData[5].value : {}    // 水文
+        // const data7 = allData[6].status === 'fulfilled' ? allData[6].value : {}    // 水文 值
+        // const data8 = allData[7].status === 'fulfilled' ? allData[7].value : {}    // 开关量、模拟量 对应
+        // const data9 = allData[8].status === 'fulfilled' ? allData[8].value : {}    // 矿压 对应
+        // const data10 = allData[9].status === 'fulfilled' ? allData[9].value : {}   // 水文 对应
+        // const data11 = allData[10].status === 'fulfilled' ? allData[10].value : {} // 风险点列表
+
+
+        const data1 = allData[0].status === 'fulfilled' ? allData[0].value : {}    // 开关量
+        const data2 = allData[1].status === 'fulfilled' ? allData[1].value : {}    // 开关量、模拟量 值
+        const data3 = allData[2].status === 'fulfilled' ? allData[2].value : {}    // 模拟量
+        const data8 = allData[3].status === 'fulfilled' ? allData[3].value : {}    // 开关量、模拟量 对应
+        const data11 = allData[4].status === 'fulfilled' ? allData[4].value : {} // 风险点列表
+
+        // 传感器
+        {
+          // 获取服务器所有的区域data
+          STATE.locationData = data11.list
+
+          handleAqmcAqkc(data1) // 开关量
+          handleAqmcAqkc(data3) // 模拟量
+
+          function handleAqmcAqkc(data) {
+            data8.list && data8.list.forEach(e => {
+              const point = STATE.locationData.find(e2 => e2.id == e.riskPointId)
+              const sensor = data.list.find(e2 => e2.ssTransducerCode == e.aqfzCode)
+              const value = data2.list.find(e2 => e2.ssTransducerCode == e.aqfzCode)
+              if (point && sensor && value) {
+                const all = Object.assign(sensor, value)
+                const sensorData = {
+                  time: all.csDataTime,
+                  value: all.ssAnalogValue,
+                  location: all.ssTransducerPoint,
+                  transducerCode: all.ssTransducerCode,
+                  transducerName: all.ssTransducerName,
+                  unit: all.ssAnalogUnit || '',
+                  allData: all
+                }
+
+                if (!point.sensor) {
+                  point.sensor = []
+                }
+                point.sensor.push(sensorData)
+              }
+            })
+          }
+
+
+          // // 矿压
+          // data9.list && data9.list.forEach(e => {
+          //   const point = STATE.locationData.find(e2 => e2.id == e.riskPointId)
+          //   const sensor = data4.list.find(e2 => e2.kyTunnelName == e.kyjcCode)
+          //   if (sensor) {
+          //     const value = data5.list.find(e2 => e2.kyTransducerCode == sensor.kyTransducerCode)
+          //     if (point && sensor && value) {
+          //       const all = Object.assign(sensor, value)
+          //       const sensorData = {
+          //         time: all.csDataTime,
+          //         value: all.kyRealtimeData,
+          //         location: all.kyTunnelName,
+          //         transducerCode: all.kyTransducerCode,
+          //         transducerName: '矿压 - ' + all.kyAreaName,
+          //         unit: all.kyAnalogUnit || '',
+          //         allData: all
+          //       }
+
+          //       if (!point.sensor) {
+          //         point.sensor = []
+          //       }
+          //       point.sensor.push(sensorData)
+          //     }
+          //   }
+          // })
+
+
+          // // 水文
+          // data10.list && data10.list.forEach(e => {
+          //   const point = STATE.locationData.find(e2 => e2.id == e.riskPointId)
+          //   const sensor = data6.list.find(e2 => e2.swStationCode == e.swjcCode)
+          //   const value = data7.list.find(e2 => e2.swStationCode == e.swjcCode)
+          //   if (point && sensor && value) {
+          //     const all = Object.assign(sensor, value)
+          //     const sensorData = {
+          //       time: all.csDataTime,
+          //       value: all.swWaterTemperatureData,
+          //       location: all.swViewPosition,
+          //       transducerCode: all.swStationCode,
+          //       transducerName: all.swAreaName + ' - ' + all.swPointName,
+          //       unit: all.swAnalogUnit || '',
+          //       allData: all
+          //     }
+
+          //     if (!point.sensor) {
+          //       point.sensor = []
+          //     }
+          //     point.sensor.push(sensorData)
+          //   }
+
+          // })
+        }
+
+
+        // 人员和区域
+        {
+          STATE.importantLocation.value = STATE.locationData.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
+
+          // 人员监管
+          const personData = await getRysj().catch(() => {
+            return { list: [] }
+          })
+          STATE.sceneList.personPopup.forEach(e => {
+            e.remove(e.children[0])
+          })
+          STATE.sceneList.personPopup = []
+
+          const personPopupList = []
+          const personAllUsefulList = []
+          personData.list.forEach(item => {
+            // 工作面
+            const hasGongzuomian = STATE.locationPositionPointsArr.find(e => e.name === item.t6)
+            if (hasGongzuomian) {
+              // const randomPosition = API.randomPointInQuadrilateral(...area.value)
+              const randomPosition = API.randomPointInLine(...hasGongzuomian.value)
+              personPopupList.push({
+                name: item.t1,
+                level: Number(item.t8),
+                position: { x: randomPosition[0], y: 0, z: randomPosition[1] },
+                user_id: item.user_id,
+                info: {
+                  title: item.t6,
+                  value1: item.t0,
+                  value2: STATE.personMap.find(e2 => e2.level == item.t8).name,
+                  value3: item.t2,
+                  value4: item.t3,
+                  value5: item.t4
+                }
+              })
+            }
+
+            const hasPosition = STATE.locationData.find(e => e.pointName === item.t6)
+            if (hasPosition) {
+              personAllUsefulList.push({
+                name: item.t1,
+                level: Number(item.t8),
+                user_id: item.user_id,
+                info: {
+                  title: item.t6,
+                  value1: item.t0,
+                  value2: STATE.personMap.find(e2 => e2.level == item.t8).name,
+                  value3: item.t2,
+                  value4: item.t3,
+                  value5: item.t4
+                }
+              })
+            }
+          })
+
+
+          STATE.personPopupList = personPopupList
+          STATE.personAllUsefulList = personAllUsefulList
+
+
+          // 处理location的当前场景人数
+          const locationPersonNum = {}
+          STATE.personAllUsefulList.forEach(e => {
+            if (locationPersonNum[e.info.title] != undefined) {
+              locationPersonNum[e.info.title]++
+            } else {
+              locationPersonNum[e.info.title] = 1
+            }
+          })
+
+
+          for (let key in locationPersonNum) {
+            if (key.includes('工作面')) {
+              const num = key.replace(/[^\d]/g, "")
+              const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面'))
+              if (location) {
+                location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
+              }
+            } else {
+              const location = STATE.popupLocationList.find(e => e.name === key)
+              if (location) {
+                location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
+              }
+            }
+          }
+
+          // 区域人员数量
+          const locationPointOrigin = await getRyPointNum().catch(() => {
+            return { list: [] }
+          })
+
+
+          waitForSceneList()
+          function waitForSceneList() {
+            if (!CACHE?.container?.sceneList?.mkxdw) {
+              setTimeout(() => {
+                waitForSceneList()
+              }, 500)
+              return
+            }
+
+            // 全部恢复成默认(已采)
+            STATE.sceneList.mkxdw.children.forEach(e => {
+              const area = e.name.replace(/[^\d]/g, " ").replace(/ /g, '')
+              if (STATE.textureOffsetDirection.toLeft.includes(area) || STATE.textureOffsetDirection.toRight.includes(area)) {
+                e.material = STATE.statusMaterial.over.clone()
+              }
+            })
+
+            // 根据接口来配置状态
+            STATE.locationData.forEach(e => {
+              if (e.pointName.includes('工作面')) {
+                const area = e.pointName.replace(/[^\d]/g, " ").replace(/ /g, '')
+                const item = STATE.sceneList.mkxdw.children.find(e2 => e2.name.includes(area))
+
+                if (item) {
+                  if (e.riskPointStatus == '1') {
+                    item.visible = false
+
+                  } else if (e.riskPointStatus == '2') {
+                    if (STATE.textureOffsetDirection.toLeft.includes(area)) {
+                      item.material = STATE.statusMaterial.toLeft.clone()
+                      STATE.mainSceneTextureAnimateMeshList.toLeft.push(item)
+
+                    } else if (STATE.textureOffsetDirection.toRight.includes(area)) {
+                      item.material = STATE.statusMaterial.toRight.clone()
+                      STATE.mainSceneTextureAnimateMeshList.toRight.push(item)
+                    }
+                    item.visible = true
+
+                  } else if (e.riskPointStatus == '3') {
+                    item.material = STATE.statusMaterial.over.clone()
+                    item.visible = true
+                  }
+                }
+              }
+
+              const location = STATE.popupLocationList.find(e2 => e2.name === e.pointName)
+              const pointNumber = locationPointOrigin.list.find(e2 => e2.pointId == e.id)
+              if (location && pointNumber) {
+                location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
+                location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
+                // location.sub = `工作人员数量: ${pointNumber.numAll} 人`
+                location.id = e.belongMine
+                location.regionRate.member = pointNumber.regionRisk1
+                location.regionRate.device = pointNumber.regionRisk2
+                location.regionRate.environment = pointNumber.regionRisk3
+                location.regionRate.manager = pointNumber.regionRisk4
+                location.regionRate.total = pointNumber.score
+                location.regionRate.status = pointNumber.status //1234 红橙黄蓝
+              }
+            })
+
+            if (!STATE.sceneList.personPopup.length) {
+              API.initPersonPopup()
+            }
+            if (!STATE.sceneList.locationPopup.length) {
+              API.initLocationPopup()
+            }
+          }
+        }
 
       })()
     }
-
-
-
 
     if (STATE.startPath === '重点区域') {
       API.showPopup([
