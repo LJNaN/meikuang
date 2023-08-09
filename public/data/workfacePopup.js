@@ -18,12 +18,6 @@ const workfacePopup = [
     name: '632回风顺槽',
     position: { x: -342, y: 0, z: -316 }
   }, {
-    name: '1012进风反掘',
-    position: { x: -65, y: 0, z: -391 }
-  }, {
-    name: '1012进风正掘',
-    position: { x: 328, y: 0, z: -396 }
-  }, {
     name: '1000回风顺槽',
     position: { x: 371, y: 0, z: -222 }
   }, {
