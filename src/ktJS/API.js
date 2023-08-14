@@ -1209,10 +1209,10 @@ function initPersonPopup() {
       <div style="
             position: absolute;
             background: url('./assets/3d/image/${map.img[1]}.png') center / 100% 100% no-repeat;
-            width: 26vw;
-            height:5.4vh;
-            left: 0.5vw;
-            top: -6.5vh;
+            width: 32vw;
+            height:11.4vh;
+            left: 3vw;
+            top: -12.5vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -1225,15 +1225,15 @@ function initPersonPopup() {
               display: inline;
               text-align: center;
               min-width: 15vw;
-              font-size: 4vh;">${e.name} ${map.name}</p>
+              font-size: 5vh;">${e.name} ${map.name}</p>
       </div>
 
       <div style="
             pointer-events: none;
             background: url('./assets/3d/image/${map.img[2]}.png') center / 100% 100% no-repeat;
             min-width: 220px;
-            width: 28vw;
-            height:24vh;
+            width: 36vw;
+            height:35vh;
             position: absolute;
             top: -0.5vh;
             display: flex;
@@ -1241,15 +1241,15 @@ function initPersonPopup() {
             justify-content: center;
             align-items: center;
           ">
-        <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:3.3vh;">${e.info.title}</p>
+        <p style="position: absolute; top: 20%;font-family: YouSheBiaoTiHei;font-size:4.3vh;">${e.info.title}</p>
         <div
           style="width: 75%; height: 34%; margin-top: 4%; display: flex; flex-direction: column; justify-content: space-around;">
           <div style="display: flex; justify-content: space-between;">
-          <p style="font-size: 1.5vh">${e.info.value3 || '-'}</p>
-          <p style="font-size: 1.5vh"> | </p>
-          <p style="font-size: 1.5vh">${e.info.value4 || '-'}</p>
-          <p style="font-size: 1.5vh"> | </p>
-          <p style="font-size: 1.5vh">${e.info.value5 || '-'}</p>
+          <p style="font-size: 2.5vh">${e.info.value3 || '-'}</p>
+          <p style="font-size: 2.5vh"> | </p>
+          <p style="font-size: 2.5vh">${e.info.value4 || '-'}</p>
+          <p style="font-size: 2.5vh"> | </p>
+          <p style="font-size: 2.5vh">${e.info.value5 || '-'}</p>
           </div>
         </div>
         <button 
