@@ -1,6 +1,9 @@
 <template>
   <div class="left-btn publicBtn"
-    :style="{ background: 'url(' + './assets/3d/image/' + (detailShow ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
+    :style="{
+      background: 'url(' + './assets/3d/image/' + (detailShow ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat',
+      cursor: STATE.allowControl.value ? 'pointer' :'wait'
+    }"
     @click="handleLeft">
     区域人员
   </div>
@@ -46,6 +49,9 @@ const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } 
 let detailShow = ref(false)
 
 function handleLeft() {
+  if(!STATE.allowControl.value) {
+    return
+  }
   detailShow.value = !detailShow.value
 }
 

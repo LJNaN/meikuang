@@ -1,8 +1,10 @@
 <template>
   <div class="home">
 
-    <div class="control" :style="{left: STATE.startPath === '综合' ? '13%' : '3%'}">
-      <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)">
+    <div class="control" :style="{ left: STATE.startPath === '综合' ? '13%' : '3%' }">
+      <div v-for="(item, index) in perserList" :key="item" class="control-item" @click="handlePerson(index)"
+        :style="{ cursor: STATE.allowControl.value ? 'pointer' : 'wait' }">
+        
         <div class="control-icon" :style="{
           background:
             personShowType.includes(index)
@@ -41,6 +43,9 @@ const perserList = [
 let personShowType = ref(STATE.personShowType)
 
 function handlePerson(index) {
+  if (!STATE.allowControl.value) {
+    return
+  }
   API.showPerson(index)
   personShowType.value = []
   personShowType.value = STATE.personShowType

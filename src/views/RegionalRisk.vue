@@ -1,9 +1,15 @@
 <template>
   <div class="home">
     <div class="left"
-      :style="{ left: STATE.startPath === '综合' ? '10%' : '3%', top: STATE.startPath === '综合' ? '10%' : '5%' }">
+      :style="{ 
+        left: STATE.startPath === '综合' ? '10%' : '3%',
+        top: STATE.startPath === '综合' ? '10%' : '5%',
+      }">
       <div v-for="(item, index) in leftList" :key="item.name" class="left-btn"
-        :style="{ background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat' }"
+        :style="{ 
+          background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat',
+          cursor: STATE.allowControl.value ? 'pointer' :'wait' 
+        }"
         @click="handleLeft(item, index)">
         {{ item }}
       </div>
@@ -26,6 +32,12 @@ let leftName = ref('')
 STATE.currentRegionalriskLeftLocation = leftName
 
 function handleLeft(item, index) {
+  
+  if(!STATE.allowControl.value) {
+    return
+  }
+
+
   // 取消透明
   STATE.sceneList.locationPopup.forEach(e => {
     API.opacityPopup(e.children[1], false)

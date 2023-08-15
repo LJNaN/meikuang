@@ -7,13 +7,15 @@ import Scene from '@/views/Scene.vue'
 import router from '@/router/index'
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
-import { onBeforeMount, onMounted, getCurrentInstance } from 'vue'
+import { onBeforeMount, onMounted, getCurrentInstance, ref } from 'vue'
 import { getRysj, getAqjcAqmcList, getAqjcAqssList, getRiskPointList, getAqjcAqkcList, getKydevList, getKyjcKyrtdataList, getSwdevList, getSwjcSwrtdataList, getRyPointNum, getSwdevRelList, getKydevRelList, getAqjcAqfzRelList } from '@/axios/api'
 import { mockData } from "@/axios/mockdata"
 import SceneChange from '@/components/sceneChange.vue'
 import { CACHE } from './ktJS/CACHE'
 const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } = getCurrentInstance()
 
+let allowControl = ref(false)
+STATE.allowControl = allowControl
 
 onBeforeMount(() => {
   if (location.hash === '#/regionalrisk') {
@@ -135,6 +137,8 @@ onMounted(() => {
             return
           }
 
+          STATE.allowControl.value = true
+
           // 全部恢复成默认(已采)
           STATE.sceneList.mkxdw.children.forEach(e => {
             const area = e.name.replace(/[^\d]/g, " ").replace(/ /g, '')
@@ -212,6 +216,7 @@ onMounted(() => {
           // getSwdevRelList(),
           getRiskPointList()
         ]).catch(() => { })
+
 
         // const data1 = allData[0].status === 'fulfilled' ? allData[0].value : {}    // 开关量
         // const data2 = allData[1].status === 'fulfilled' ? allData[1].value : {}    // 开关量、模拟量 值
@@ -322,6 +327,9 @@ onMounted(() => {
 
         // 人员和区域
         {
+          if (!STATE.locationData) {
+            STATE.locationData = []
+          }
           STATE.importantLocation.value = STATE.locationData.filter(e => e.keyAreaStatus === '1').map(e => e.pointName)
 
           // 人员监管
@@ -420,6 +428,7 @@ onMounted(() => {
               }, 500)
               return
             }
+            STATE.allowControl.value = true
 
             // 全部恢复成默认(已采)
             STATE.sceneList.mkxdw.children.forEach(e => {
@@ -481,6 +490,8 @@ onMounted(() => {
             }
           }
         }
+
+
 
       })()
     }

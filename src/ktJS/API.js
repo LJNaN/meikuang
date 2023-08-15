@@ -349,7 +349,7 @@ function initLocationPopup() {
     // 重点区域的popup 传感器页
     let textValue = ``
     let textArr = []
-    
+
 
     let hasAlert = false
     item.sensor && item.sensor.forEach(e2 => {
@@ -402,7 +402,7 @@ function initLocationPopup() {
     textArr.forEach(e2 => {
       textValue += e2
     })
-    
+
 
     if (hasAlert) {
       const dom = popup2.element.children[0].children[0].children[0]
@@ -575,6 +575,10 @@ function initLocationPopup() {
 // 区域风险的弹窗三个按钮的行为
 // 0 传感器 1 监控 2 进入场景 3 传感器关闭 4 监控关闭
 function handleLocationBtn(type) {
+  if (!STATE.allowControl.value) {
+    return
+  }
+  
   let locationName = null
   let group = null
   if (type === 0) {
@@ -1179,6 +1183,10 @@ function initPersonPopup() {
 
     // 点击头像
     popup.element.addEventListener('click', (() => {
+      if (!STATE.allowControl.value) {
+        return
+      }
+      
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
@@ -1257,8 +1265,10 @@ function initPersonPopup() {
             window.parent.postMessage('${e.user_id}','*')
           "
          style="position: absolute;
-          right: 12%;bottom: 21%;
-           height: 14%;width: 16%;
+           right: 12%;
+           bottom: 21%;
+           height: 14%;
+           width: 16%;
            background-color:#FFF;
            border:none;
            pointer-events: all;
@@ -1598,7 +1608,7 @@ function testBox() {
       "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
-    
+
     console.log(markData)
   }
 
@@ -1635,10 +1645,16 @@ function setModelPosition(mesh) {
  * @param {String} name 场景名
  */
 function enterRoom(name = '') {
+
   const item = STATE.roomModelName.find(e => name.includes(e.name))
 
   // 如果找到匹配的
   if (item) {
+    if (!STATE.allowControl.value) {
+      return
+    }
+    STATE.allowControl.value = false
+
     // 过渡
     prtScreen()
     // 更改当前场景 相机移动到标签上
@@ -1996,6 +2012,8 @@ function back(type) {
       // showPerson(0)
     }
   }
+
+  STATE.allowControl.value = true
 }
 
 /**

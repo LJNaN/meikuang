@@ -1,7 +1,10 @@
 <template>
   <div v-show="STATE.startPath === '综合' && showFlag" class="main">
     <div v-for="item in list" class="left-btn publicBtn"
-      :style="{ background: 'url(' + './assets/3d/image/' + (active === item.name ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat' }"
+      :style="{
+        background: 'url(' + './assets/3d/image/' + (active === item.name ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat',
+        cursor: STATE.allowControl.value ? 'pointer' :'wait' 
+      }"
       @click="handleLeft(item)">
       {{ item.name }}
     </div>
@@ -46,6 +49,9 @@ watch(
 
 console.log('router: ', router);
 function handleLeft(e) {
+  if(!STATE.allowControl.value) {
+    return
+  }
   if (active.value === e.name) {
     // 
   } else {

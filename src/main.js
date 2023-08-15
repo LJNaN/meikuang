@@ -6,7 +6,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 const app = createApp(App)
 
-app.config.globalProperties.$isOurSite = true  // 控制是否是官网数据
+app.config.globalProperties.$isOurSite = false  // 控制是否是官网数据
 
 app.use(ElementPlus).use(router)
 

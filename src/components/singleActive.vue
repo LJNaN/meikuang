@@ -1,5 +1,8 @@
 <template>
-  <div class="btn publicBtn" :style="style" @click="handle">
+  <div class="btn publicBtn" :style="
+      Object.assign(style, 
+      {cursor: STATE.allowControl.value ? 'pointer' :'wait'})"
+    @click="handle">
     {{ text }}
   </div>
 </template>
@@ -27,12 +30,16 @@ const style = reactive(options.style)
 style.background = background
 
 function handle() {
+  if (!STATE.allowControl.value) {
+    return
+  }
   options.cb && options.cb()
   active.value = !active.value
   emits("btnClick", {
     text: options.text,
     active: active.value
   })
+
 }
 
 

@@ -16,11 +16,12 @@ import router from '@/router/index'
 import SingleActive from "@/components/singleActive.vue";
 import PersonInfo from "@/components/personInfo.vue";
 
-
+STATE.allowControl.value = true
 
 let animationFlag = ref(true)
 
 function back() {
+  STATE.allowControl.value = false
   API.back()
 }
 
