@@ -14,15 +14,55 @@ import SceneChange from '@/components/sceneChange.vue'
 import { CACHE } from './ktJS/CACHE'
 const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } = getCurrentInstance()
 
+// 允许操作按钮等，简单的防抖
 let allowControl = ref(false)
 STATE.allowControl = allowControl
 
+const version = API.getVersion()
+
+// 判断入口 以及版本
 onBeforeMount(() => {
-  if (location.hash === '#/regionalrisk') {
+  let currentWorkfacePopup = []
+  if (version === 'yihao') {
+    STATE.locationPositionPointsArr = window.workfaceArea
+    currentWorkfacePopup = window.workfacePopup
+
+  } else if (version === 'erhao') {
+    STATE.locationPositionPointsArr = window.workfaceArea_erhao
+    currentWorkfacePopup = window.workfacePopup_erhao
+
+  } else if (version === 'shuanglong') {
+    STATE.locationPositionPointsArr = window.workfaceArea_shuanglong
+    currentWorkfacePopup = window.workfacePopup_shuanglong
+
+  } else if (version === 'ruineng') {
+    STATE.locationPositionPointsArr = window.workfaceArea_ruineng
+    currentWorkfacePopup = window.workfacePopup_ruineng
+  }
+
+  currentWorkfacePopup.forEach(e => {
+    STATE.popupLocationList.push({
+      name: e.name,
+      sub: '工作人员数量: 0 人',
+      position: e.position,
+      regionRate: {
+        total: 0,
+        member: 0,
+        device: 0,
+        environment: 0,
+        manager: 0
+      },
+      person: []
+    })
+  })
+
+
+  // 确认入口
+  if (location.hash.includes('/regionalrisk')) {
     STATE.startPath = '重点区域'
-  } else if (location.hash === '#/comprehensive') {
+  } else if (location.hash.includes('/comprehensive')) {
     STATE.startPath = '综合'
-  } else if (location.hash === '#/') {
+  } else if (location.hash === '#/' || location.hash.includes('#/?version=')) {
     STATE.startPath = '人员管理'
   } else {
     STATE.startPath = '人员管理'
@@ -130,7 +170,7 @@ onMounted(() => {
 
         waitForSceneList()
         function waitForSceneList() {
-          if (!CACHE?.container?.sceneList?.mkxdw) {
+          if (!STATE?.sceneList?.mainScene) {
             setTimeout(() => {
               waitForSceneList()
             }, 500)
@@ -140,29 +180,67 @@ onMounted(() => {
           STATE.allowControl.value = true
 
           // 全部恢复成默认(已采)
-          STATE.sceneList.mkxdw.children.forEach(e => {
-            const area = e.name.replace(/[^\d]/g, " ").replace(/ /g, '')
-            if (STATE.textureOffsetDirection.toLeft.includes(area) || STATE.textureOffsetDirection.toRight.includes(area)) {
+          if (STATE.version === 'yihao') {
+            STATE.sceneList.mainScene.children.forEach(e => {
+              const area = e.name.replace(/[^\d]/g, "")
+              if (STATE.textureOffsetDirection.yihao.toLeft.includes(area) || STATE.textureOffsetDirection.yihao.toRight.includes(area)) {
+                e.material = STATE.statusMaterial.over.clone()
+              }
+            })
+
+          } else if (STATE.version === 'erhao') {
+
+          } else if (STATE.version === 'shuanglong') {
+            STATE.sceneList.mainScene.traverse(e => {
+              if (e.isMesh && e.name.includes('zcgzm')) {
+                const area = e.name.replace(/[^\d]/g, "")
+                if (STATE.textureOffsetDirection.shuanglong.toLeft.includes(area) || STATE.textureOffsetDirection.shuanglong.toRight.includes(area)) {
+                  e.material = STATE.statusMaterial.over.clone()
+                }
+              }
+            })
+
+
+
+          } else if (STATE.version === 'ruineng') {
+            let group = []
+            STATE.sceneList.mainScene.traverse(e => {
+              if (e.name === 'huise') {
+                group = e
+              }
+            })
+            group.children.forEach(e => {
               e.material = STATE.statusMaterial.over.clone()
-            }
-          })
+            })
+          }
 
           // 根据接口来配置状态
           STATE.locationData.forEach(e => {
             if (e.pointName.includes('工作面')) {
               const area = e.pointName.replace(/[^\d]/g, " ").replace(/ /g, '')
-              const item = STATE.sceneList.mkxdw.children.find(e2 => e2.name.includes(area))
+
+              let item = null
+              if (STATE.version === 'yihao') {
+                item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
+
+              } else if (STATE.version === 'erhao') {
+
+              } else if (STATE.version === 'shuanglong') {
+
+              } else if (STATE.version === 'ruineng') {
+
+              }
 
               if (item) {
                 if (e.riskPointStatus == '1') {
                   item.visible = false
 
                 } else if (e.riskPointStatus == '2') {
-                  if (STATE.textureOffsetDirection.toLeft.includes(area)) {
+                  if (STATE.textureOffsetDirection[STATE.version].toLeft.includes(area)) {
                     item.material = STATE.statusMaterial.toLeft.clone()
                     STATE.mainSceneTextureAnimateMeshList.toLeft.push(item)
 
-                  } else if (STATE.textureOffsetDirection.toRight.includes(area)) {
+                  } else if (STATE.textureOffsetDirection[STATE.version].toRight.includes(area)) {
                     item.material = STATE.statusMaterial.toRight.clone()
                     STATE.mainSceneTextureAnimateMeshList.toRight.push(item)
                   }
@@ -235,7 +313,7 @@ onMounted(() => {
         const data2 = allData[1].status === 'fulfilled' ? allData[1].value : {}    // 开关量、模拟量 值
         const data3 = allData[2].status === 'fulfilled' ? allData[2].value : {}    // 模拟量
         const data8 = allData[3].status === 'fulfilled' ? allData[3].value : {}    // 开关量、模拟量 对应
-        const data11 = allData[4].status === 'fulfilled' ? allData[4].value : {} // 风险点列表
+        const data11 = allData[4].status === 'fulfilled' ? allData[4].value : {}   // 风险点列表
 
         // 传感器
         {
@@ -422,7 +500,7 @@ onMounted(() => {
 
           waitForSceneList()
           function waitForSceneList() {
-            if (!CACHE?.container?.sceneList?.mkxdw) {
+            if (!STATE?.sceneList?.mainScene) {
               setTimeout(() => {
                 waitForSceneList()
               }, 500)
@@ -431,29 +509,73 @@ onMounted(() => {
             STATE.allowControl.value = true
 
             // 全部恢复成默认(已采)
-            STATE.sceneList.mkxdw.children.forEach(e => {
-              const area = e.name.replace(/[^\d]/g, " ").replace(/ /g, '')
-              if (STATE.textureOffsetDirection.toLeft.includes(area) || STATE.textureOffsetDirection.toRight.includes(area)) {
+            if (STATE.version === 'yihao') {
+              STATE.sceneList.mainScene.children.forEach(e => {
+                const area = e.name.replace(/[^\d]/g, "")
+                if (STATE.textureOffsetDirection.yihao.toLeft.includes(area) || STATE.textureOffsetDirection.yihao.toRight.includes(area)) {
+                  e.material = STATE.statusMaterial.over.clone()
+                }
+              })
+
+            } else if (STATE.version === 'erhao') {
+
+            } else if (STATE.version === 'shuanglong') {
+              STATE.sceneList.mainScene.traverse(e => {
+                if (e.isMesh && e.name.includes('zcgzm')) {
+                  const area = e.name.replace(/[^\d]/g, "")
+                  if (STATE.textureOffsetDirection.shuanglong.toLeft.includes(area) || STATE.textureOffsetDirection.shuanglong.toRight.includes(area)) {
+                    e.material = STATE.statusMaterial.over.clone()
+                  }
+                }
+              })
+
+
+
+            } else if (STATE.version === 'ruineng') {
+              let group = []
+              STATE.sceneList.mainScene.traverse(e => {
+                if (e.name === 'huise') {
+                  group = e
+                }
+              })
+              group.children.forEach(e => {
                 e.material = STATE.statusMaterial.over.clone()
-              }
-            })
+              })
+            }
 
             // 根据接口来配置状态
             STATE.locationData.forEach(e => {
               if (e.pointName.includes('工作面')) {
-                const area = e.pointName.replace(/[^\d]/g, " ").replace(/ /g, '')
-                const item = STATE.sceneList.mkxdw.children.find(e2 => e2.name.includes(area))
+                const area = e.pointName.replace(/[^\d]/g, "")
+
+                let item = null
+                if (STATE.version === 'yihao') {
+                  item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
+
+                } else if (STATE.version === 'erhao') {
+
+                } else if (STATE.version === 'shuanglong') {
+                  item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area + 'zcgzm'))
+
+                } else if (STATE.version === 'ruineng') {
+                  STATE.sceneList.mainScene.traverse(e => {
+                    if (e.name === area) {
+                      item = e
+                    }
+                  })
+
+                }
 
                 if (item) {
                   if (e.riskPointStatus == '1') {
                     item.visible = false
 
                   } else if (e.riskPointStatus == '2') {
-                    if (STATE.textureOffsetDirection.toLeft.includes(area)) {
+                    if (STATE.textureOffsetDirection[STATE.version].toLeft.includes(area)) {
                       item.material = STATE.statusMaterial.toLeft.clone()
                       STATE.mainSceneTextureAnimateMeshList.toLeft.push(item)
 
-                    } else if (STATE.textureOffsetDirection.toRight.includes(area)) {
+                    } else if (STATE.textureOffsetDirection[STATE.version].toRight.includes(area)) {
                       item.material = STATE.statusMaterial.toRight.clone()
                       STATE.mainSceneTextureAnimateMeshList.toRight.push(item)
                     }
@@ -508,73 +630,14 @@ onMounted(() => {
   }
 });
 
+
+
 </script>
 
 <template>
   <Scene />
   <router-view></router-view>
   <!-- <SceneChange></SceneChange> -->
-  <div v-if="false" style="
-          z-index: 2;
-          position: fixed;
-          left: 50%;
-          top: 50%;
-          margin:0;
-          color: #ffffff;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          transform: translate(0, -27%);
-        ">
-
-    <div class="location_title" name=${e.name} style="
-              background: url('./assets/3d/image/97.png') center / 100% 100% no-repeat;
-              width: 24vw;
-              height:30vh;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-          ">
-      <div
-        style="display: flex; width: 80%; height: 16%;position: absolute; top: 5%;align-items: center; justify-content: space-between;">
-        <p class="font-gradient" style="font-size: 2.2vh;flex: 1; text-align: center">设备名</p>
-        <p class="font-gradient" style="font-size: 2.2vh;flex: 1; text-align: center">检测地点</p>
-        <p class="font-gradient" style="font-size: 2.2vh;flex: 1; text-align: center">监测值</p>
-      </div>
-      <div
-        style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 13%; height: 52%;">
-
-        <div
-          style="background-color: #634f8a; border-radius: 5px; margin-bottom: 1vh;display: flex;justify-content: space-between;align-items:center; padding: 0 2%;">
-          <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">111111111</p>
-          <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">22222222</p>
-          <p style="word-break: break-all;width: 30%;font-size: 2vh; text-align: left;">3333333</p>
-        </div>
-      </div>
-      <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)"
-        style="cursor: pointer;pointer-events: all;background: url('./assets/3d/image/45.png') center / 100% 100% no-repeat; position: absolute; width: 3vh; height: 3vh; right: 5%; top: 6%;">
-      </div>
-    </div>
-
-    <div style="
-            background: url('./assets/3d/image/103.png') center / 100% 100% no-repeat;
-            width: 6vw;
-            height:13vh;
-          ">
-    </div>
-
-    <div style="
-            background: url('./assets/3d/image/104.png') center / 100% 100% no-repeat;
-            width: 7vw;
-            height:7vw;
-            position: relative;
-            top: -6vh;
-            animation: myrotate 8s linear infinite;
-            scale: 1 0.4;
-          ">
-    </div>
-  </div>
 </template>
 
 <style scoped>

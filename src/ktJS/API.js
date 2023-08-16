@@ -578,7 +578,7 @@ function handleLocationBtn(type) {
   if (!STATE.allowControl.value) {
     return
   }
-  
+
   let locationName = null
   let group = null
   if (type === 0) {
@@ -1186,7 +1186,7 @@ function initPersonPopup() {
       if (!STATE.allowControl.value) {
         return
       }
-      
+
       STATE.currentPopup.forEach(e2 => {
         CACHE.container.remove(e2)
       })
@@ -1612,6 +1612,15 @@ function testBox() {
     console.log(markData)
   }
 
+  document.onkeydown = function (e) {
+    var keyNum = window.event ? e.keyCode : e.which;
+    if (keyNum == 79) {
+      markStep()
+    } else if (keyNum == 80) {
+      markReset()
+    }
+  }
+
   window.markData = markData
   window.markReset = markReset
   window.markStep = markStep
@@ -1697,7 +1706,7 @@ function enterRoom(name = '') {
       STATE.sceneList.text.visible = false
       CACHE.container.orbitControls.maxPolarAngle = Math.PI
       CACHE.container.orbitControls.minPolarAngle = 0
-      CACHE.container.sceneList.mkxdw.visible = false
+      CACHE.container.sceneList.mainScene.visible = false
       item.model.visible = true
 
       // 设定场景配套的光源
@@ -1898,7 +1907,7 @@ function back(type) {
       // 显示场景
       for (let key in STATE.sceneList) {
         if (STATE.sceneList[key]) {
-          if (key === 'mkxdw' || key === 'text') {
+          if (key === 'mainScene' || key === 'text') {
             STATE.sceneList[key].visible = true
           } else {
             STATE.sceneList[key].visible = false
@@ -2305,6 +2314,16 @@ const render = () => {
   }
 };
 
+function getVersion() {
+  // 确认版本
+  if (location.hash.includes('version')) {
+    const version = location.hash.split('?version=')[1]
+    return version
+  } else {
+    return 'yihao'
+  }
+}
+
 export const API = {
   ...TU,
   cameraAnimation,
@@ -2327,5 +2346,6 @@ export const API = {
   randomPointInQuadrilateral,
   randomPointInLine,
   handleLocationBtn,
+  getVersion,
   render
 }

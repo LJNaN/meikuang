@@ -55,6 +55,9 @@ const outlineObjects = []
 const clock = new Bol3D.Clock()
 clock.running = true
 
+// 版本
+let version = ''
+
 const sceneList = {
   personPopup: [],
   baseStationPopup: [],
@@ -240,21 +243,7 @@ const roomModelName = [
 
 // location popup 弹窗
 const popupLocationList = []
-window.workfacePopup.forEach(e => {
-  popupLocationList.push({
-    name: e.name,
-    sub: '工作人员数量: 0 人',
-    position: e.position,
-    regionRate: {
-      total: 0,
-      member: 0,
-      device: 0,
-      environment: 0,
-      manager: 0
-    },
-    person: []
-  })
-})
+
 
 // 重点区域
 const importantLocation = ref([])
@@ -1554,7 +1543,7 @@ const mainSceneTextureAnimateMeshList = {
 }
 
 // 工作面选区
-const locationPositionPointsArr = window.workfaceArea
+let locationPositionPointsArr = []
 
 // 页面的左边重点工作区当前选中名字
 let currentRegionalriskLeftLocation = null
@@ -1570,10 +1559,7 @@ let sensorData = []
 
 
 // 在采贴图方向列表
-let textureOffsetDirection = {
-  'toLeft': ['627', '625', '623', '621', '619', '617', '613', '611', '609', '607', '605', '603', '601', '311', '310', '309', '308', '307', '306', '305', '304', '303', '302', '301', '300', '402', '404', '406', '814', '812', '810'],
-  'toRight': ['1010', '1009', '1008', '1007', '1006', '1005', '1004', '1003', '1002', '1001', '501', '626', '624', '620', '209', '208', '207', '206', '205', '204', '203', '809', '807', '805', '803', '801']
-}
+let textureOffsetDirection = window.textureOffsetDirection
 
 // 存一下贴图
 const statusMaterial = {
@@ -1625,6 +1611,7 @@ export const STATE = {
   statusMaterial,
   keyAreaColorMap,
   personAllUsefulList,
+  version,
   clock
 }
 window.STATE = STATE

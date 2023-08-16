@@ -6,7 +6,20 @@ import TU from './threeUtils.js'
 
 let container
 
+
 export const sceneOnLoad = ({ domElement, callback }) => {
+  let mainScene = ''
+  if (STATE.version === 'yihao') {
+    mainScene = 'mkxdw.glb'
+  } else if (STATE.version === 'erhao') {
+    mainScene = 'erhao.glb'
+  } else if (STATE.version === 'shuanglong') {
+    mainScene = 'shuanglong.glb'
+  } else if (STATE.version === 'ruineng') {
+    mainScene = 'ruineng.glb'
+  }
+
+
   container = new Bol3D.Container({
     publicPath: STATE.PUBLIC_PATH,
     container: domElement,
@@ -67,8 +80,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       }
     },
     modelUrls: [
-      // '/model/mk-v1.glb', // 主
-      '/model/mkxdw.glb', // 主
+      `/model/${mainScene}`, // 主
       '/model/jjgzm.glb', // 1010切眼
       '/model/zcgzm.glb', // 综采
       '/model/ts.glb', // 硐室
@@ -315,8 +327,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             child.material.side = 0
           }
         }) // mkxdw mk-v1
-      } else if (model.name === 'mkxdw') { // 主场景
-        // const textArr = ["gzm_6"]
+      } else if (model.name === 'mkxdw') { // 一号 主场景
         const textArr = ["1009", "627_(1)", "501", "1009", "624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
         const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm']
         model.traverse(child => {
@@ -371,8 +382,170 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         })
         container.loadingBar.style.visibility = 'hidden'
+
+        STATE.sceneList.mainScene = model
+
+      } else if (model.name === 'ruineng') { // 瑞能 主场景
+        const textArr = ['101gzm', '102gzm', '103gzm', '105gzm', '107gzm', '109gzm', '108gzm', '106gzm', '111gzm', '113gzm', '115gzm', '117gzm', '110gzm', '112gzm', '116GZM', '118gzm', '120gzm', '203gzm', '201gzm']
+        model.traverse(child => {
+
+          if (child && child.isMesh) {
+            if (textArr.includes(child.name)) {
+              if (!STATE.sceneList.text) {
+                STATE.sceneList.text = new Bol3D.Group()
+                STATE.sceneList.text.name = 'text'
+              }
+              const worldP = new Bol3D.Vector3()
+              const worldS = new Bol3D.Vector3()
+              const worldQ = new Bol3D.Quaternion()
+              child.getWorldPosition(worldP)
+              child.getWorldScale(worldS)
+              child.getWorldQuaternion(worldQ)
+
+              const clone = child.clone()
+              clone.position.set(worldP.x, worldP.y, worldP.z)
+              clone.scale.set(worldS.x, worldS.y, worldS.z)
+              clone.quaternion.set(worldQ.x, worldQ.y, worldQ.z, worldQ.w)
+
+              STATE.sceneList.text.add(clone)
+              child.visible = false
+              child.material.dispose()
+              child.geometry.dispose()
+              if (!CACHE.removed[child.name]) CACHE.removed[child.name] = child
+              child = null
+            } else if (child.name.includes('Line')) {
+              // child.material.transparent = true
+              // child.material.opacity = 0.4
+              child.visible = false
+            } else {
+              child.material.transparent = true
+              child.material.opacity = 0.2
+            }
+
+
+            // 预存几个不同状态的材质
+            if (child && child.name === '109') {
+              STATE.statusMaterial.toLeft = child.material.clone()
+
+            } else if (child && child.name === '2023ZC') {
+              STATE.statusMaterial.toRight = child.material.clone()
+
+            } else if (child && child.name === '107') {
+              STATE.statusMaterial.over = child.material.clone()
+            }
+          }
+        })
+
+        model.traverse(child => {
+          if (child && child.isMesh) {
+            if (child.name === '2023ZC' || child.name === '109') {
+              child.material = STATE.statusMaterial.over.clone()
+            }
+          } else if(child.name === 'huise') {
+            child.children.forEach(e => {
+              e.material = STATE.statusMaterial.over.clone()
+            })
+          }
+        })
+
+        container.loadingBar.style.visibility = 'hidden'
+
+        STATE.sceneList.mainScene = model
+      } else if (model.name === 'shuanglong') { // 双龙 主场景
+        const textArr = ['108', '107', '106', '101', '102', '103', '104', '105', '113', '112', '110', '109']
+        model.traverse(child => {
+          if (child && child.isMesh) {
+
+            if (textArr.includes(child.name)) {
+              if (!STATE.sceneList.text) {
+                STATE.sceneList.text = new Bol3D.Group()
+                STATE.sceneList.text.name = 'text'
+              }
+              STATE.sceneList.text.add(child.clone())
+              child.visible = false
+              child.material.dispose()
+              child.geometry.dispose()
+              if (!CACHE.removed[child.name]) CACHE.removed[child.name] = child
+              child = null
+
+            } else {
+              child.material.transparent = true
+              child.material.opacity = 0.2
+            }
+
+            if (child && child.name === '110bcgzm') {
+              child.visible = false
+            }
+
+            // 预存几个不同状态的材质
+            if (child && child.name === '109zcgzm') {
+              STATE.statusMaterial.toRight = child.material.clone()
+
+            } else if (child && child.name === '108zcgzm') {
+              STATE.statusMaterial.over = child.material.clone()
+            }
+          }
+        })
+
+        model.traverse(child => {
+          if (child && child.isMesh) {
+            if (child.name.includes('zcgzm') || child.name.includes('bcgzm')) {
+              child.material = STATE.statusMaterial.over.clone()
+            }
+          }
+        })
+        container.loadingBar.style.visibility = 'hidden'
+
+        STATE.sceneList.mainScene = model
+      } else if (model.name === 'erhao') { // 二号 主场景
+        const textArr = ['cka_1', 'ckq_2', 'ckq_3', 'ckq_4', 'ckq_5', 'ckq_6', 'ckq_7', 'ckq_8', 'ckq_9', 'ckq_10', 'ckq_11', 'ckq_12', 'ckq_13', 'ckq_14', 'ckq_15', 'ckq_16', 'ckq_17', 'ckq_18', 'ckq_19', 'ckq_20', 'ckq_21', 'ckq_22']
+        model.traverse(child => {
+          if (child && child.isMesh) {
+
+            if (textArr.includes(child.name)) {
+              if (!STATE.sceneList.text) {
+                STATE.sceneList.text = new Bol3D.Group()
+                STATE.sceneList.text.name = 'text'
+              }
+              STATE.sceneList.text.add(child.clone())
+              child.visible = false
+              child.material.dispose()
+              child.geometry.dispose()
+              if (!CACHE.removed[child.name]) CACHE.removed[child.name] = child
+              child = null
+
+            } else {
+              child.material.transparent = true
+              child.material.opacity = 0.2
+            }
+
+            if (child && child.name === '110bcgzm') {
+              child.visible = false
+            }
+
+            // 预存几个不同状态的材质
+            if (child && child.name === '109zcgzm') {
+              STATE.statusMaterial.toRight = child.material.clone()
+
+            } else if (child && child.name === '108zcgzm') {
+              STATE.statusMaterial.over = child.material.clone()
+            }
+          }
+        })
+
+        // model.traverse(child => {
+        //   if (child && child.isMesh) {
+        //     if (child.name.includes('gzm') || child.name.includes('jia')) {
+        //       child.material = STATE.statusMaterial.over.clone()
+        //     }
+        //   }
+        // })
+        container.loadingBar.style.visibility = 'hidden'
+
+        STATE.sceneList.mainScene = model
       }
     },
+
     onLoad: (evt) => {
       CACHE.container = evt
       window.container = evt
@@ -388,7 +561,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
       );
       console.log(
-        "%c2.使用 markStep() 在新区域的四周进行标注，请多次执行此函数以围成一个多边形区域",
+        "%c2.使用 markStep() 在新区域的四周进行标注，请多次执行此函数以围成一个多边形区域(快捷键 O)",
         "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
       );
       console.log(
@@ -396,7 +569,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
       );
       console.log(
-        "%c4.使用 markReset() 清空暂存数组，退出编辑模式请直接刷新",
+        "%c4.使用 markReset() 清空暂存数组(快捷键 P)，退出编辑模式请直接刷新",
         "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
       );
 
@@ -426,11 +599,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
 
       // 左右键行为
-      CACHE.container.orbitControls.mouseButtons = {
-        LEFT: Bol3D.MOUSE.PAN,
-        MIDDLE: Bol3D.MOUSE.DOLLY,
-        RIGHT: Bol3D.MOUSE.ROTATE
-      }
+      // CACHE.container.orbitControls.mouseButtons = {
+      //   LEFT: Bol3D.MOUSE.PAN,
+      //   MIDDLE: Bol3D.MOUSE.DOLLY,
+      //   RIGHT: Bol3D.MOUSE.ROTATE
+      // }
 
 
       API.initmonitorList()

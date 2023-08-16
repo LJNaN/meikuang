@@ -1,7 +1,26 @@
 import { request } from './index'
+import { STATE } from '@/ktJS/STATE'
+import { API } from '@/ktJS/API'
+
+const version = API.getVersion()
+
+let belongMine = ''
+if (version === 'yihao') {
+  belongMine = '610632007274'
+
+} else if (version === 'erhao') {
+  belongMine = '610632007345'
+
+} else if (version === 'shuanglong') {
+  belongMine = '610632007302'
+
+} else if (version === 'ruineng') {
+  belongMine = '610632007636'
+}
+
 
 const token = {
-  belongMine: 610632007274
+  belongMine
 }
 
 // 人员预警列表
