@@ -599,11 +599,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
 
       // 左右键行为
-      // CACHE.container.orbitControls.mouseButtons = {
-      //   LEFT: Bol3D.MOUSE.PAN,
-      //   MIDDLE: Bol3D.MOUSE.DOLLY,
-      //   RIGHT: Bol3D.MOUSE.ROTATE
-      // }
+      CACHE.container.orbitControls.mouseButtons = {
+        LEFT: Bol3D.MOUSE.PAN,
+        MIDDLE: Bol3D.MOUSE.DOLLY,
+        RIGHT: Bol3D.MOUSE.ROTATE
+      }
 
 
       API.initmonitorList()
