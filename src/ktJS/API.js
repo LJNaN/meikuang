@@ -437,7 +437,7 @@ function initLocationPopup() {
           <p class="font-gradient" style="font-size: 2.4vh;flex: 1; text-align: center">监测值</p>
         </div>
         <div
-          style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 22%; height: 64%;">
+          style="overflow-y: scroll;pointer-events: all;display: flex; flex-direction: column; width: 80%; margin-top: 27%; height: 64%;">
           ${textValue}
         </div>
         <div onclick="CACHE.environmentLocationPopup = this, API.handleLocationBtn(3)"
@@ -633,14 +633,12 @@ function handleLocationBtn(type) {
   // 移动镜头
   if (type === 0 || type === 1) {
     const currentCameraPosition = CACHE.container.orbitCamera.position
-    const distance = Math.sqrt((currentCameraPosition.x - group.position.x) ** 2 + (currentCameraPosition.y - group.position.y) ** 2 + (currentCameraPosition.z - group.position.z) ** 2)
-    if (distance > 350) {
-      const cameraState = {
-        position: { x: group.position.x + 200, y: 200, z: group.position.z + 200 },
-        target: { x: group.position.x, y: 20, z: group.position.z }
-      }
-      cameraAnimation({ cameraState })
+    const cameraState = {
+      position: computedCameraFocusPosition(currentCameraPosition, group.position),
+      target: { x: group.position.x, y: 100, z: group.position.z }
     }
+    cameraAnimation({ cameraState })
+
     // 其他标签透明化
     if (locationName) {
       STATE.sceneList.locationPopup.forEach((e, index) => {
@@ -798,7 +796,7 @@ function initEnvironmentPopup() {
       // 移动镜头
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 100, y: 100, z: e.position.z + 100 },
+          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
           target: { x: e.position.x, y: e.position.y + 20, z: e.position.z }
         }
       })
@@ -1020,7 +1018,7 @@ function initmonitorList() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 100 * (window.innerWidth / 1000), y: 100, z: e.position.z + 100 * (window.innerWidth / 1000) },
+          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
           target: { x: e.position.x, y: e.position.y + 42, z: e.position.z }
         }
       })
@@ -1194,7 +1192,7 @@ function initPersonPopup() {
 
       cameraAnimation({
         cameraState: {
-          position: { x: e.position.x + 100 * (window.innerWidth / 1000), y: 255, z: e.position.z + (-144 * (window.innerWidth / 1000)) },
+          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
           target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
@@ -1690,7 +1688,7 @@ function enterRoom(name = '') {
       })
 
       // 跳路由
-      if (name.includes('1010') || name.includes('槽')) {
+      if (name.includes('槽')) {
         STATE.animationFlag = true
         STATE.router.push('/qieyan')
 
@@ -2323,6 +2321,30 @@ function getVersion() {
     return 'yihao'
   }
 }
+
+
+// 计算聚焦距离的
+function computedCameraFocusPosition(currentP, targetP, gapDistance = 200) {
+
+  // 计算点1和点2之间的距离
+  let distance = Math.sqrt((targetP.x - currentP.x) ** 2 + (targetP.z - currentP.z) ** 2);
+
+  // 计算从点1到点2的向量，并将其标准化为单位向量
+  let vector = { x: (targetP.x - currentP.x) / distance, z: (targetP.z - currentP.z) / distance };
+
+  // 将向量乘以100，以便点1向点2移动
+  let scaled_vector = { x: vector.x * gapDistance, z: vector.z * gapDistance };
+
+  // 将点1的x和z坐标设置为新位置的值，使其靠近点2
+  const computedPosition = new Bol3D.Vector3()
+  computedPosition.x = targetP.x - scaled_vector.x;
+  computedPosition.z = targetP.z - scaled_vector.z;
+  computedPosition.y = 400;
+
+  // 最终坐标[x3,y3,z3]
+  return computedPosition
+}
+
 
 export const API = {
   ...TU,

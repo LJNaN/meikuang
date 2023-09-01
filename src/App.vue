@@ -90,6 +90,7 @@ onMounted(() => {
 
         // 人员监管
         const personData = mockData.getRysj
+        console.log('personData: ', personData);
         STATE.sceneList.personPopup.forEach(e => {
           e.remove(e.children[0])
         })
@@ -628,6 +629,16 @@ onMounted(() => {
     STATE.isNeedGetData = false
 
   }
+
+
+  // 设置路由
+  const pathMatch = location.hash.match(/#\/(\w+)/)
+  let path = ''
+  if(pathMatch) {
+    path = pathMatch[1]
+  }
+  STATE.currentScene[0] = '/' + path
+  STATE.currentScene[1] = '/' + path
 });
 
 
