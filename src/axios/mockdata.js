@@ -8737,7 +8737,7 @@ for (let i = 0; i < Math.random() * 10; i++) {
 
 // 人员数据列表 模拟 300 条
 const getRysj = []
-for (let i = 0; i < 300; i++) {
+for (let i = 0; i < 20; i++) {
   getRysj.push({
     t0: Math.floor(Math.random() * 8000 + 1000),
     t1: STATE.personPopupList[Math.floor(Math.random() * STATE.personPopupList.length)].name,

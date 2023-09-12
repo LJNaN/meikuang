@@ -28,6 +28,10 @@ const workfacePopup_ruineng = [
   { name: '2#变电所', position: { x: 121, y: 0, z: 226 } },
   { name: '北一变电所', position: { x: -258, y: 0, z: 65 } },
   { name: '避难硐室', position: { x: -204, y: 0, z: 178 } },
+  { name: '北翼辅助运输大巷', position: { x: 538, y: 0, z: -518 } },
+  { name: '北翼回风大巷', position: { x: 534, y: 0, z: -624 } },
+  { name: '二盘区变电所', position: { x: 541, y: 0, z: -564 } },
+  { name: '二号风井主扇', position: { x: -372, y: 0, z: -181 } },
 ]
 
 window.workfacePopup_ruineng = workfacePopup_ruineng

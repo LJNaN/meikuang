@@ -43,7 +43,7 @@ onBeforeMount(() => {
   currentWorkfacePopup.forEach(e => {
     STATE.popupLocationList.push({
       name: e.name,
-      sub: '工作人员数量: 0 人',
+      sub: '人数: 0 人',
       position: e.position,
       regionRate: {
         total: 0,
@@ -90,7 +90,6 @@ onMounted(() => {
 
         // 人员监管
         const personData = mockData.getRysj
-        console.log('personData: ', personData);
         STATE.sceneList.personPopup.forEach(e => {
           e.remove(e.children[0])
         })
@@ -155,17 +154,9 @@ onMounted(() => {
 
 
         for (let key in locationPersonNum) {
-          if (key.includes('工作面')) {
-            const num = key.replace(/[^\d]/g, "")
-            const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面'))
-            if (location) {
-              location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
-            }
-          } else {
-            const location = STATE.popupLocationList.find(e => e.name === key)
-            if (location) {
-              location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
-            }
+          const location = STATE.popupLocationList.find(e => e.name === key)
+          if (location) {
+            location.sub = `人数: ${locationPersonNum[key]} 人`
           }
         }
 
@@ -180,57 +171,13 @@ onMounted(() => {
 
           STATE.allowControl.value = true
 
-          // 全部恢复成默认(已采)
-          if (STATE.version === 'yihao') {
-            STATE.sceneList.mainScene.children.forEach(e => {
-              const area = e.name.replace(/[^\d]/g, "")
-              if (STATE.textureOffsetDirection.yihao.toLeft.includes(area) || STATE.textureOffsetDirection.yihao.toRight.includes(area)) {
-                e.material = STATE.statusMaterial.over.clone()
-              }
-            })
-
-          } else if (STATE.version === 'erhao') {
-
-          } else if (STATE.version === 'shuanglong') {
-            STATE.sceneList.mainScene.traverse(e => {
-              if (e.isMesh && e.name.includes('zcgzm')) {
-                const area = e.name.replace(/[^\d]/g, "")
-                if (STATE.textureOffsetDirection.shuanglong.toLeft.includes(area) || STATE.textureOffsetDirection.shuanglong.toRight.includes(area)) {
-                  e.material = STATE.statusMaterial.over.clone()
-                }
-              }
-            })
-
-
-
-          } else if (STATE.version === 'ruineng') {
-            let group = []
-            STATE.sceneList.mainScene.traverse(e => {
-              if (e.name === 'huise') {
-                group = e
-              }
-            })
-            group.children.forEach(e => {
-              e.material = STATE.statusMaterial.over.clone()
-            })
-          }
-
           // 根据接口来配置状态
           STATE.locationData.forEach(e => {
             if (e.pointName.includes('工作面')) {
-              const area = e.pointName.replace(/[^\d]/g, " ").replace(/ /g, '')
+              const area = e.pointName.replace(/[^\d]/g, "")
 
               let item = null
-              if (STATE.version === 'yihao') {
-                item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
-
-              } else if (STATE.version === 'erhao') {
-
-              } else if (STATE.version === 'shuanglong') {
-
-              } else if (STATE.version === 'ruineng') {
-
-              }
+              item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
 
               if (item) {
                 if (e.riskPointStatus == '1') {
@@ -477,19 +424,12 @@ onMounted(() => {
             }
           })
 
+          console.log('locationPersonNum: ', locationPersonNum);
 
           for (let key in locationPersonNum) {
-            if (key.includes('工作面')) {
-              const num = key.replace(/[^\d]/g, "")
-              const location = STATE.popupLocationList.find(e => e.name.includes(num + '综采工作面') || e.name.includes(num + '工作面'))
-              if (location) {
-                location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
-              }
-            } else {
-              const location = STATE.popupLocationList.find(e => e.name === key)
-              if (location) {
-                location.sub = `工作人员数量: ${locationPersonNum[key]} 人`
-              }
+            const location = STATE.popupLocationList.find(e => e.name === key)
+            if (location) {
+              location.sub = `人数: ${locationPersonNum[key]} 人`
             }
           }
 
@@ -509,63 +449,13 @@ onMounted(() => {
             }
             STATE.allowControl.value = true
 
-            // 全部恢复成默认(已采)
-            if (STATE.version === 'yihao') {
-              STATE.sceneList.mainScene.children.forEach(e => {
-                const area = e.name.replace(/[^\d]/g, "")
-                if (STATE.textureOffsetDirection.yihao.toLeft.includes(area) || STATE.textureOffsetDirection.yihao.toRight.includes(area)) {
-                  e.material = STATE.statusMaterial.over.clone()
-                }
-              })
-
-            } else if (STATE.version === 'erhao') {
-
-            } else if (STATE.version === 'shuanglong') {
-              STATE.sceneList.mainScene.traverse(e => {
-                if (e.isMesh && e.name.includes('zcgzm')) {
-                  const area = e.name.replace(/[^\d]/g, "")
-                  if (STATE.textureOffsetDirection.shuanglong.toLeft.includes(area) || STATE.textureOffsetDirection.shuanglong.toRight.includes(area)) {
-                    e.material = STATE.statusMaterial.over.clone()
-                  }
-                }
-              })
-
-
-
-            } else if (STATE.version === 'ruineng') {
-              let group = []
-              STATE.sceneList.mainScene.traverse(e => {
-                if (e.name === 'huise') {
-                  group = e
-                }
-              })
-              group.children.forEach(e => {
-                e.material = STATE.statusMaterial.over.clone()
-              })
-            }
-
             // 根据接口来配置状态
             STATE.locationData.forEach(e => {
               if (e.pointName.includes('工作面')) {
                 const area = e.pointName.replace(/[^\d]/g, "")
 
                 let item = null
-                if (STATE.version === 'yihao') {
-                  item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
-
-                } else if (STATE.version === 'erhao') {
-
-                } else if (STATE.version === 'shuanglong') {
-                  item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area + 'zcgzm'))
-
-                } else if (STATE.version === 'ruineng') {
-                  STATE.sceneList.mainScene.traverse(e => {
-                    if (e.name === area) {
-                      item = e
-                    }
-                  })
-
-                }
+                item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
 
                 if (item) {
                   if (e.riskPointStatus == '1') {
@@ -594,7 +484,7 @@ onMounted(() => {
               if (location && pointNumber) {
                 location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
                 location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
-                // location.sub = `工作人员数量: ${pointNumber.numAll} 人`
+                // location.sub = `人数: ${pointNumber.numAll} 人`
                 location.id = e.belongMine
                 location.regionRate.member = pointNumber.regionRisk1
                 location.regionRate.device = pointNumber.regionRisk2
@@ -605,6 +495,7 @@ onMounted(() => {
               }
             })
 
+            console.log(STATE.popupLocationList.find(e => e.name === '816进风顺槽'))
             if (!STATE.sceneList.personPopup.length) {
               API.initPersonPopup()
             }
@@ -634,7 +525,7 @@ onMounted(() => {
   // 设置路由
   const pathMatch = location.hash.match(/#\/(\w+)/)
   let path = ''
-  if(pathMatch) {
+  if (pathMatch) {
     path = pathMatch[1]
   }
   STATE.currentScene[0] = '/' + path

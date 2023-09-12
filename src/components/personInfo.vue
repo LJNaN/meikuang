@@ -102,7 +102,7 @@ onMounted(() => {
 .title {
   width: 86%;
   height: 14%;
-  margin: 7.5% auto 0 auto;
+  margin: 10% auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;

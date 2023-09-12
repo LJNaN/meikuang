@@ -28,17 +28,17 @@ if (version === 'yihao') {
     }
 
 } else if (version === 'erhao') {
-    if (new Date("2023-09-10") * 1 > new Date() * 1) {
+    if (new Date("2023-10-10") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'shuanglong') {
-    if (new Date("2023-09-10") * 1 > new Date() * 1) {
+    if (new Date("2023-10-10") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'ruineng') {
-    if (new Date("2023-09-10") * 1 > new Date() * 1) {
+    if (new Date("2023-10-10") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 }

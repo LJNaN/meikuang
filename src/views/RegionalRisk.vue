@@ -1,16 +1,13 @@
 <template>
   <div class="home">
-    <div class="left"
-      :style="{ 
-        left: STATE.startPath === '综合' ? '10%' : '3%',
-        top: STATE.startPath === '综合' ? '10%' : '5%',
-      }">
-      <div v-for="(item, index) in leftList" :key="item.name" class="left-btn"
-        :style="{ 
-          background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat',
-          cursor: STATE.allowControl.value ? 'pointer' :'wait' 
-        }"
-        @click="handleLeft(item, index)">
+    <div class="left" :style="{
+      left: STATE.startPath === '综合' ? '10%' : '3%',
+      top: STATE.startPath === '综合' ? '10%' : '5%',
+    }">
+      <div v-for="(item, index) in leftList" :key="item.name" class="left-btn" :style="{
+        background: 'url(' + './assets/3d/image/' + (leftName === item ? '94' : '95') + '.png' + ') center / 100% 100% no-repeat',
+        cursor: STATE.allowControl.value ? 'pointer' : 'wait'
+      }" @click="handleLeft(item, index)">
         {{ item }}
       </div>
     </div>
@@ -32,8 +29,8 @@ let leftName = ref('')
 STATE.currentRegionalriskLeftLocation = leftName
 
 function handleLeft(item, index) {
-  
-  if(!STATE.allowControl.value) {
+
+  if (!STATE.allowControl.value) {
     return
   }
 
@@ -63,10 +60,12 @@ function handleLeft(item, index) {
 
     if (child) {
       // 移动镜头
+      const currentCameraPosition = CACHE.container.orbitCamera.position
       const cameraState = {
-        position: { x: child.position.x + 200, y: 200, z: child.position.z + 200 },
-        target: { x: child.position.x, y: 20, z: child.position.z }
+        position: API.computedCameraFocusPosition(currentCameraPosition, child.position),
+        target: { x: child.position.x, y: 100, z: child.position.z }
       }
+
       API.cameraAnimation({ cameraState })
 
       // 其他标签透明化

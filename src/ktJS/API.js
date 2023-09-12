@@ -2369,5 +2369,6 @@ export const API = {
   randomPointInLine,
   handleLocationBtn,
   getVersion,
+  computedCameraFocusPosition,
   render
 }

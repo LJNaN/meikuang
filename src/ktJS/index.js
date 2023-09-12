@@ -378,6 +378,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           if (child && child.isMesh) {
             if (child.name.includes('gzm') || child.name.includes('jia')) {
               child.material = STATE.statusMaterial.over.clone()
+              child.visible = true
             }
           }
         })
@@ -386,7 +387,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         STATE.sceneList.mainScene = model
 
       } else if (model.name === 'ruineng') { // 瑞能 主场景
-        const textArr = ['101gzm', '102gzm', '103gzm', '105gzm', '107gzm', '109gzm', '108gzm', '106gzm', '111gzm', '113gzm', '115gzm', '117gzm', '110gzm', '112gzm', '116GZM', '118gzm', '120gzm', '203gzm', '201gzm']
+        const textArr = ['4006', '4004', '4002', '1002', '1004', '1006', '1008', '1003', '1005', '1007', '2001', '1001', '2002', '2005', '3001', '3002', '3003', '3004', '3005', '3006', '3007', '3008', '3009', '3010', '101', '102', '103', '105', '107', '109', '108', '106', '111', '113', '115', '117', '110', '112', '116', '118', '120', '201', '203']
         model.traverse(child => {
 
           if (child && child.isMesh) {
@@ -424,27 +425,22 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
 
             // 预存几个不同状态的材质
-            if (child && child.name === '109') {
-              STATE.statusMaterial.toLeft = child.material.clone()
-
-            } else if (child && child.name === '2023ZC') {
+            if (child && child.name === '203gzm') {
               STATE.statusMaterial.toRight = child.material.clone()
 
-            } else if (child && child.name === '107') {
+            } else if (child && child.name === '109gzm') {
+              STATE.statusMaterial.toLeft = child.material.clone()
+
+            } else if (child && child.name === '3004gzm') {
               STATE.statusMaterial.over = child.material.clone()
             }
           }
         })
 
         model.traverse(child => {
-          if (child && child.isMesh) {
-            if (child.name === '2023ZC' || child.name === '109') {
-              child.material = STATE.statusMaterial.over.clone()
-            }
-          } else if(child.name === 'huise') {
-            child.children.forEach(e => {
-              e.material = STATE.statusMaterial.over.clone()
-            })
+          if (child && child.isMesh && child.name.includes('gzm')) {
+            child.material = STATE.statusMaterial.over.clone()
+            child.visible = true
           }
         })
 
@@ -473,32 +469,32 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.material.opacity = 0.2
             }
 
-            if (child && child.name === '110bcgzm') {
-              child.visible = false
-            }
 
             // 预存几个不同状态的材质
-            if (child && child.name === '109zcgzm') {
+            if (child && child.name === '101gzm') {
               STATE.statusMaterial.toRight = child.material.clone()
 
-            } else if (child && child.name === '108zcgzm') {
+            } else if (child && child.name === '109gzm') {
+              STATE.statusMaterial.toLeft = child.material.clone()
+
+            } else if (child && child.name === '108gzm') {
               STATE.statusMaterial.over = child.material.clone()
             }
+
           }
         })
 
         model.traverse(child => {
-          if (child && child.isMesh) {
-            if (child.name.includes('zcgzm') || child.name.includes('bcgzm')) {
-              child.material = STATE.statusMaterial.over.clone()
-            }
+          if (child && child.isMesh && child.name.includes('gzm')) {
+            child.material = STATE.statusMaterial.over.clone()
+            child.visible = true
           }
         })
         container.loadingBar.style.visibility = 'hidden'
 
         STATE.sceneList.mainScene = model
       } else if (model.name === 'erhao') { // 二号 主场景
-        const textArr = ['cka_1', 'ckq_2', 'ckq_3', 'ckq_4', 'ckq_5', 'ckq_6', 'ckq_7', 'ckq_8', 'ckq_9', 'ckq_10', 'ckq_11', 'ckq_12', 'ckq_13', 'ckq_14', 'ckq_15', 'ckq_16', 'ckq_17', 'ckq_18', 'ckq_19', 'ckq_20', 'ckq_21', 'ckq_22']
+        const textArr = ['305', '303', '418', '209', '211', '213', '105', '001', '107', '109', '111', '03', '02', '01', '403', '405', '407', '409', '406', '408', '410', '412', '414', '416', '201', '203', '205', '207', '301']
         model.traverse(child => {
           if (child && child.isMesh) {
 
@@ -519,27 +515,25 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.material.opacity = 0.2
             }
 
-            if (child && child.name === '110bcgzm') {
-              child.visible = false
-            }
-
             // 预存几个不同状态的材质
-            if (child && child.name === '109zcgzm') {
+            if (child && child.name === '213gzm') {
               STATE.statusMaterial.toRight = child.material.clone()
 
-            } else if (child && child.name === '108zcgzm') {
+            } else if (child && child.name === '305gzm') {
+              STATE.statusMaterial.toLeft = child.material.clone()
+
+            } else if (child && child.name === '406gzm') {
               STATE.statusMaterial.over = child.material.clone()
             }
           }
         })
 
-        // model.traverse(child => {
-        //   if (child && child.isMesh) {
-        //     if (child.name.includes('gzm') || child.name.includes('jia')) {
-        //       child.material = STATE.statusMaterial.over.clone()
-        //     }
-        //   }
-        // })
+        model.traverse(child => {
+          if (child && child.isMesh && child.name.includes('gzm')) {
+            child.material = STATE.statusMaterial.over.clone()
+            child.visible = true
+          }
+        })
         container.loadingBar.style.visibility = 'hidden'
 
         STATE.sceneList.mainScene = model
@@ -599,11 +593,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
 
       // 左右键行为
-      CACHE.container.orbitControls.mouseButtons = {
-        LEFT: Bol3D.MOUSE.PAN,
-        MIDDLE: Bol3D.MOUSE.DOLLY,
-        RIGHT: Bol3D.MOUSE.ROTATE
-      }
+      // CACHE.container.orbitControls.mouseButtons = {
+      //   LEFT: Bol3D.MOUSE.PAN,
+      //   MIDDLE: Bol3D.MOUSE.DOLLY,
+      //   RIGHT: Bol3D.MOUSE.ROTATE
+      // }
 
 
       API.initmonitorList()

@@ -21,11 +21,7 @@ const workfacePopup = [
   { name: '三号车场', position: { x: 255, y: 0, z: 298 } },
   { name: '七号车场', position: { x: -224, y: 0, z: 161 } },
   { name: '局部通风机', position: { x: -386, y: 0, z: 303 } },
-  { name: '局部通风机', position: { x: -358, y: 0, z: 316 } },
-  { name: '局部通风机', position: { x: -376, y: 0, z: 279 } },
-  { name: '局部通风机', position: { x: -305, y: 0, z: 203 } },
   { name: '主要通风机', position: { x: -338, y: 0, z: 146 } },
-  { name: '主要通风机', position: { x: -334, y: 0, z: 138 } },
   { name: '北一2#抽采瓦斯泵', position: { x: 339, y: 0, z: -1 } },
   { name: '四号瓦斯斜井', position: { x: 444, y: 0, z: -219 } },
   { name: '北二2#抽采瓦斯泵', position: { x: -193, y: 0, z: -157 } },
@@ -57,7 +53,6 @@ const workfacePopup = [
   { name: '二号中央水泵房', position: { x: -191, y: 0, z: 183 } },
   { name: '西一临时水泵房', position: { x: 17, y: 0, z: 242 } },
   { name: '一号中央水泵房', position: { x: 223, y: 0, z: 300 } },
-  { name: '北二水泵房', position: { x: -249, y: 0, z: 73 } },
   { name: '八盘区水泵房', position: { x: -394, y: 0, z: 353 } },
   { name: '三号中央水泵房', position: { x: 429, y: 0, z: -237 } },
   { name: '北二变电所', position: { x: -247, y: 0, z: 72 } },
@@ -65,8 +60,6 @@ const workfacePopup = [
   { name: '西采变电所', position: { x: 34, y: 0, z: 245 } },
   { name: '1012进风反掘', position: { x: -65, y: 0, z: -391 } },
   { name: '1012进风正掘', position: { x: 328, y: 0, z: -396 } },
-  { name: '816回风顺槽', position: { x: -326, y: 0, z: 330 } },
-  { name: '816进风顺槽', position: { x: -326, y: 0, z: 321 } }
 ]
 
 window.workfacePopup = workfacePopup
