@@ -162,7 +162,7 @@ onMounted(() => {
 
         waitForSceneList()
         function waitForSceneList() {
-          if (!STATE?.sceneList?.mainScene) {
+          if (!CACHE.mainSceneLoad) {
             setTimeout(() => {
               waitForSceneList()
             }, 500)
@@ -175,6 +175,10 @@ onMounted(() => {
           STATE.locationData.forEach(e => {
             if (e.pointName.includes('工作面')) {
               const area = e.pointName.replace(/[^\d]/g, "")
+
+              if (area === '') {
+                return
+              }
 
               let item = null
               item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
@@ -192,10 +196,14 @@ onMounted(() => {
                     item.material = STATE.statusMaterial.toRight.clone()
                     STATE.mainSceneTextureAnimateMeshList.toRight.push(item)
                   }
+                  item.material.transparent = true
+                  item.material.opacity = 0.5
                   item.visible = true
 
                 } else if (e.riskPointStatus == '3') {
                   item.material = STATE.statusMaterial.over.clone()
+                  item.material.transparent = true
+                  item.material.opacity = 0.2
                   item.visible = true
                 }
               }
@@ -367,6 +375,7 @@ onMounted(() => {
           })
           STATE.sceneList.personPopup = []
 
+
           const personPopupList = []
           const personAllUsefulList = []
           personData.list.forEach(item => {
@@ -424,8 +433,6 @@ onMounted(() => {
             }
           })
 
-          console.log('locationPersonNum: ', locationPersonNum);
-
           for (let key in locationPersonNum) {
             const location = STATE.popupLocationList.find(e => e.name === key)
             if (location) {
@@ -441,12 +448,13 @@ onMounted(() => {
 
           waitForSceneList()
           function waitForSceneList() {
-            if (!STATE?.sceneList?.mainScene) {
+            if (!CACHE.mainSceneLoad) {
               setTimeout(() => {
                 waitForSceneList()
               }, 500)
               return
             }
+
             STATE.allowControl.value = true
 
             // 根据接口来配置状态
@@ -454,26 +462,41 @@ onMounted(() => {
               if (e.pointName.includes('工作面')) {
                 const area = e.pointName.replace(/[^\d]/g, "")
 
+                if (area === '') {
+                  return
+                }
+
+
                 let item = null
                 item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
-
                 if (item) {
+                  if (item.name === '305gzm') {
+                    console.log(item)
+                    console.log(e.riskPointStatus)
+
+                  }
                   if (e.riskPointStatus == '1') {
                     item.visible = false
 
                   } else if (e.riskPointStatus == '2') {
+
                     if (STATE.textureOffsetDirection[STATE.version].toLeft.includes(area)) {
                       item.material = STATE.statusMaterial.toLeft.clone()
                       STATE.mainSceneTextureAnimateMeshList.toLeft.push(item)
 
-                    } else if (STATE.textureOffsetDirection[STATE.version].toRight.includes(area)) {
+                    } else {
                       item.material = STATE.statusMaterial.toRight.clone()
                       STATE.mainSceneTextureAnimateMeshList.toRight.push(item)
                     }
+
+                    item.material.transparent = true
+                    item.material.opacity = 0.5
                     item.visible = true
 
                   } else if (e.riskPointStatus == '3') {
                     item.material = STATE.statusMaterial.over.clone()
+                    item.material.transparent = true
+                    item.material.opacity = 0.2
                     item.visible = true
                   }
                 }
@@ -495,7 +518,7 @@ onMounted(() => {
               }
             })
 
-            console.log(STATE.popupLocationList.find(e => e.name === '816进风顺槽'))
+
             if (!STATE.sceneList.personPopup.length) {
               API.initPersonPopup()
             }
@@ -531,8 +554,6 @@ onMounted(() => {
   STATE.currentScene[0] = '/' + path
   STATE.currentScene[1] = '/' + path
 });
-
-
 
 </script>
 

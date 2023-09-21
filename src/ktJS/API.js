@@ -632,12 +632,27 @@ function handleLocationBtn(type) {
 
   // 移动镜头
   if (type === 0 || type === 1) {
-    const currentCameraPosition = CACHE.container.orbitCamera.position
-    const cameraState = {
-      position: computedCameraFocusPosition(currentCameraPosition, group.position),
-      target: { x: group.position.x, y: 100, z: group.position.z }
+    const differencePosition = {
+      x: CACHE.container.orbitControls.target.x - CACHE.container.orbitCamera.position.x,
+      y: CACHE.container.orbitControls.target.y - CACHE.container.orbitCamera.position.y,
+      z: CACHE.container.orbitControls.target.z - CACHE.container.orbitCamera.position.z
     }
-    cameraAnimation({ cameraState })
+
+    const tempPosition = {
+      x: group.position.x - differencePosition.x,
+      y: group.position.y - differencePosition.y,
+      z: group.position.z - differencePosition.z
+    }
+
+    const finalPosition = computedCameraFocusPosition(tempPosition, group.position, 50)
+
+    cameraAnimation({
+      cameraState: {
+        position: finalPosition,
+        target: { x: group.position.x, y: group.position.y + 175, z: group.position.z },
+      }
+    })
+
 
     // 其他标签透明化
     if (locationName) {
@@ -794,10 +809,24 @@ function initEnvironmentPopup() {
 
     popup.element.addEventListener('click', (() => {
       // 移动镜头
+      const differencePosition = {
+        x: CACHE.container.orbitControls.target.x - CACHE.container.orbitCamera.position.x,
+        y: CACHE.container.orbitControls.target.y - CACHE.container.orbitCamera.position.y,
+        z: CACHE.container.orbitControls.target.z - CACHE.container.orbitCamera.position.z
+      }
+
+      const tempPosition = {
+        x: e.position.x - differencePosition.x,
+        y: e.position.y - differencePosition.y,
+        z: e.position.z - differencePosition.z
+      }
+
+      const finalPosition = computedCameraFocusPosition(tempPosition, e.position)
+
       cameraAnimation({
         cameraState: {
-          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
-          target: { x: e.position.x, y: e.position.y + 20, z: e.position.z }
+          position: finalPosition,
+          target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
 
@@ -1016,10 +1045,24 @@ function initmonitorList() {
         CACHE.container.remove(e2)
       })
 
+      const differencePosition = {
+        x: CACHE.container.orbitControls.target.x - CACHE.container.orbitCamera.position.x,
+        y: CACHE.container.orbitControls.target.y - CACHE.container.orbitCamera.position.y,
+        z: CACHE.container.orbitControls.target.z - CACHE.container.orbitCamera.position.z
+      }
+
+      const tempPosition = {
+        x: e.position.x - differencePosition.x,
+        y: e.position.y - differencePosition.y,
+        z: e.position.z - differencePosition.z
+      }
+
+      const finalPosition = computedCameraFocusPosition(tempPosition, e.position)
+
       cameraAnimation({
         cameraState: {
-          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
-          target: { x: e.position.x, y: e.position.y + 42, z: e.position.z }
+          position: finalPosition,
+          target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
 
@@ -1190,9 +1233,23 @@ function initPersonPopup() {
       })
       STATE.currentPopup = []
 
+      const differencePosition = {
+        x: CACHE.container.orbitControls.target.x - CACHE.container.orbitCamera.position.x,
+        y: CACHE.container.orbitControls.target.y - CACHE.container.orbitCamera.position.y,
+        z: CACHE.container.orbitControls.target.z - CACHE.container.orbitCamera.position.z
+      }
+
+      const tempPosition = {
+        x: e.position.x - differencePosition.x,
+        y: e.position.y - differencePosition.y,
+        z: e.position.z - differencePosition.z
+      }
+
+      const finalPosition = computedCameraFocusPosition(tempPosition, e.position)
+
       cameraAnimation({
         cameraState: {
-          position: computedCameraFocusPosition(CACHE.container.orbitCamera.position, e.position),
+          position: finalPosition,
           target: { x: e.position.x, y: e.position.y, z: e.position.z },
         }
       })
@@ -1655,185 +1712,183 @@ function enterRoom(name = '') {
 
   const item = STATE.roomModelName.find(e => name.includes(e.name))
 
-  // 如果找到匹配的
-  if (item) {
-    if (!STATE.allowControl.value) {
-      return
+  if (!item) {
+    return
+  }
+
+  if (!STATE.allowControl.value) {
+    return
+  }
+
+  STATE.allowControl.value = false
+
+  // 过渡
+  prtScreen()
+  // 更改当前场景 相机移动到标签上
+  STATE.currentScene[1] = STATE.currentScene[0]
+  STATE.currentScene[0] = name
+  const popup = STATE.popupLocationList.find(e => e.name === name)
+  afterCamera()
+
+  // 相机移动完之后
+  function afterCamera() {
+    // 关灯
+    CACHE.container.spotLights.forEach(e => {
+      e.visible = false
+    })
+
+    // 重点区域点进去的
+    STATE.sceneList.locationPopup.forEach(e => {
+      API.opacityPopup(e.children[1], false)
+    })
+
+    // 跳路由
+    if (name.includes('槽')) {
+      STATE.animationFlag = true
+      STATE.router.push('/qieyan')
+
+    } else if (name.includes('综采')) {
+      STATE.animationFlag = true
+      STATE.router.push('/zongcai')
+
+    } else {
+      STATE.router.push('/other')
     }
-    STATE.allowControl.value = false
 
-    // 过渡
-    prtScreen()
-    // 更改当前场景 相机移动到标签上
-    STATE.currentScene[1] = STATE.currentScene[0]
-    STATE.currentScene[0] = name
-    const popup = STATE.popupLocationList.find(e => e.name === name)
-    const popupCameraState = {
-      position: { x: popup.position.x, y: popup.position.y, z: popup.position.z },
-      target: { x: popup.position.x, y: popup.position.y, z: popup.position.z }
+    // 隐藏场景与文字 设定旋转角度 显示内部场景
+    STATE.sceneList.text.visible = false
+    CACHE.container.orbitControls.maxPolarAngle = Math.PI
+    CACHE.container.orbitControls.minPolarAngle = 0
+    CACHE.container.sceneList.mainScene.visible = false
+    item.model.visible = true
+
+    // 设定场景配套的光源
+    if (item.light) {
+      if (item.light.ambientLight != undefined) {
+        CACHE.container.ambientLight.intensity = item.light.ambientLight
+      }
+
+      if (item.light.directionLight != undefined) {
+        const lightPosition = item.light.directionLight.position
+        CACHE.container.directionLights[0].position.set(lightPosition.x, lightPosition.y, lightPosition.z)
+        CACHE.container.directionLights[0].intensity = item.light.directionLight.intensity
+      }
     }
-    // cameraAnimation({ cameraState: popupCameraState, callback: afterCamera, duration: 500 })
-    afterCamera()
 
-    // 相机移动完之后
-    function afterCamera() {
-      // 关灯
-      CACHE.container.spotLights.forEach(e => {
-        e.visible = false
-      })
+    // 隐藏标签 相机移动到预设位置
+    showPopup([
+      STATE.sceneList.environmentPopup,
+      STATE.sceneList.locationPopup,
+      STATE.sceneList.personPopup,
+      STATE.sceneList.monitorPopup,
+      STATE.sceneList.baseStationPopup
+    ], false)
 
-      // 重点区域点进去的
-      STATE.sceneList.locationPopup.forEach(e => {
-        API.opacityPopup(e.children[1], false)
-      })
+    cameraAnimation({ cameraState: item.cameraState, duration: 0 })
 
-      // 跳路由
-      if (name.includes('槽')) {
-        STATE.animationFlag = true
-        STATE.router.push('/qieyan')
+    // 主要是配合综采的
+    let CMJGroup = null
+    let bladePoint1 = null
+    let bladePoint2 = null
+    let bladePoint1_2 = null
+    let bladePoint2_2 = null
+    if (name.includes('综采')) {
+      // 俩刀片的粒子效果
+      bladePoint1 = new API.BladePoints(300, './assets/3d/image/92.png')
+      bladePoint1_2 = new API.BladePoints(300, './assets/3d/image/93.png')
+      bladePoint2 = new API.BladePoints(300, './assets/3d/image/92.png')
+      bladePoint2_2 = new API.BladePoints(300, './assets/3d/image/93.png')
 
-      } else if (name.includes('综采')) {
-        STATE.animationFlag = true
-        STATE.router.push('/zongcai')
+      // 整个组移动
+      CMJGroup = item.model.children.find(e => e.name === 'CMJGroup')
+      if (CMJGroup) {
+        CMJGroup.userData.move = true
+        CMJGroup.userData.directionLeft = false
+        CMJGroup = CMJGroup
 
-      } else {
-        STATE.router.push('/other')
-      }
+        CMJGroup.children.forEach(child => {
+          if (child.name === 'CMJ-1') {
+            let wordPosition = new Bol3D.Vector3()
+            child.getWorldPosition(wordPosition)
+            bladePoint1.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            bladePoint1_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            child.userData.points = [bladePoint1, bladePoint1_2]
 
-      // 隐藏场景与文字 设定旋转角度 显示内部场景
-      STATE.sceneList.text.visible = false
-      CACHE.container.orbitControls.maxPolarAngle = Math.PI
-      CACHE.container.orbitControls.minPolarAngle = 0
-      CACHE.container.sceneList.mainScene.visible = false
-      item.model.visible = true
-
-      // 设定场景配套的光源
-      if (item.light) {
-        if (item.light.ambientLight != undefined) {
-          CACHE.container.ambientLight.intensity = item.light.ambientLight
-        }
-
-        if (item.light.directionLight != undefined) {
-          const lightPosition = item.light.directionLight.position
-          CACHE.container.directionLights[0].position.set(lightPosition.x, lightPosition.y, lightPosition.z)
-          CACHE.container.directionLights[0].intensity = item.light.directionLight.intensity
-        }
-      }
-
-      // 隐藏标签 相机移动到预设位置
-      showPopup([
-        STATE.sceneList.environmentPopup,
-        STATE.sceneList.locationPopup,
-        STATE.sceneList.personPopup,
-        STATE.sceneList.monitorPopup,
-        STATE.sceneList.baseStationPopup
-      ], false)
-
-      cameraAnimation({ cameraState: item.cameraState, duration: 0 })
-
-      // 主要是配合综采的
-      let CMJGroup = null
-      let bladePoint1 = null
-      let bladePoint2 = null
-      let bladePoint1_2 = null
-      let bladePoint2_2 = null
-      if (name.includes('综采')) {
-        // 俩刀片的粒子效果
-        bladePoint1 = new API.BladePoints(300, './assets/3d/image/92.png')
-        bladePoint1_2 = new API.BladePoints(300, './assets/3d/image/93.png')
-        bladePoint2 = new API.BladePoints(300, './assets/3d/image/92.png')
-        bladePoint2_2 = new API.BladePoints(300, './assets/3d/image/93.png')
-
-        // 整个组移动
-        CMJGroup = item.model.children.find(e => e.name === 'CMJGroup')
-        if (CMJGroup) {
-          CMJGroup.userData.move = true
-          CMJGroup.userData.directionLeft = false
-          CMJGroup = CMJGroup
-
-          CMJGroup.children.forEach(child => {
-            if (child.name === 'CMJ-1') {
-              let wordPosition = new Bol3D.Vector3()
-              child.getWorldPosition(wordPosition)
-              bladePoint1.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              bladePoint1_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              child.userData.points = [bladePoint1, bladePoint1_2]
-
-            } else if (child.name === 'CMJ-2') {
-              let wordPosition = new Bol3D.Vector3()
-              child.getWorldPosition(wordPosition)
-              bladePoint2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              bladePoint2_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-              child.userData.points = [bladePoint2, bladePoint2_2]
-            }
-          })
-        }
-      }
-
-      const animation = () => {
-        if (STATE.animationFlag) {
-          if (bladePoint1) bladePoint1.play = true
-          if (bladePoint2) bladePoint2.play = true
-          if (bladePoint1_2) bladePoint1_2.play = true
-          if (bladePoint2_2) bladePoint2_2.play = true
-
-          // 综采的左右移动
-          if (CMJGroup) {
-            let directionLeft = CMJGroup.userData.directionLeft
-            let move = CMJGroup.userData.move
-
-            if (move) {
-              if (CMJGroup.position.z > -55) {
-                CMJGroup.userData.move = false
-                CMJGroup.userData.directionLeft = false
-                CACHE.timer = setTimeout(() => {
-                  CMJGroup.position.z = -55
-                  CMJGroup.userData.move = true
-                }, 2000);
-
-              } else if (CMJGroup.position.z < -85) {
-                CMJGroup.userData.move = false
-                CMJGroup.userData.directionLeft = true
-                CACHE.timer = setTimeout(() => {
-                  CMJGroup.position.z = -85
-                  CMJGroup.userData.move = true;
-                }, 2000);
-              }
-              CMJGroup.position.z += directionLeft ? 0.05 : -0.05
-
-              CMJGroup.children.forEach(child => {
-                if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
-                  let wordPosition = new Bol3D.Vector3()
-                  child.getWorldPosition(wordPosition)
-                  child.userData.points.forEach(e => {
-                    e.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
-                  })
-                }
-              })
-            }
+          } else if (child.name === 'CMJ-2') {
+            let wordPosition = new Bol3D.Vector3()
+            child.getWorldPosition(wordPosition)
+            bladePoint2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            bladePoint2_2.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+            child.userData.points = [bladePoint2, bladePoint2_2]
           }
+        })
+      }
+    }
 
+    const animation = () => {
+      if (STATE.animationFlag) {
+        if (bladePoint1) bladePoint1.play = true
+        if (bladePoint2) bladePoint2.play = true
+        if (bladePoint1_2) bladePoint1_2.play = true
+        if (bladePoint2_2) bladePoint2_2.play = true
 
-          // 齿轮旋转
-          if (item.rotateMesh) {
-            item.rotateMesh.forEach(e2 => {
-              if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
-                e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
-              } else {
-                e2.mesh.rotation[e2.position] += e2.num
+        // 综采的左右移动
+        if (CMJGroup) {
+          let directionLeft = CMJGroup.userData.directionLeft
+          let move = CMJGroup.userData.move
+
+          if (move) {
+            if (CMJGroup.position.z > -55) {
+              CMJGroup.userData.move = false
+              CMJGroup.userData.directionLeft = false
+              CACHE.timer = setTimeout(() => {
+                CMJGroup.position.z = -55
+                CMJGroup.userData.move = true
+              }, 2000);
+
+            } else if (CMJGroup.position.z < -85) {
+              CMJGroup.userData.move = false
+              CMJGroup.userData.directionLeft = true
+              CACHE.timer = setTimeout(() => {
+                CMJGroup.position.z = -85
+                CMJGroup.userData.move = true;
+              }, 2000);
+            }
+            CMJGroup.position.z += directionLeft ? 0.05 : -0.05
+
+            CMJGroup.children.forEach(child => {
+              if (child.name === 'CMJ-1' || child.name === 'CMJ-2') {
+                let wordPosition = new Bol3D.Vector3()
+                child.getWorldPosition(wordPosition)
+                child.userData.points.forEach(e => {
+                  e.point.position.set(wordPosition.x, wordPosition.y, wordPosition.z)
+                })
               }
             })
           }
-        } else {
-          if (bladePoint1) bladePoint1.play = false
-          if (bladePoint2) bladePoint2.play = false
-          if (bladePoint1_2) bladePoint1_2.play = false
-          if (bladePoint2_2) bladePoint2_2.play = false
         }
+
+
+        // 齿轮旋转
+        if (item.rotateMesh) {
+          item.rotateMesh.forEach(e2 => {
+            if (['XuanZ_01', 'XuanZ_02'].includes(e2.mesh.name)) {
+              e2.mesh.rotateOnAxis(e2.mesh.position.clone().set(0, 1, 0), 0.1)
+            } else {
+              e2.mesh.rotation[e2.position] += e2.num
+            }
+          })
+        }
+      } else {
+        if (bladePoint1) bladePoint1.play = false
+        if (bladePoint2) bladePoint2.play = false
+        if (bladePoint1_2) bladePoint1_2.play = false
+        if (bladePoint2_2) bladePoint2_2.play = false
       }
-      renderAnimationList.push({ name, animation })
     }
+    renderAnimationList.push({ name, animation })
   }
+
 }
 
 
@@ -2324,7 +2379,7 @@ function getVersion() {
 
 
 // 计算聚焦距离的
-function computedCameraFocusPosition(currentP, targetP, gapDistance = 200) {
+function computedCameraFocusPosition(currentP, targetP, gapDistance = 200, y = 300) {
 
   // 计算点1和点2之间的距离
   let distance = Math.sqrt((targetP.x - currentP.x) ** 2 + (targetP.z - currentP.z) ** 2);
@@ -2339,7 +2394,7 @@ function computedCameraFocusPosition(currentP, targetP, gapDistance = 200) {
   const computedPosition = new Bol3D.Vector3()
   computedPosition.x = targetP.x - scaled_vector.x;
   computedPosition.z = targetP.z - scaled_vector.z;
-  computedPosition.y = 400;
+  computedPosition.y = y;
 
   // 最终坐标[x3,y3,z3]
   return computedPosition

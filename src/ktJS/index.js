@@ -378,6 +378,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           if (child && child.isMesh) {
             if (child.name.includes('gzm') || child.name.includes('jia')) {
               child.material = STATE.statusMaterial.over.clone()
+              child.material.opacity = 0.2
               child.visible = true
             }
           }
@@ -440,6 +441,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh && child.name.includes('gzm')) {
             child.material = STATE.statusMaterial.over.clone()
+            child.material.opacity = 0.2
             child.visible = true
           }
         })
@@ -487,6 +489,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh && child.name.includes('gzm')) {
             child.material = STATE.statusMaterial.over.clone()
+            child.material.opacity = 0.2
             child.visible = true
           }
         })
@@ -531,6 +534,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh && child.name.includes('gzm')) {
             child.material = STATE.statusMaterial.over.clone()
+            child.material.opacity = 0.2
             child.visible = true
           }
         })
@@ -599,7 +603,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       //   RIGHT: Bol3D.MOUSE.ROTATE
       // }
 
-
+      CACHE.mainSceneLoad = true
       API.initmonitorList()
       // API.initBaseStationPopup()
 

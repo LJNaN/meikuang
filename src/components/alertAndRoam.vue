@@ -3,7 +3,7 @@
     <SingleActive :options="options1" @btnClick="btnClick"></SingleActive>
   </el-badge>
 
-  <SingleActive :options="options2"></SingleActive>
+  <!-- <SingleActive :options="options2"></SingleActive> -->
 
   <el-scrollbar v-show="alertShow" class="alert-detail">
     <div class="alert-detail-item" v-for="item in alertList">

@@ -119,6 +119,54 @@ const roomModelName = [
       position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
       target: { x: -325, y: 17, z: 0 }
     }
+  }, { // 反掘
+    name: '反掘',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
+  }, { // 正掘
+    name: '正掘',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
+  }, { // 掘进
+    name: '掘进',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
+  }, { // 预抽巷
+    name: '预抽巷',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
   }, { // 变电所
     name: '变电所',
     modelName: 'bds',
@@ -194,6 +242,21 @@ const roomModelName = [
         intensity: 1.1
       }
     }
+  }, { // 扇
+    name: '扇',
+    modelName: 'tfjf',
+    model: null,
+    cameraState: {
+      position: { x: -10.815394061192443, y: 12.438939566707647, z: 93.88151088323951 },
+      target: { x: 41.63987032848906, y: 1.1148309349480146e-17, z: -15.332754537450171 }
+    },
+    light: {
+      ambientLight: 3.2,
+      directionLight: {
+        position: { x: -104, y: 99, z: -180 },
+        intensity: 1.1
+      }
+    }
   }, { // 瓦斯
     name: '瓦斯',
     modelName: 'wsb',
@@ -209,8 +272,47 @@ const roomModelName = [
         intensity: 1.9
       }
     }
+  }, { // 北翼辅助运输大巷
+    name: '北翼辅助运输大巷',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
+  }, { // 北翼回风大巷
+    name: '北翼回风大巷',
+    modelName: 'jjgzm',
+    model: null,
+    rotateMeshName: ['GunTong02_1', 'GunTong02_2', 'GunTong03_1', 'GunTong03_2', 'GunTong01_1', 'GunTong01_2', 'XuanZ_01', 'XuanZ_02'],
+    rotateMesh: [],
+    mainMeshName: ['ZZJ_003', 'LunTai01', 'LunTai002', 'YiDong_02', 'ZZJ_Zhou', 'YiDong_Qian', 'ZZJ_Z01_01', 'ZZJ_Z01_02', 'Sphere001', 'CZ_CX_01', 'CZ_CX_002', 'CZ_MX_01', 'CZ_MX_002', 'MZ_01', 'MZ_02', 'ZZJ_004', 'ZZJ_Zhou_(1)', 'JM_FuJian', 'QiGe_01', 'QiGe_05', 'QiGe_06', 'QiGe_07', 'Wu_019', 'Wu_018', 'JM01', 'JM_07', 'JM_05', 'JM_03', 'JM_01', 'JM_08', 'JM_10', 'JM_09'],
+    mainMachinePopup: null,
+    cameraState: {
+      position: { x: -385.48531236599695, y: 34.316284718300054, z: 94.37294254683876 },
+      target: { x: -325, y: 17, z: 0 }
+    }
   }, { // 运输
     name: '运输',
+    modelName: 'ysdx',
+    model: null,
+    cameraState: {
+      position: { x: -6.192025997646759, y: 13.294844676753192, z: 304.76269419444634 },
+      target: { x: 28.492693469905007, y: 0, z: 87.8841204 }
+    },
+    light: {
+      ambientLight: 5.4,
+      directionLight: {
+        position: { x: -96, y: 120, z: 220 },
+        intensity: 1.3
+      }
+    }
+  }, { // 大巷
+    name: '大巷',
     modelName: 'ysdx',
     model: null,
     cameraState: {

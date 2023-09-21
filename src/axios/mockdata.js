@@ -2,6 +2,30 @@ import { STATE } from '@/ktJS/STATE'
 const locationData = [
   {
 
+    "id": 328,
+    "belongMine": "610632007274",
+    "pointName": "106综采工作面",
+    "keyAreaStatus": "0",
+    "riskPointStatus": "2"
+  },
+  {
+
+    "id": 327,
+    "belongMine": "610632007274",
+    "pointName": "北翼辅助运输大巷",
+    "keyAreaStatus": "0",
+    "riskPointStatus": "3"
+  },
+  {
+
+    "id": 326,
+    "belongMine": "610632007274",
+    "pointName": "217胶带巷掘进工作面",
+    "keyAreaStatus": "0",
+    "riskPointStatus": "3"
+  },
+  {
+
     "id": 325,
     "belongMine": "610632007274",
     "pointName": "1010辅运顺槽",

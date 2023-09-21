@@ -60,13 +60,27 @@ function handleLeft(item, index) {
 
     if (child) {
       // 移动镜头
-      const currentCameraPosition = CACHE.container.orbitCamera.position
-      const cameraState = {
-        position: API.computedCameraFocusPosition(currentCameraPosition, child.position),
-        target: { x: child.position.x, y: 100, z: child.position.z }
+      const differencePosition = {
+        x: CACHE.container.orbitControls.target.x - CACHE.container.orbitCamera.position.x,
+        y: CACHE.container.orbitControls.target.y - CACHE.container.orbitCamera.position.y,
+        z: CACHE.container.orbitControls.target.z - CACHE.container.orbitCamera.position.z
       }
 
-      API.cameraAnimation({ cameraState })
+      const tempPosition = {
+        x: child.position.x - differencePosition.x,
+        y: child.position.y - differencePosition.y,
+        z: child.position.z - differencePosition.z
+      }
+
+      const finalPosition = API.computedCameraFocusPosition(tempPosition, child.position)
+
+      API.cameraAnimation({
+        cameraState: {
+          position: finalPosition,
+          target: { x: child.position.x, y: child.position.y, z: child.position.z },
+        }
+      })
+
 
       // 其他标签透明化
       const itemIndex = STATE.sceneList.locationPopup.findIndex(e => e.name === ('location_group_' + child.name))
