@@ -275,12 +275,6 @@ export const sceneOnLoad = ({ domElement, callback }) => {
             e.model = model
           }
         })
-
-        model.traverse(child => {
-          if (child.name === 'xd003_1') {
-            child.material.side = 0
-          }
-        })
       } else if (model.name === 'bds') { // 变电所
         model.visible = false
         model.scale.set(5, 5, 5)
@@ -388,6 +382,11 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         STATE.sceneList.mainScene = model
 
       } else if (model.name === 'ruineng') { // 瑞能 主场景
+        const gzm109 = model.children.find(e => e.name === '组001').children.find(e => e.name === '109gzm')
+        const newGzm109 = gzm109.clone()
+        model.add(newGzm109)
+        gzm109.parent.remove(gzm109)
+
         const textArr = ['4006', '4004', '4002', '1002', '1004', '1006', '1008', '1003', '1005', '1007', '2001', '1001', '2002', '2005', '3001', '3002', '3003', '3004', '3005', '3006', '3007', '3008', '3009', '3010', '101', '102', '103', '105', '107', '109', '108', '106', '111', '113', '115', '117', '110', '112', '116', '118', '120', '201', '203']
         model.traverse(child => {
 
@@ -607,8 +606,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       API.initmonitorList()
       // API.initBaseStationPopup()
 
-      console.log(STATE.roomModelName)
-      console.log(STATE.sceneList)
+      
+      
       window.STATE = STATE
       window.CACHE = CACHE
       window.API = API
@@ -629,7 +628,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
   events.onclick = (e) => {
     if (e.objects.length) {
       const obj = e.objects[0].object
-      console.log('obj: ', obj);
+      
 
       // 点击出现弹窗 主要是切眼和综采机器的交互
       if (obj.userData.modelName === 'zcgzm') {
