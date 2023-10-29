@@ -47,7 +47,6 @@ watch(
   { immediate: true }
 )
 
-console.log('router: ', router);
 function handleLeft(e) {
   if(!STATE.allowControl.value) {
     return

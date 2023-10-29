@@ -1373,6 +1373,12 @@ function initPersonPopup() {
     STATE.sceneList.personPopup.push(group)
   })
 
+  if (STATE.startPath === '重点区域') {
+    showPopup([
+      STATE.sceneList.personPopup
+    ], false)
+  }
+
   // 图标适应大小
   function waitContainerLoad2() {
     if (!CACHE.container) {

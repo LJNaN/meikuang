@@ -151,6 +151,9 @@ onMounted(() => {
             locationPersonNum[e.info.title] = 1
           }
         })
+        STATE.personAllUsefulList.sort((a, b) => {
+          return a.level - b.level
+        })
 
 
         for (let key in locationPersonNum) {
@@ -432,6 +435,9 @@ onMounted(() => {
               locationPersonNum[e.info.title] = 1
             }
           })
+          STATE.personAllUsefulList.sort((a, b) => {
+            return a.level - b.level
+          })
 
           for (let key in locationPersonNum) {
             const location = STATE.popupLocationList.find(e => e.name === key)
@@ -471,8 +477,8 @@ onMounted(() => {
                 item = STATE.sceneList.mainScene.children.find(e2 => e2.name.includes(area))
                 if (item) {
                   if (item.name === '305gzm') {
-                    console.log(item)
-                    console.log(e.riskPointStatus)
+                    
+                    
 
                   }
                   if (e.riskPointStatus == '1') {

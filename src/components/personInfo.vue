@@ -1,10 +1,8 @@
 <template>
-  <div class="left-btn publicBtn"
-    :style="{
-      background: 'url(' + './assets/3d/image/' + (detailShow ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat',
-      cursor: STATE.allowControl.value ? 'pointer' :'wait'
-    }"
-    @click="handleLeft">
+  <div class="left-btn publicBtn" :style="{
+    background: 'url(' + './assets/3d/image/' + (detailShow ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat',
+    cursor: STATE.allowControl.value ? 'pointer' : 'wait'
+  }" @click="handleLeft">
     区域人员
   </div>
 
@@ -29,7 +27,11 @@
                 item.info.value2 === '需关注' ? '#c1be26' :
                   item.info.value2 === '安全' ? '#356cb0' : '#FFFFFF'
         }">{{ item.info.value2 }}</div>
-        <div class="item3">{{ (item.info.value3 || '--') + ' | ' + (item.info.value5 || '--') + ' | ' + (item.info.value4 || '--') }}</div>
+        <div class="item3">{{
+          (item.info.value3 || '')
+          + (item.info.value5 ? (' | ' + item.info.value5) : '')
+          + (item.info.value4 ? (' | ' + item.info.value4) : '') }}
+        </div>
         <div class="line"></div>
       </div>
     </el-scrollbar>
@@ -38,7 +40,7 @@
 
 
 <script setup>
-import { onMounted, ref, computed, reactive, watch,getCurrentInstance } from "vue";
+import { onMounted, ref, computed, reactive, watch, getCurrentInstance } from "vue";
 import { API } from '@/ktJS/API'
 import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
@@ -49,7 +51,7 @@ const { appContext: { app: { config: { globalProperties: { $isOurSite } } } } } 
 let detailShow = ref(false)
 
 function handleLeft() {
-  if(!STATE.allowControl.value) {
+  if (!STATE.allowControl.value) {
     return
   }
   detailShow.value = !detailShow.value
@@ -58,7 +60,7 @@ function handleLeft() {
 
 const sceneName = STATE.currentScene[0]
 let list = []
-if($isOurSite) {
+if ($isOurSite) {
   list = STATE.personAllUsefulList
 } else {
   list = STATE.personAllUsefulList.filter(e => e.info.title === sceneName)
