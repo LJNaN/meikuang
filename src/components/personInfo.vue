@@ -94,7 +94,7 @@ onMounted(() => {
   pointer-events: all;
   position: fixed;
   left: 11%;
-  top: 2%;
+  top: 9%;
   height: 40vh;
   width: 41vw;
   background: url('/assets/3d/image/64.png') center / 100% 100% no-repeat;
@@ -104,7 +104,7 @@ onMounted(() => {
 .title {
   width: 86%;
   height: 14%;
-  margin: 10% auto 0 auto;
+  margin: 6vh auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;

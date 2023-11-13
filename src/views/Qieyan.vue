@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <PersonInfo></PersonInfo>
+    <DeviceInfo></DeviceInfo>
     <SingleActive :options="options1"></SingleActive>
     <SingleActive :options="options2"></SingleActive>
   </div>
@@ -15,6 +16,7 @@ import { STATE } from '@/ktJS/STATE'
 import router from '@/router/index'
 import SingleActive from "@/components/singleActive.vue";
 import PersonInfo from "@/components/personInfo.vue";
+import DeviceInfo from "@/components/deviceInfo.vue";
 
 STATE.allowControl.value = true
 

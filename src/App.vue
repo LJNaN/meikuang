@@ -66,7 +66,7 @@ onBeforeMount(() => {
     STATE.startPath = '人员管理'
   } else {
     STATE.startPath = '人员管理'
-    router.push('/')
+    location.href = "/"
   }
 })
 
@@ -216,7 +216,7 @@ onMounted(() => {
             if (location) {
               location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
               location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
-              location.id = e.belongMine
+              location.id = e.id
               location.regionRate.member = Math.floor(Math.random() * 10 + 90)
               location.regionRate.device = Math.floor(Math.random() * 10 + 90)
               location.regionRate.environment = Math.floor(Math.random() * 10 + 90)
@@ -514,7 +514,7 @@ onMounted(() => {
                 location.keyAreaStatus = e.keyAreaStatus // 是否为重点区域 0 否 1 是
                 location.riskPointStatus = e.riskPointStatus // 状态 1 备采 2 在采 3 已采
                 // location.sub = `人数: ${pointNumber.numAll} 人`
-                location.id = e.belongMine
+                location.id = e.id
                 location.regionRate.member = pointNumber.regionRisk1
                 location.regionRate.device = pointNumber.regionRisk2
                 location.regionRate.environment = pointNumber.regionRisk3

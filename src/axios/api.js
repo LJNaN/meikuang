@@ -120,3 +120,21 @@ export function getRyPointNum(params = {}) {
   return request('/api/getRyPointNum', params, 'get')
 }
 
+// 设备列表  参数：pointId （getRiskPointList获取）
+export function getEquipmentListLayer(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getEquipmentListLayer', params, 'get')
+}
+
+// 设备下信息 参数：pointId 、 equipmentOrder （getEquipmentListLayer获取） statuscode：“good”为开启，“bad”为关闭
+export function getEquipmentInfoLayer(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getEquipmentInfoLayer', params, 'get')
+}
+
+// 传感器信息 参数 pointId 、equipmentOrder 、 equipmentInfoOrder  （getEquipmentInfoLayer 获取）
+export function getEquipmentInfoDetailLayer(params = {}) {
+  Object.assign(params, token)
+  return request('/api/getEquipmentInfoDetailLayer', params, 'get')
+}
+
