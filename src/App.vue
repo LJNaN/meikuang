@@ -287,6 +287,12 @@ onMounted(() => {
               const point = STATE.locationData.find(e2 => e2.id == e.riskPointId)
               const sensor = data.list.find(e2 => e2.ssTransducerCode == e.aqfzCode)
               const value = data2.list.find(e2 => e2.ssTransducerCode == e.aqfzCode)
+              if(sensor && sensor.ssTransducerPoint === '1012进风正掘回风流甲烷T2&1012进风回风流T2') {
+                console.log('e: ', e);
+                console.log('point: ', point);
+                console.log('sensor: ',sensor)
+                console.log('value: ', value);
+              }
               if (point && sensor && value) {
                 const all = Object.assign(sensor, value)
                 const sensorData = {

@@ -27,7 +27,7 @@
     <div v-show="detailShow2" class="detail2">
       <div class="detail2-list" v-for="item in detail2">
         <p class="detail2-list-name">{{ item.name }}</p>
-        <div class="detail2-list-wrap">
+        <el-scrollbar class="detail2-list-wrap">
           <div class="detail2-list-item" v-for="(item2, index2) in item.data">
             <p>{{ item2.name }}</p>
             <p class="detail-list-status" v-if="item2.value === '开启' || item2.value === '关闭'"
@@ -35,7 +35,7 @@
               {{ item2.value }}</p>
             <p v-else>{{ item2.value }}</p>
           </div>
-        </div>
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -121,7 +121,6 @@ async function handleDetailItem(item) {
       if (!thisItem) return
 
       res2.infoDetailList.forEach(e2 => {
-        if (!e2.value) return
         thisItem.data.push({
           name: e2.monitorName,
           value: e2.value + e2.unitName
@@ -136,7 +135,6 @@ async function handleDetailItem(item) {
     })
 
     res.infoDetailList.forEach(e => {
-      if (!e.value) return
 
       const thisItem = detail2.value.find(e2 => e2.name === equipmentItem.equipmentName)
       if (!thisItem) return
@@ -294,7 +292,7 @@ async function handleDetailItem(item) {
 }
 
 .detail2-list-wrap {
-  overflow-y: scroll;
+  padding-right: 5%;
 }
 
 .detail-list-status {
