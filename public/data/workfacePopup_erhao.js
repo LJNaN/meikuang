@@ -22,10 +22,12 @@ const workfacePopup_erhao = [
   { name: "四盘区二号变电所", position: { x: -267, y: 0, z: -301 } },
   { name: "一号风井瓦斯抽采泵站", position: { x: 176, y: 0, z: 378 } },
   { name: "一号风井主扇", position: { x: 171, y: 0, z: 380 } },
+  { name: "一号风井压风机", position: { x: 161, y: 0, z: 370 } },
   { name: "三盘区瓦斯抽采泵站", position: { x: -129, y: 0, z: 390 } },
   { name: "四盘区瓦斯抽采泵站", position: { x: -161, y: 0, z: 33 } },
   { name: "二号风井瓦斯抽采泵站", position: { x: 486, y: 0, z: -260 } },
   { name: "二号风井主扇", position: { x: 488, y: 0, z: -266 } },
+  { name: "二号风井压风机", position: { x: 478, y: 0, z: -276 } },
 ]
 
 window.workfacePopup_erhao = workfacePopup_erhao

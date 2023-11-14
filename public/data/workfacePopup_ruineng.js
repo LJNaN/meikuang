@@ -32,6 +32,7 @@ const workfacePopup_ruineng = [
   { name: '北翼回风大巷', position: { x: 534, y: 0, z: -624 } },
   { name: '二盘区变电所', position: { x: 541, y: 0, z: -564 } },
   { name: '二号风井主扇', position: { x: -372, y: 0, z: -181 } },
+  { name: '二号风井压风机', position: { x: -382, y: 0, z: -171 } },
   { name: '二盘区水泵房', position: { x: 532, y: 0, z: -557 } },
 ]
 

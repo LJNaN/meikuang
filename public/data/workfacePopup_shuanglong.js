@@ -19,7 +19,8 @@ const workfacePopup_shuanglong = [
   { name: '101运顺掘进工作面', position: { x: -23, y: 0, z: 113 } },
   { name: '101回顺掘进工作面', position: { x: -72, y: 0, z: 110 } },
   { name: '瓦斯抽采泵站', position: { x: -49, y: 0, z: 190 } },
-  { name: '副斜井主扇', position: { x: -61, y: 0, z: 223 } }
+  { name: '副斜井主扇', position: { x: -61, y: 0, z: 223 } },
+  { name: '副斜井压风机', position: { x: -51, y: 0, z: 213 } }
 ]
 
 window.workfacePopup_shuanglong = workfacePopup_shuanglong
