@@ -1,5 +1,5 @@
 <template>
-  <div class="left-btn publicBtn" :style="{
+  <div v-if="list.length" class="left-btn publicBtn" :style="{
     background: 'url(' + './assets/3d/image/' + (detailShow ? '6' : '5') + '.png' + ') center / 100% 100% no-repeat',
     cursor: STATE.allowControl.value ? 'pointer' : 'wait'
   }" @click="handleDeviceDetail">
@@ -27,12 +27,14 @@
     <div v-show="detailShow2" class="detail2">
       <div class="detail2-list" v-for="item in detail2">
         <p class="detail2-list-name">{{ item.name }}</p>
-        <div class="detail2-list-item" v-for="(item2, index2) in item.data">
-          <p>{{ item2.name }}</p>
-          <p class="detail-list-status" v-if="item2.name.includes('状态') && index2 === 0"
-            :style="{ backgroundColor: item2.status === 'good' ? '#63fd01' : '#fa1416' }">
-            {{ item2.status === 'good' ? '开启' : '关闭' }}</p>
-          <p v-else>{{ item2.value }}</p>
+        <div class="detail2-list-wrap">
+          <div class="detail2-list-item" v-for="(item2, index2) in item.data">
+            <p>{{ item2.name }}</p>
+            <p class="detail-list-status" v-if="item2.value === '开启' || item2.value === '关闭'"
+              :style="{ backgroundColor: item2.value === '开启' ? '#63fd01' : '#fa1416' }">
+              {{ item2.value }}</p>
+            <p v-else>{{ item2.value }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -84,78 +86,68 @@ onMounted(async () => {
   if (!res?.list) return
 
   equipmentList.value = res.list
-  const typeList = []
-  res.list.forEach(e => {
-    const splitArr = e.equipmentName.split('号')
-    const type = splitArr.length > 1 ? e.equipmentName.split('号')[1] : e.equipmentName
-    if (!typeList.find(e => e === type)) {
-      typeList.push(type)
-    }
-  })
-  list.value = typeList
+  list.value = res.list.sort((a, b) => {
+    return a.equipmentOrder - b.equipmentOrder
+  }).map(e => e.equipmentName)
+  
 })
 
 async function handleDetailItem(item) {
+  const equipmentItem = equipmentList.value.find(e => e.equipmentName === item)
+  if (!equipmentItem) return
+
   detail2.value = []
   detailShow2.value = true
-
   const scene = STATE.popupLocationList.find(e => e.name === sceneName)
 
+  const res = await getEquipmentInfoLayer({
+    pointId: scene.id,
+    equipmentOrder: equipmentItem.equipmentOrder
+  })
 
-  equipmentList.value.forEach(async e => {
-    const splitArr = e.equipmentName.split('号')
-
-    const type = splitArr.length > 1 ? splitArr[1] : splitArr[0]
-
-    if (item === type) {
-      const res = await getEquipmentInfoLayer({
-        pointId: scene.id,
-        equipmentOrder: e.equipmentOrder
+  if (res?.infoList.length) {
+    res.infoList.forEach(async e => {
+      detail2.value.push({
+        name: e.equipmentInfoName,
+        data: []
       })
 
-      if (res?.infoList.length) {
-        res.infoList.forEach(async e2 => {
-          detail2.value.push({
-            name: e2.equipmentInfoName,
-            data: []
-          })
+      const res2 = await getEquipmentInfoDetailLayer({
+        pointId: scene.id,
+        equipmentOrder: equipmentItem.equipmentOrder,
+        equipmentInfoOrder: e.equipmentInfoOrder
+      })
+      const thisItem = detail2.value.find(e2 => e2.name === e.equipmentInfoName)
+      if (!thisItem) return
 
-          const res2 = await getEquipmentInfoDetailLayer({
-            pointId: scene.id,
-            equipmentOrder: e.equipmentOrder,
-            equipmentInfoOrder: e2.equipmentInfoOrder
-          })
-          const thisItem = detail2.value.find(e3 => e3.name === e2.equipmentInfoName)
-          if (!thisItem) return
-
-          res2.infoDetailList.forEach(e3 => {
-            thisItem.data.push({
-              name: e3.monitorName,
-              value: e3.value + e3.unitName,
-              status: e3.statusCode
-            })
-          })
+      res2.infoDetailList.forEach(e2 => {
+        if (!e2.value) return
+        thisItem.data.push({
+          name: e2.monitorName,
+          value: e2.value + e2.unitName
         })
+      })
+    })
 
-      } else if (res?.infoDetailList.length) {
-        detail2.value.push({
-          name: e.equipmentName,
-          data: []
-        })
+  } else if (res?.infoDetailList.length) {
+    detail2.value.push({
+      name: equipmentItem.equipmentName,
+      data: []
+    })
 
-        res.infoDetailList.forEach(e2 => {
-          const thisItem = detail2.value.find(e3 => e3.name === e.equipmentName)
-          if (!thisItem) return
+    res.infoDetailList.forEach(e => {
+      if (!e.value) return
 
-          thisItem.data.push({
-            name: e2.monitorName,
-            value: e2.value + e2.unitName,
-            status: e2.statusCode
-          })
-        })
-      }
-    }
-  })
+      const thisItem = detail2.value.find(e2 => e2.name === equipmentItem.equipmentName)
+      if (!thisItem) return
+
+      thisItem.data.push({
+        name: e.monitorName,
+        value: e.value + e.unitName
+      })
+    })
+  }
+
 }
 
 </script>
@@ -249,22 +241,25 @@ async function handleDetailItem(item) {
 
 .detail2 {
   position: absolute;
-  width: 90%;
-  height: 100%;
-  left: 5%;
-  top: 28%;
-  height: 65%;
+  width: 100%;
+  top: 18%;
+  height: 75%;
+  padding: 0 5%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  overflow-y: scroll;
 }
 
 .detail2-list {
   position: relative;
   background: url('/assets/3d/image/118.png') center / 100% 100% no-repeat;
-  width: 23%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   padding: 2% 2%;
+  height: 65%;
+  margin-top: 5%;
 }
 
 .detail2-list-item {
@@ -291,11 +286,15 @@ async function handleDetailItem(item) {
 .detail2-list-name {
   word-break: keep-all;
   position: absolute;
-  top: -10%;
+  top: -12%;
   left: 50%;
   transform: translateX(-50%);
   font-family: YouSheBiaoTiHei;
-  font-size: 3vh;
+  font-size: 2vh;
+}
+
+.detail2-list-wrap {
+  overflow-y: scroll;
 }
 
 .detail-list-status {
