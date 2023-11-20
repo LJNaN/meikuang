@@ -1635,7 +1635,6 @@ function prtScreen() {
 }
 
 
-
 /**
  * 测试用盒子
  */
@@ -1670,7 +1669,7 @@ function testBox() {
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
 
-    console.log(markData)
+    
   }
 
   document.onkeydown = function (e) {
@@ -2405,6 +2404,7 @@ function computedCameraFocusPosition(currentP, targetP, gapDistance = 200, y = 3
   // 最终坐标[x3,y3,z3]
   return computedPosition
 }
+
 
 
 export const API = {

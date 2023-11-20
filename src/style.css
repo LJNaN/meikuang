@@ -1,8 +1,8 @@
 * {
-  margin: 0;
-  user-select: none;
-  font-size: 2vh;
-  box-sizing: border-box;
+  margin         : 0;
+  user-select    : none;
+  font-size      : 2vh;
+  box-sizing     : border-box;
   scrollbar-width: none;
 }
 
@@ -12,15 +12,18 @@
 
 @font-face {
   font-family: 'YouSheBiaoTiHei';
-  src: url('/assets/2d/fonts/YouSheBiaoTiHei.ttf');
+  src        : url('/assets/2d/fonts/YouSheBiaoTiHei.ttf');
   font-weight: normal;
-  font-style: normal;
+  font-style : normal;
 }
 
 a {
-	text-decoration: none; /* 去除默认的下划线 */
-	outline: none;	/* 去除旧版浏览器的点击后的外虚线框 */
-	color: #000;	/* 去除默认的颜色和点击后变化的颜色 */ 
+  text-decoration: none;
+  /* 去除默认的下划线 */
+  outline        : none;
+  /* 去除旧版浏览器的点击后的外虚线框 */
+  color          : #000;
+  /* 去除默认的颜色和点击后变化的颜色 */
 }
 
 .dg.ac {
@@ -37,7 +40,7 @@ a {
 
 .popup3d_enviroment_detail .popup-close {
   right: 6% !important;
-  top: -108% !important;
+  top  : -108% !important;
 }
 
 .popup3d_location_region p {
@@ -46,13 +49,13 @@ a {
 
 .popup3d_location_region .popup-close {
   right: 1.5vw !important;
-  top: -43vh !important;
+  top  : -43vh !important;
   scale: 1.5;
 }
 
 .popup3d_monitor_detail .popup-close {
   right: 7% !important;
-  top: -71.5% !important;
+  top  : -71.5% !important;
   scale: 2;
 }
 
@@ -62,39 +65,39 @@ a {
 
 .popup3d_person_detail .popup-close {
   right: -33vw !important;
-  top: -21vh !important;
+  top  : -21vh !important;
   scale: 1.5;
 }
 
 .popup3d_main_machine .popup-close {
   scale: 2;
   right: -11vw !important;
-  top: -17vh !important;
+  top  : -17vh !important;
 }
 
 .publicBtn {
-  pointer-events: all;
-  cursor: pointer;
-  display: flex;
+  pointer-events : all;
+  cursor         : pointer;
+  display        : flex;
   justify-content: center;
-  align-items: center;
+  align-items    : center;
 }
 
 .font-gradient {
-  font-size: 3vh;
-  font-family: YouSheBiaoTiHei;
-  font-weight: 400;
-  color: #FFFFFF;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(166,189,204,1) 16.748046875%, rgba(255,255,255,1) 66.6259765625%);
+  font-size              : 3vh;
+  font-family            : YouSheBiaoTiHei;
+  font-weight            : 400;
+  color                  : #FFFFFF;
+  background             : linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(166, 189, 204, 1) 16.748046875%, rgba(255, 255, 255, 1) 66.6259765625%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @font-face {
   font-family: 'YouSheBiaoTiHei';
-  src: url('./assets/2d/fonts/YouSheBiaoTiHei.ttf');
+  src        : url('./assets/2d/fonts/YouSheBiaoTiHei.ttf');
   font-weight: normal;
-  font-style: normal;
+  font-style : normal;
 }
 
 @keyframes myrotate {
@@ -120,4 +123,3 @@ a {
     opacity: 0.4;
   }
 }
-

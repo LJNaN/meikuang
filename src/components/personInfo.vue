@@ -17,6 +17,12 @@
       </div>
     </div>
 
+    <div class="table-title">
+      <p>姓名</p>
+      <p>评价分类</p>
+      <p>岗位信息</p>
+    </div>
+
     <el-scrollbar class="wrap">
       <div class="item" v-for="item in list">
         <div class="item1">{{ item.name }}</div>
@@ -95,16 +101,18 @@ onMounted(() => {
   position: fixed;
   left: 11%;
   top: 9%;
-  height: 40vh;
-  width: 41vw;
+  height: 48vh;
+  width: 47vw;
   background: url('/assets/3d/image/64.png') center / 100% 100% no-repeat;
 
 }
 
 .title {
+  position: absolute;
+  left: 7%;
+  top: 14%;
   width: 86%;
   height: 14%;
-  margin: 6vh auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -132,9 +140,11 @@ onMounted(() => {
 }
 
 .wrap {
+  position: absolute;
+  top: 39%;
+  left: 7%;
   width: 86%;
-  height: 54%;
-  margin: 2% auto 0 auto;
+  height: 49%;
 }
 
 .item {
@@ -151,7 +161,7 @@ onMounted(() => {
 }
 
 .item2 {
-  flex: 3;
+  flex: 4;
 }
 
 .item3 {
@@ -164,7 +174,7 @@ onMounted(() => {
   top: 12.2%;
   right: 4%;
   width: 5%;
-  height: 10%;
+  height: 7%;
   background: url('/assets/3d/image/45.png') center / 100% 100% no-repeat;
 }
 
@@ -175,5 +185,28 @@ onMounted(() => {
   height: 1px;
   background: linear-gradient(-90deg, rgba(11, 16, 19, 0), rgba(97, 158, 225, 0.88), rgba(91, 175, 227, 0.88), rgba(97, 158, 225, 0.88), rgba(11, 16, 19, 0));
   opacity: 0.5;
+}
+
+.table-title {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  top: 31%;
+}
+
+.table-title p{
+  text-align: center;
+  font-size: 2.6vh;
+  font-family: YouSheBiaoTiHei;
+}
+
+.table-title p:nth-of-type(1) {
+  flex: 4;
+}
+.table-title p:nth-of-type(2) {
+  flex: 4;
+}
+.table-title p:nth-of-type(3) {
+  flex: 11;
 }
 </style>

@@ -327,7 +327,8 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name)) {
+            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
+              
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -391,7 +392,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
 
           if (child && child.isMesh) {
-            if (textArr.includes(child.name)) {
+            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -453,7 +454,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name)) {
+            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -500,7 +501,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name)) {
+            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -547,6 +548,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
       CACHE.container = evt
       window.container = evt
       CACHE.container.sceneList = STATE.sceneList
+      
       CACHE.container.attach(STATE.sceneList.text)
 
       console.log(
@@ -573,6 +575,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
       // 处理text
       STATE.sceneList.text.children.forEach(e => {
+        
         STATE.bloomList.push(e)
       })
 
@@ -639,7 +642,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           popup.children[0].element.remove()
           delete STATE.sceneList.mainMachinePopup
         }
-        API.initMainMachinePopup('zongcai')
+        // API.initMainMachinePopup('zongcai')
 
       } else if (obj.userData.modelName === 'jjgzm') {
         let popup = STATE.sceneList.mainMachinePopup
@@ -648,7 +651,7 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           popup.children[0].element.remove()
           delete STATE.sceneList.mainMachinePopup
         }
-        API.initMainMachinePopup('qieyan')
+        // API.initMainMachinePopup('qieyan')
       }
     }
   }
