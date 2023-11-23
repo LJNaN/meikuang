@@ -19,25 +19,25 @@
 
     <div class="table-title">
       <p>姓名</p>
-      <p>评价分类</p>
       <p>岗位信息</p>
+      <p>评价分类</p>
     </div>
 
     <el-scrollbar class="wrap">
       <div class="item" v-for="item in list">
         <div class="item1">{{ item.name }}</div>
-        <div class="item2" :style="{
+        <div class="item2">{{
+          (item.info.value3 || '')
+          + (item.info.value5 ? (' | ' + item.info.value5) : '')
+          + (item.info.value4 ? (' | ' + item.info.value4) : '') }}
+        </div>
+        <div class="item3" :style="{
           color:
             item.info.value2 === '重点监管' ? '#b01e1e' :
               item.info.value2 === '加强监管' ? '#c17f26' :
                 item.info.value2 === '需关注' ? '#c1be26' :
                   item.info.value2 === '安全' ? '#356cb0' : '#FFFFFF'
         }">{{ item.info.value2 }}</div>
-        <div class="item3">{{
-          (item.info.value3 || '')
-          + (item.info.value5 ? (' | ' + item.info.value5) : '')
-          + (item.info.value4 ? (' | ' + item.info.value4) : '') }}
-        </div>
         <div class="line"></div>
       </div>
     </el-scrollbar>
@@ -157,15 +157,18 @@ onMounted(() => {
 }
 
 .item1 {
+  text-align: center;
   flex: 4;
 }
 
 .item2 {
-  flex: 4;
+  text-align: center;
+  flex: 11;
 }
 
 .item3 {
-  flex: 11;
+  text-align: center;
+  flex: 4;
 }
 
 .close {
@@ -190,11 +193,12 @@ onMounted(() => {
 .table-title {
   position: absolute;
   display: flex;
-  width: 100%;
+  width: 86%;
+  left: 7%;
   top: 31%;
 }
 
-.table-title p{
+.table-title p {
   text-align: center;
   font-size: 2.6vh;
   font-family: YouSheBiaoTiHei;
@@ -203,10 +207,12 @@ onMounted(() => {
 .table-title p:nth-of-type(1) {
   flex: 4;
 }
+
 .table-title p:nth-of-type(2) {
-  flex: 4;
-}
-.table-title p:nth-of-type(3) {
   flex: 11;
+}
+
+.table-title p:nth-of-type(3) {
+  flex: 4;
 }
 </style>
