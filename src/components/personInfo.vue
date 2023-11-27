@@ -99,10 +99,11 @@ onMounted(() => {
 .detail {
   pointer-events: all;
   position: fixed;
-  left: 11%;
-  top: 9%;
-  height: 48vh;
-  width: 47vw;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 14%;
+  height: 69vh;
+  width: 81vw;
   background: url('/assets/3d/image/64.png') center / 100% 100% no-repeat;
 
 }
@@ -110,7 +111,7 @@ onMounted(() => {
 .title {
   position: absolute;
   left: 7%;
-  top: 14%;
+  top: 6%;
   width: 86%;
   height: 14%;
   display: flex;
@@ -141,10 +142,10 @@ onMounted(() => {
 
 .wrap {
   position: absolute;
-  top: 39%;
-  left: 7%;
-  width: 86%;
-  height: 49%;
+  top: 33%;
+  left: 3%;
+  width: 94%;
+  height: 60%;
 }
 
 .item {
@@ -174,8 +175,8 @@ onMounted(() => {
 .close {
   cursor: pointer;
   position: absolute;
-  top: 12.2%;
-  right: 4%;
+  top: 17.2%;
+  right: 2.8%;
   width: 5%;
   height: 7%;
   background: url('/assets/3d/image/45.png') center / 100% 100% no-repeat;
@@ -193,9 +194,9 @@ onMounted(() => {
 .table-title {
   position: absolute;
   display: flex;
-  width: 86%;
-  left: 7%;
-  top: 31%;
+  width: 94%;
+  left: 3%;
+  top: 25%;
 }
 
 .table-title p {
