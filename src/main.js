@@ -23,22 +23,20 @@ if (['yihao', 'erhao', 'shuanglong', 'ruineng'].includes(version)) {
 }
 
 if (version === 'yihao') {
-    if (new Date("2023-12-15") * 1 > new Date() * 1) {
-        app.mount('#app')
-    }
+    app.mount('#app')
 
 } else if (version === 'erhao') {
-    if (new Date("2023-12-15") * 1 > new Date() * 1) {
+    if (new Date("2024-1-27") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'shuanglong') {
-    if (new Date("2023-12-15") * 1 > new Date() * 1) {
+    if (new Date("2024-1-27") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'ruineng') {
-    if (new Date("2023-12-15") * 1 > new Date() * 1) {
+    if (new Date("2024-1-27") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 }
