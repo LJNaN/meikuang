@@ -322,13 +322,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
           }
         }) // mkxdw mk-v1
       } else if (model.name === 'mkxdw') { // 一号 主场景
-        const textArr = ["1009", "627_(1)", "501", "1009", "624", "620", "1001", "626", "627", "628", "629", "630", "631", "632", "609", "607", "605", "603", "601", "814", "812", "810", "801", "803", "805", "807", "809", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "311", "310", "309", "308", "307", "306", "305", "304", "303", "302", "301", "300", "402", "404", "406", "203", "204", "205", "206", "207", "208", "209"]
-        const workLocationArr = ['627zcgzm', '501zcgzm', '1010zcgzm', 'jjgzm']
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
-              
+            if (/^[0-9]*$/.test(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -339,13 +336,9 @@ export const sceneOnLoad = ({ domElement, callback }) => {
               child.geometry.dispose()
               if (!CACHE.removed[child.name]) CACHE.removed[child.name] = child
               child = null
-            } else if (workLocationArr.includes(child.name)) {
-              child.material.transparent = true
-              child.material.opacity = 0.5
-            } else if (child.name === 'hangdao') {
+            } else if  (child.name === 'hangdao') {
               child.material.transparent = true
               child.material.opacity = 0.4
-              // STATE.bloomList.push(child)
             } else {
               child.material.transparent = true
               child.material.opacity = 0.2
@@ -388,11 +381,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
         model.add(newGzm109)
         gzm109.parent.remove(gzm109)
 
-        const textArr = ['4006', '4004', '4002', '1002', '1004', '1006', '1008', '1003', '1005', '1007', '2001', '1001', '2002', '2005', '3001', '3002', '3003', '3004', '3005', '3006', '3007', '3008', '3009', '3010', '101', '102', '103', '105', '107', '109', '108', '106', '111', '113', '115', '117', '110', '112', '116', '118', '120', '201', '203']
         model.traverse(child => {
 
           if (child && child.isMesh) {
-            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
+            if (/^[0-9]*$/.test(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -450,11 +442,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
         STATE.sceneList.mainScene = model
       } else if (model.name === 'shuanglong') { // 双龙 主场景
-        const textArr = ['108', '107', '106', '101', '102', '103', '104', '105', '113', '112', '110', '109']
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
+            if (/^[0-9]*$/.test(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'
@@ -497,11 +488,10 @@ export const sceneOnLoad = ({ domElement, callback }) => {
 
         STATE.sceneList.mainScene = model
       } else if (model.name === 'erhao') { // 二号 主场景
-        const textArr = ['305', '303', '418', '209', '211', '213', '105', '001', '107', '109', '111', '03', '02', '01', '403', '405', '407', '409', '406', '408', '410', '412', '414', '416', '201', '203', '205', '207', '301']
         model.traverse(child => {
           if (child && child.isMesh) {
 
-            if (textArr.includes(child.name) || child.name.includes('daxiang')) {
+            if (/^[0-9]*$/.test(child.name) || child.name.includes('daxiang')) {
               if (!STATE.sceneList.text) {
                 STATE.sceneList.text = new Bol3D.Group()
                 STATE.sceneList.text.name = 'text'

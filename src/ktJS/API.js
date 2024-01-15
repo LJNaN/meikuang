@@ -1668,8 +1668,10 @@ function testBox() {
       "%c该点标注成功，您可以继续使用此函数以形成多边形。当前已添加的坐标为：",
       "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
+    console.log(
+      markData
+    )
 
-    
   }
 
   document.onkeydown = function (e) {
