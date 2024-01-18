@@ -8,7 +8,7 @@ import { STATE } from '@/ktJS/STATE'
 import { API } from '@/ktJS/API'
 const app = createApp(App)
 
-app.config.globalProperties.$isOurSite = false  // 控制是否是官网数据
+app.config.globalProperties.$isOurSite = true  // 控制是否是官网数据
 
 app.use(ElementPlus).use(router)
 
