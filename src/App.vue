@@ -382,7 +382,7 @@ onMounted(() => {
 
           const personPopupList = []
           const personAllUsefulList = []
-          personData.list.forEach(item => {
+          personData?.list && personData.list.forEach(item => {
             // 工作面
             const hasGongzuomian = STATE.locationPositionPointsArr.find(e => e.name === item.t6)
             if (hasGongzuomian) {

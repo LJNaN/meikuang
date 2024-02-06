@@ -8,7 +8,7 @@ import { STATE } from '@/ktJS/STATE'
 import { API } from '@/ktJS/API'
 const app = createApp(App)
 
-app.config.globalProperties.$isOurSite = true  // 控制是否是官网数据
+app.config.globalProperties.$isOurSite = false  // 控制是否是官网数据
 
 app.use(ElementPlus).use(router)
 
@@ -26,17 +26,17 @@ if (version === 'yihao') {
     app.mount('#app')
 
 } else if (version === 'erhao') {
-    if (new Date("2024-1-27") * 1 > new Date() * 1) {
+    if (new Date("2024-3-15") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'shuanglong') {
-    if (new Date("2024-1-27") * 1 > new Date() * 1) {
+    if (new Date("2024-3-15") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 
 } else if (version === 'ruineng') {
-    if (new Date("2024-1-27") * 1 > new Date() * 1) {
+    if (new Date("2024-3-15") * 1 > new Date() * 1) {
         app.mount('#app')
     }
 }
