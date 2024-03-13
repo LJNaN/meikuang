@@ -22,21 +22,16 @@ if (['yihao', 'erhao', 'shuanglong', 'ruineng'].includes(version)) {
     STATE.version = 'yihao'
 }
 
+
 if (version === 'yihao') {
     app.mount('#app')
 
 } else if (version === 'erhao') {
-    if (new Date("2024-3-15") * 1 > new Date() * 1) {
-        app.mount('#app')
-    }
+    app.mount('#app')
 
 } else if (version === 'shuanglong') {
-    if (new Date("2024-3-15") * 1 > new Date() * 1) {
-        app.mount('#app')
-    }
+    app.mount('#app')
 
 } else if (version === 'ruineng') {
-    if (new Date("2024-3-15") * 1 > new Date() * 1) {
-        app.mount('#app')
-    }
+    app.mount('#app')
 }
